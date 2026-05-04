@@ -1,0 +1,52 @@
+# Builds and deploys the Vite app to GitHub Pages on every push to main.
+#
+# Setup once on GitHub:
+#   Settings -> Pages -> Build and deployment -> Source: GitHub Actions
+#
+# The Vite config (vite.config.ts) reads GITHUB_REPOSITORY (auto-injected by
+# Actions) and derives the correct `base` path, so this works for any repo
+# name without hardcoding it. If you later switch to a custom apex domain,
+# add `BASE_PATH: /` under the build env block.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment; cancel any in-progress run if a new push lands.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
