@@ -19,6 +19,28 @@ export interface CustomItem {
   done: boolean;
 }
 
+// All possible activities a day can contain, except for "lift" which keeps its
+// own Push/Pull/Legs sub-type. Adding a new wellness/cardio activity = adding
+// an entry here, in ACTIVITY_REGISTRY (constants), and in DEFAULT_DAY_ACTIVITIES.
+export type ActivityId =
+  | 'run'
+  | 'hiit'
+  | 'walk'
+  | 'core'
+  | 'bend-full'
+  | 'bend-expert'
+  | 'meditate';
+
+export interface ActivityMeta {
+  icon: string;
+  color: string;
+  label: string;
+  // Activities marked "checkbox" are completed in-place by tapping them in
+  // the day expansion. Activities marked "session" open the WorkoutDetail
+  // screen with sets/timer support.
+  kind: 'checkbox' | 'session';
+}
+
 export interface NutritionProfile {
   sex: 'm' | 'f';
   age: number;
@@ -39,7 +61,7 @@ export interface WeightEntry {
 }
 
 export interface WorkoutItem {
-  type: 'lift' | 'run' | 'hiit' | 'walk' | 'core';
+  type: 'lift' | ActivityId;
   liftType?: 'Push' | 'Pull' | 'Legs' | 'None';
 }
 

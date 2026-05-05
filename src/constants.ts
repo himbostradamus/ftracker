@@ -1,4 +1,4 @@
-import { ExerciseConfig } from './types';
+import { ActivityId, ActivityMeta, ExerciseConfig } from './types';
 
 export const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -72,19 +72,51 @@ export const STOCK_DEFAULTS: Record<string, ExerciseConfig> = {
   "Quad Extension": { sets: 3, reps: 12, w: 70, inc: 5, bw: false, rest: 60 }
 };
 
-export const DAILY_TASKS = [
-  { id: "bend-full", label: "Bend – Full Body", icon: "○", color: "#C084FC" },
-  { id: "bend-expert", label: "Bend – Expert", icon: "◎", color: "#C084FC" },
-  { id: "meditate", label: "Meditate", icon: "◇", color: "#A78BFA" }
+// Single source of truth for non-lift activities. Each entry's key matches an
+// ActivityId in types.ts; ChecklistTab and the ScheduleEditor both read from
+// here so adding a new wellness activity is one entry plus a default.
+export const ACTIVITY_REGISTRY: Record<ActivityId, ActivityMeta> = {
+  run:           { icon: "▸",  color: "#47E8A0", label: "Run / Bike",      kind: 'session' },
+  hiit:          { icon: "⚡", color: "#E85C47", label: "HIIT Sprint",     kind: 'session' },
+  walk:          { icon: "~",  color: "#47B8E8", label: "75 min Walk",     kind: 'session' },
+  core:          { icon: "◉",  color: "#F59E0B", label: "Core",            kind: 'session' },
+  "bend-full":   { icon: "○",  color: "#C084FC", label: "Bend – Full Body", kind: 'checkbox' },
+  "bend-expert": { icon: "◎",  color: "#C084FC", label: "Bend – Expert",   kind: 'checkbox' },
+  meditate:      { icon: "◇",  color: "#A78BFA", label: "Meditate",        kind: 'checkbox' }
+};
+
+// Stable order for UI lists (chips in the editor, default scheduling).
+export const ACTIVITY_IDS: readonly ActivityId[] = [
+  'run', 'hiit', 'walk', 'core', 'bend-full', 'bend-expert', 'meditate'
 ] as const;
 
+// Default activities per day (Mon..Sun). This drives the schedule when the
+// user hasn't customized anything for a given week. Bend-full and meditate
+// default to every day to match the previous app behavior; cardio/HIIT
+// follow the original rotation by week parity (handled in helpers.ts).
+export const DEFAULT_DAY_ACTIVITIES: Record<number, ActivityId[]> = {
+  0: ['hiit',    'bend-full', 'meditate'], // Mon
+  1: ['run',     'bend-full', 'meditate'], // Tue
+  2: ['hiit',    'bend-full', 'meditate'], // Wed
+  3: ['run',     'bend-full', 'meditate'], // Thu
+  4: ['hiit',    'bend-full', 'meditate'], // Fri (becomes 'core' on even weeks, see helpers)
+  5: ['run',     'bend-full', 'meditate'], // Sat (becomes 'core' on odd weeks)
+  6: ['walk',    'bend-full', 'meditate']  // Sun
+};
+
+// Legacy aliases retained for code that still imports the old names.
+// TYPE_META now also includes a 'lift' entry that the ACTIVITY_REGISTRY (which
+// only lists non-lift activities) doesn't carry.
 export const TYPE_META = {
   lift: { icon: "◆", color: "#E8C547", label: "Lift" },
-  run: { icon: "▸", color: "#47E8A0", label: "Run / Bike" },
-  hiit: { icon: "⚡", color: "#E85C47", label: "HIIT Sprint" },
-  walk: { icon: "~", color: "#47B8E8", label: "75 min Walk" },
-  core: { icon: "◉", color: "#F59E0B", label: "Core" }
+  ...ACTIVITY_REGISTRY
 } as const;
+
+export const DAILY_TASKS = [
+  { id: "bend-full",   label: ACTIVITY_REGISTRY['bend-full'].label,   icon: ACTIVITY_REGISTRY['bend-full'].icon,   color: ACTIVITY_REGISTRY['bend-full'].color },
+  { id: "bend-expert", label: ACTIVITY_REGISTRY['bend-expert'].label, icon: ACTIVITY_REGISTRY['bend-expert'].icon, color: ACTIVITY_REGISTRY['bend-expert'].color },
+  { id: "meditate",    label: ACTIVITY_REGISTRY.meditate.label,       icon: ACTIVITY_REGISTRY.meditate.icon,       color: ACTIVITY_REGISTRY.meditate.color }
+] as const;
 
 export const ALL_EX_CATS = [
   { cat: "Push", items: EXERCISES.Push },

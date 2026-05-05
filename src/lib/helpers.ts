@@ -1,5 +1,5 @@
-import { ExerciseConfig, NutritionProfile, DaySchedule } from '../types';
-import { LIFT_ROTATION } from '../constants';
+import { ActivityId, ExerciseConfig, NutritionProfile, DaySchedule, WorkoutItem } from '../types';
+import { ACTIVITY_REGISTRY, DEFAULT_DAY_ACTIVITIES, LIFT_ROTATION } from '../constants';
 
 export function getWeekId(date: Date): string {
   const d = new Date(date);
@@ -17,52 +17,57 @@ export function getRotationIndex(weekNum: number): number {
   return ((weekNum - 1) % LIFT_ROTATION.length + LIFT_ROTATION.length) % LIFT_ROTATION.length;
 }
 
+// Default lift slot per day (5 lift days; Sat/Sun are rest from lifting).
+// Indexed by Mon..Sun. `null` means the day has no lift slot in the template.
+const DEFAULT_LIFT_DAYS: (number | null)[] = [0, 1, 2, 3, 4, null, null];
+
+// Returns activities scheduled for a given day, applying the week-parity
+// swap (Fri HIIT -> Core on even weeks, Sat Run -> Core on odd weeks) that
+// the original template encoded.
+function getDefaultActivities(day: number, weekNum: number): ActivityId[] {
+  const base = [...DEFAULT_DAY_ACTIVITIES[day]];
+  if (weekNum % 2 === 0 && day === 4) {
+    return base.map(a => a === 'hiit' ? 'core' : a);
+  }
+  if (weekNum % 2 !== 0 && day === 5) {
+    return base.map(a => a === 'run' ? 'core' : a);
+  }
+  return base;
+}
+
 export function getWeekTemplate(wid: string, data: any): DaySchedule[] {
   const wn = parseInt(wid.split("-W")[1], 10);
-  const base: DaySchedule[] = [
-    { day: 0, items: [{ type: 'lift', liftType: 'Legs' }, { type: 'hiit' }] },
-    { day: 1, items: [{ type: 'lift', liftType: 'Push' }, { type: 'run' }] },
-    { day: 2, items: [{ type: 'lift', liftType: 'Legs' }, { type: 'hiit' }] },
-    { day: 3, items: [{ type: 'lift', liftType: 'Push' }, { type: 'run' }] },
-    { day: 4, items: [{ type: 'lift', liftType: 'Pull' }, { type: 'hiit' }] },
-    { day: 5, items: [{ type: 'run' }] },
-    { day: 6, items: [{ type: 'walk' }] }
-  ];
-  
-  if (wn % 2 === 0) {
-    base[4].items = base[4].items.map(i => i.type === 'hiit' ? { type: 'core' } : i);
-  } else {
-    base[5].items = [{ type: 'core' }];
-  }
+  const customLifts: Record<number, string> | undefined = data[`week-lifts-${wid}`];
+  const customActivities: Record<number, ActivityId[]> | undefined = data[`week-activities-${wid}`];
+  const rotationLifts = LIFT_ROTATION[getRotationIndex(wn)].lifts;
 
-  const currentLifts = LIFT_ROTATION[getRotationIndex(wn)].lifts;
-  const customLifts = data[`week-lifts-${wid}`];
-  
-  if (customLifts) {
-    // If we have any custom lift assignment for this week, apply it.
-    base.forEach(s => {
-      // Remove any existing lift items from this day
-      s.items = s.items.filter(i => i.type !== 'lift');
-      
-      const customVal = customLifts[s.day];
-      if (customVal && customVal !== 'None') {
-        s.items.unshift({ type: 'lift', liftType: customVal as any });
-      }
+  return [0, 1, 2, 3, 4, 5, 6].map(day => {
+    const items: WorkoutItem[] = [];
+
+    // 1. Lift slot (if any). Per-week override wins; otherwise fall back to
+    //    the default lift-day mapping plus the rotation table.
+    let liftType: string | undefined;
+    if (customLifts && customLifts[day] !== undefined) {
+      const v = customLifts[day];
+      if (v && v !== 'None') liftType = v;
+    } else {
+      const defaultLiftIdx = DEFAULT_LIFT_DAYS[day];
+      if (defaultLiftIdx !== null) liftType = rotationLifts[defaultLiftIdx];
+    }
+    if (liftType) {
+      items.push({ type: 'lift', liftType: liftType as any });
+    }
+
+    // 2. Other activities. Per-week override wins; otherwise use the seed
+    //    in DEFAULT_DAY_ACTIVITIES (with the parity swap applied).
+    const activities = customActivities?.[day] ?? getDefaultActivities(day, wn);
+    activities.forEach(a => {
+      // Skip unknown ids gracefully (e.g. data from an older schema version).
+      if (ACTIVITY_REGISTRY[a]) items.push({ type: a });
     });
-  } else {
-    // Apply default lifting rotation correctly
-    let liftIdx = 0;
-    base.forEach(s => {
-      s.items.forEach(item => {
-        if (item.type === 'lift') {
-          item.liftType = currentLifts[liftIdx] as any;
-          liftIdx++;
-        }
-      });
-    });
-  }
-  
-  return base;
+
+    return { day, items };
+  });
 }
 
 export function getMon(date: Date): Date {

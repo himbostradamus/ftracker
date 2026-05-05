@@ -3,7 +3,7 @@ import { ChevronLeft, Settings, Minus, Plus, Check } from 'lucide-react';
 import { TYPE_META, EXERCISES, AVAILABLE_EXERCISES } from '../constants';
 import { getWeekId, getMon, fmtDate, getWeekTemplate } from '../lib/helpers';
 import { 
-  loadData, saveData, getDef, getLift, saveConfigs, loadConfigs, updateWeekLifts 
+  loadData, saveData, getDef, getLift, saveConfigs, loadConfigs, updateWeekLifts, updateWeekActivities 
 } from '../lib/storage';
 import { cn } from '../lib/utils';
 import { ExerciseConfig } from '../types';
@@ -173,8 +173,14 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
           sched={sched}
           mon={mon}
           customLifts={data[`week-lifts-${weekId}`]}
-          onChange={(day, val) => {
+          customActivities={data[`week-activities-${weekId}`]}
+          onLiftChange={(day, val) => {
             const newData = updateWeekLifts(data, weekId, sched, day, val);
+            setData(newData);
+            saveData(newData);
+          }}
+          onActivitiesChange={(day, activities) => {
+            const newData = updateWeekActivities(data, weekId, sched, day, activities);
             setData(newData);
             saveData(newData);
           }}

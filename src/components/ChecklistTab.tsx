@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, Plus, Check } from 'lucide-react';
-import { DAYS, DAILY_TASKS, TYPE_META } from '../constants';
+import { ACTIVITY_REGISTRY, DAYS, TYPE_META } from '../constants';
 import { getWeekId, getMon, fmtDate, getWeekTemplate, getRotationIndex } from '../lib/helpers';
-import { loadData, saveData, updateWeekLifts } from '../lib/storage';
+import { loadData, saveData, updateWeekLifts, updateWeekActivities } from '../lib/storage';
 import { cn } from '../lib/utils';
 import { CustomItem } from '../types';
 import { ScheduleEditor } from './ScheduleEditor';
@@ -40,7 +40,6 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
 
   const sched = getWeekTemplate(weekId, data);
   const k = (dn: number, ti: number) => `${weekId}-${dn}-${ti}`;
-  const kdl = (dn: number, id: string) => `${weekId}-${dn}-daily-${id}`;
   const kcu = (dn: number) => `${weekId}-${dn}-custom`;
 
   const toggle = (key: string) => { const newData = { ...data, [key]: !data[key] }; setData(newData); saveData(newData); };
@@ -78,8 +77,14 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
           sched={sched}
           mon={mon}
           customLifts={data[`week-lifts-${weekId}`]}
-          onChange={(day, val) => {
+          customActivities={data[`week-activities-${weekId}`]}
+          onLiftChange={(day, val) => {
             const newData = updateWeekLifts(data, weekId, sched, day, val);
+            setData(newData);
+            saveData(newData);
+          }}
+          onActivitiesChange={(day, activities) => {
+            const newData = updateWeekActivities(data, weekId, sched, day, activities);
             setData(newData);
             saveData(newData);
           }}
@@ -116,6 +121,10 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
                     const chk = data[k(s.day, ti)];
                     const meta = TYPE_META[item.type];
                     const label = item.type === 'lift' ? item.liftType : meta.label;
+                    const hasDetail =
+                      item.type === 'lift' ||
+                      ACTIVITY_REGISTRY[item.type]?.kind === 'session';
+
                     return (
                       <div key={ti} className={cn("flex items-center gap-2 p-1.5 rounded-md", chk && "opacity-40")}>
                         <button
@@ -128,29 +137,28 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
                         >
                           {chk && <Check size={12} className="text-bg font-bold" />}
                         </button>
-                        <button
-                          type="button"
-                          className="flex items-center gap-2 flex-1 text-left"
-                          onClick={() => onOpenWorkout(di, ti)}
-                        >
-                          <span className="text-xs w-3.5 text-center" style={{ color: chk ? meta.color + "44" : meta.color }}>{meta.icon}</span>
-                          <span className={cn("text-xs font-medium text-[#ccc] flex-1", chk && "line-through text-[#555]")}>{label}</span>
-                          <ChevronRight size={14} className="text-[#2A2A2A]" />
-                        </button>
+                        {hasDetail ? (
+                          <button
+                            type="button"
+                            className="flex items-center gap-2 flex-1 text-left"
+                            onClick={() => onOpenWorkout(di, ti)}
+                          >
+                            <span className="text-xs w-3.5 text-center" style={{ color: chk ? meta.color + "44" : meta.color }}>{meta.icon}</span>
+                            <span className={cn("text-xs font-medium text-[#ccc] flex-1", chk && "line-through text-[#555]")}>{label}</span>
+                            <ChevronRight size={14} className="text-[#2A2A2A]" />
+                          </button>
+                        ) : (
+                          // Checkbox-only activity: tapping the row anywhere just toggles.
+                          <button
+                            type="button"
+                            className="flex items-center gap-2 flex-1 text-left"
+                            onClick={() => toggle(k(s.day, ti))}
+                          >
+                            <span className="text-xs w-3.5 text-center" style={{ color: chk ? meta.color + "44" : meta.color }}>{meta.icon}</span>
+                            <span className={cn("text-xs font-medium text-[#ccc] flex-1", chk && "line-through text-[#555]")}>{label}</span>
+                          </button>
+                        )}
                       </div>
-                    );
-                  })}
-                  <div className="h-[1px] bg-border my-1" />
-                  {DAILY_TASKS.map(dt => {
-                    const chk = data[kdl(s.day, dt.id)];
-                    return (
-                      <button key={dt.id} className={cn("flex items-center gap-2 p-1.5 rounded-md text-left", chk && "opacity-40")} onClick={() => toggle(kdl(s.day, dt.id))}>
-                        <div className={cn("w-[18px] h-[18px] rounded border-2 flex items-center justify-center shrink-0", chk ? "bg-[var(--c)] border-[var(--c)]" : "border-[var(--c-dim)]")} style={{ '--c': dt.color, '--c-dim': dt.color + "33" } as any}>
-                          {chk && <Check size={12} className="text-bg font-bold" />}
-                        </div>
-                        <span className="text-xs w-3.5 text-center" style={{ color: chk ? dt.color + "33" : dt.color }}>{dt.icon}</span>
-                        <span className={cn("text-xs font-medium text-[#ccc] flex-1", chk && "line-through text-[#555]")}>{dt.label}</span>
-                      </button>
                     );
                   })}
                   {cust.length > 0 && <div className="h-[1px] bg-border my-1" />}

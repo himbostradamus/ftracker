@@ -1,5 +1,5 @@
-import { ExerciseConfig, LiftData, NutritionProfile, WeightEntry, DaySchedule } from '../types';
-import { STOCK_DEFAULTS } from '../constants';
+import { ActivityId, ExerciseConfig, LiftData, NutritionProfile, WeightEntry, DaySchedule } from '../types';
+import { ACTIVITY_REGISTRY, STOCK_DEFAULTS } from '../constants';
 import { getWeekId } from './helpers';
 
 const SK = "workout-tracker-v6";
@@ -72,6 +72,33 @@ export function updateWeekLifts(
     });
   }
   return { ...data, [key]: { ...customLifts, [day]: value } };
+}
+
+export function getCustomActivities(data: any, weekId: string): Record<number, ActivityId[]> | undefined {
+  return data[`week-activities-${weekId}`];
+}
+
+// Sets a day's activity list (everything except the lift slot). On first
+// edit, seeds the full week from the current schedule so that toggling one
+// day's activities doesn't reset the others to defaults.
+export function updateWeekActivities(
+  data: any,
+  weekId: string,
+  sched: DaySchedule[],
+  day: number,
+  activities: ActivityId[]
+): any {
+  const key = `week-activities-${weekId}`;
+  let map: Record<number, ActivityId[]> = data[key];
+  if (!map) {
+    map = {};
+    sched.forEach(s => {
+      map[s.day] = s.items
+        .filter((i): i is { type: ActivityId } => i.type !== 'lift' && (i.type as ActivityId) in ACTIVITY_REGISTRY)
+        .map(i => i.type as ActivityId);
+    });
+  }
+  return { ...data, [key]: { ...map, [day]: activities } };
 }
 
 export function getLift(day: number, exName: string, weekId: string): LiftData {
