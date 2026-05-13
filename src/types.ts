@@ -31,6 +31,15 @@ export interface CustomItem {
   done: boolean;
 }
 
+// Lightweight container for UI-only preferences (visibility toggles, etc).
+// Stored separately from workout data so it can be reset without losing logs.
+export interface UIPrefs {
+  // When true, the Macros/Nutrition tab is hidden from the TabBar. The data
+  // itself (profile, weight log) is preserved — flip this back to false and
+  // it's all still there.
+  hideNutrition?: boolean;
+}
+
 // All possible activities a day can contain, except for "lift" which keeps its
 // own Push/Pull/Legs sub-type. Adding a new wellness/cardio activity = adding
 // an entry here, in ACTIVITY_REGISTRY (constants), and in DEFAULT_DAY_ACTIVITIES.

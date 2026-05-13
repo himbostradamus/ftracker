@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
-import { Download, Upload, Trash2, Database } from 'lucide-react';
+import { Download, Upload, Trash2, Database, Eye } from 'lucide-react';
 import { loadData, loadConfigs, loadNutrProfile, loadWeightLog, saveData, saveConfigs, saveNutrProfile, saveWeightLog } from '../lib/storage';
 import { cn } from '../lib/utils';
+import { UIPrefs } from '../types';
 
-export function DataTab() {
+interface DataTabProps {
+  uiPrefs: UIPrefs;
+  onUpdatePrefs: (next: UIPrefs) => void;
+}
+
+export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
   const [msg, setMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
 
   const exportData = () => {
@@ -12,10 +18,11 @@ export function DataTab() {
       configs: loadConfigs(),
       nutrProfile: loadNutrProfile(),
       weightLog: loadWeightLog(),
-      version: 6,
+      uiPrefs,
+      version: 7,
       exported: new Date().toISOString()
     }, null, 2);
-    
+
     const blob = new Blob([payload], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -57,6 +64,7 @@ export function DataTab() {
           merged.sort((a, b) => a.date > b.date ? 1 : -1);
           saveWeightLog(merged);
         }
+        if (p.uiPrefs) onUpdatePrefs({ ...uiPrefs, ...p.uiPrefs });
         setMsg({ type: 'ok', text: "Imported successfully" });
       } catch (err) {
         setMsg({ type: 'err', text: "Could not parse file" });
@@ -67,13 +75,11 @@ export function DataTab() {
   };
 
   const clearAllData = () => {
-    if (!confirm("Delete ALL training data? This cannot be undone.")) return;
-    saveData({});
-    saveConfigs({});
-    saveNutrProfile(null);
-    saveWeightLog([]);
+    if (!confirm("Permanently delete all workout, configuration, nutrition, and weight data?")) return;
+    if (!confirm("Are you absolutely sure? This cannot be undone.")) return;
+    localStorage.clear();
     setMsg({ type: 'ok', text: "All data cleared" });
-    window.location.reload();
+    setTimeout(() => window.location.reload(), 500);
   };
 
   const data = loadData();
@@ -86,7 +92,7 @@ export function DataTab() {
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-base font-bold tracking-[5px] text-white">DATA</h1>
-      
+
       {msg && (
         <div className={cn(
           "text-[11px] p-2 rounded-md text-center tracking-wider border",
@@ -95,6 +101,34 @@ export function DataTab() {
           {msg.text}
         </div>
       )}
+
+      <div className="bg-card border border-border rounded-lg p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Eye size={14} className="text-[#888]" />
+          <h2 className="text-[11px] font-bold tracking-widest text-[#888] uppercase">Display</h2>
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col">
+            <span className="text-[11px] text-[#ccc]">Show Macros tab</span>
+            <span className="text-[9px] text-[#444] leading-relaxed">Calorie targets, macros, and weight tracking. Hide if you'd rather not see this data.</span>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={!uiPrefs.hideNutrition}
+            aria-label="Show Macros tab"
+            onClick={() => onUpdatePrefs({ ...uiPrefs, hideNutrition: !uiPrefs.hideNutrition })}
+            className={cn(
+              "px-2.5 py-1 rounded text-[10px] font-bold tracking-widest border transition-colors shrink-0 ml-3",
+              !uiPrefs.hideNutrition
+                ? "bg-success/15 text-success border-success/40"
+                : "bg-bg text-[#555] border-border"
+            )}
+          >
+            {!uiPrefs.hideNutrition ? "ON" : "OFF"}
+          </button>
+        </div>
+      </div>
 
       <div className="bg-card border border-border rounded-lg p-4">
         <div className="flex items-center gap-2 mb-3">

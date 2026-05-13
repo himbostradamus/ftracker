@@ -1,10 +1,11 @@
-import { ActivityId, ExerciseConfig, LiftData, NutritionProfile, WeightEntry, DaySchedule } from '../types';
+import { ActivityId, ExerciseConfig, LiftData, NutritionProfile, UIPrefs, WeightEntry, DaySchedule } from '../types';
 import { ACTIVITY_REGISTRY, STOCK_DEFAULTS } from '../constants';
 
 const SK = "workout-tracker-v6";
 const CK = "exercise-config-v1";
 const NK = "nutrition-v1";
 const WK = "weight-log-v1";
+const UK = "ui-prefs-v1";
 
 export function loadData() {
   return JSON.parse(localStorage.getItem(SK) || "{}");
@@ -36,6 +37,14 @@ export function loadWeightLog(): WeightEntry[] {
 
 export function saveWeightLog(log: WeightEntry[]) {
   localStorage.setItem(WK, JSON.stringify(log));
+}
+
+export function loadUIPrefs(): UIPrefs {
+  return JSON.parse(localStorage.getItem(UK) || "{}");
+}
+
+export function saveUIPrefs(prefs: UIPrefs) {
+  localStorage.setItem(UK, JSON.stringify(prefs));
 }
 
 export function getDef(name: string): ExerciseConfig {
@@ -147,7 +156,14 @@ function dateForWeekDay(weekId: string, day: number): Date {
 // what the previous one was.
 export function getLastPerformed(exName: string, excludeKey?: string): LastPerformed | null {
   const data = loadData();
-  let best: { weekId: string; day: number; entry: LiftData } | null = null;
+  // Use today (local midnight) as the upper bound. Future-dated sessions —
+  // which can exist if the user navigates ahead with the week buttons and
+  // logs reps there — are excluded from "last performed" lookups so they
+  // don't trigger auto-bump or show up in the indicator with a future date.
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  let best: { weekId: string; day: number; entry: LiftData; date: Date } | null = null;
 
   for (const key of Object.keys(data)) {
     if (key === excludeKey) continue;
@@ -156,20 +172,23 @@ export function getLastPerformed(exName: string, excludeKey?: string): LastPerfo
     const [, weekId, dayStr, name] = m;
     if (name !== exName) continue;
     const entry = data[key] as LiftData | undefined;
-    if (!entry || !entry.weight || !entry.grid) continue;
+    // We accept weight === 0 (bodyweight sessions with no added weight) but
+    // reject undefined/null/missing weight. Using `typeof !== 'number'` makes
+    // the intent explicit; `!entry.weight` would silently drop BW sessions.
+    if (!entry || typeof entry.weight !== 'number' || !entry.grid) continue;
     // Only count sessions where at least one rep was logged.
     const hasWork = entry.grid.some(row => row.some(r => r));
     if (!hasWork) continue;
+    // Filter out future-dated sessions.
+    const date = dateForWeekDay(weekId, parseInt(dayStr, 10));
+    if (date.getTime() > today.getTime()) continue;
     if (!best || `${weekId}-${dayStr}` > `${best.weekId}-${best.day}`) {
-      best = { weekId, day: parseInt(dayStr, 10), entry };
+      best = { weekId, day: parseInt(dayStr, 10), entry, date };
     }
   }
 
   if (!best) return null;
-  const date = dateForWeekDay(best.weekId, best.day);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const daysAgo = Math.round((today.getTime() - date.getTime()) / 86400000);
+  const daysAgo = Math.round((today.getTime() - best.date.getTime()) / 86400000);
   const grid = best.entry.grid;
   const completedSets = grid.filter(row => row.some(r => r)).length;
   const reps = grid.reduce((acc, row) => acc + row.filter(r => r).length, 0);
@@ -190,7 +209,7 @@ export function getLastPerformed(exName: string, excludeKey?: string): LastPerfo
   return {
     weekId: best.weekId,
     day: best.day,
-    date,
+    date: best.date,
     weight: best.entry.weight,
     prescribedSets,
     prescribedReps,
@@ -221,7 +240,7 @@ export function getLift(day: number, exName: string, weekId: string): LiftData {
     stored?.prescribedReps ?? last?.prescribedReps ?? def.reps;
 
   // Resolve weight:
-  //   - Existing session: keep what's stored.
+  //   - Existing session with a stored weight (including 0 for pure bodyweight): honor it.
   //   - No history: stock default.
   //   - Last fully cleared at weight W and auto-bump enabled for this exercise:
   //     prescribe W + def.inc. For bodyweight exercises this still adds to
@@ -230,7 +249,7 @@ export function getLift(day: number, exName: string, weekId: string): LiftData {
   //     drives progression manually.
   //   - Last under-performed: same weight as last time, deload is a manual choice.
   let weight: number;
-  if (stored && stored.weight > 0) {
+  if (stored && typeof stored.weight === 'number') {
     weight = stored.weight;
   } else if (!last) {
     weight = def.w;

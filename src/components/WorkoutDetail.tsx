@@ -126,9 +126,14 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
 
   const toggleComplete = () => {
     const key = `${weekId}-${dayIdx}-${typeIdx}`;
-    const newData = { ...data, [key]: !data[key] };
+    const wasComplete = !!data[key];
+    const newData = { ...data, [key]: !wasComplete };
     setData(newData);
     saveData(newData);
+    // Marking a workout complete kicks back to the schedule — that's the
+    // natural "done with this" gesture. Un-marking does NOT navigate; the
+    // user is signaling they want to keep working on it.
+    if (!wasComplete) onBack();
   };
 
   const toggleSkip = (exName: string) => {
