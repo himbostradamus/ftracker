@@ -1,6 +1,5 @@
 import { ActivityId, ExerciseConfig, LiftData, NutritionProfile, WeightEntry, DaySchedule } from '../types';
 import { ACTIVITY_REGISTRY, STOCK_DEFAULTS } from '../constants';
-import { getWeekId } from './helpers';
 
 const SK = "workout-tracker-v6";
 const CK = "exercise-config-v1";
@@ -101,47 +100,169 @@ export function updateWeekActivities(
   return { ...data, [key]: { ...map, [day]: activities } };
 }
 
-export function getLift(day: number, exName: string, weekId: string): LiftData {
-  const data = loadData();
-  const key = `lift-${weekId}-${day}-${exName}`;
-  const d = data[key];
-  const def = getDef(exName);
-  
-  if (d && d.grid && d.grid.length === def.sets && d.grid[0]?.length === def.reps) return d;
-  
-  // Build or rebuild grid
-  let lastW = def.w;
-  // Try to find last weight in previous weeks
-  const today = new Date();
-  for (let off = 1; off <= 12; off++) {
-    const past = new Date(today);
-    past.setDate(past.getDate() - off * 7);
-    const prevWk = getWeekId(past);
-    for (let dy = 6; dy >= 0; dy--) {
-      const pk = `lift-${prevWk}-${dy}-${exName}`;
-      if (data[pk] && data[pk].weight > 0) {
-        lastW = data[pk].weight;
-        off = 99;
-        break;
-      }
-    }
-  }
-  
-  const grid: boolean[][] = [];
-  for (let s = 0; s < def.sets; s++) grid.push(new Array(def.reps).fill(false));
-  
-  if (d && d.grid) {
-    for (let s = 0; s < Math.min(d.grid.length, def.sets); s++)
-      for (let r = 0; r < Math.min(d.grid[s].length, def.reps); r++)
-        grid[s][r] = d.grid[s][r];
-  }
-  
-  return { weight: d ? d.weight : lastW, grid, skipped: d?.skipped };
-}
-
 // Matches lift keys of form `lift-YYYY-Www-d-<exName>`. The exercise name capture
 // uses a greedy `(.+)$` so it correctly preserves spaces, hyphens, etc.
 const LIFT_KEY_RE = /^lift-(\d{4}-W\d{2})-(\d)-(.+)$/;
+
+export interface LastPerformed {
+  weekId: string;
+  day: number;
+  date: Date;
+  weight: number;
+  // Prescription: what the session intended. Pulled from the stored
+  // prescribedSets/Reps when present, else inferred from the grid shape.
+  prescribedSets: number;
+  prescribedReps: number;
+  // Performance: what was actually completed.
+  completedSets: number;
+  reps: number;
+  // True when every prescribed rep was checked off. Used to decide whether
+  // the next session should auto-bump the weight.
+  fullyCleared: boolean;
+  daysAgo: number;
+}
+
+// Computes the Monday of an ISO week, then offsets by `day` (0..6) to get
+// the actual calendar date a session was performed on.
+function dateForWeekDay(weekId: string, day: number): Date {
+  const m = weekId.match(/^(\d{4})-W(\d{2})$/);
+  if (!m) return new Date(NaN);
+  const year = parseInt(m[1], 10);
+  const week = parseInt(m[2], 10);
+  // ISO 8601: week 1 is the week containing Jan 4. The Monday of week 1 is
+  // Jan 4 minus the weekday-1 offset (where Mon=1).
+  const jan4 = new Date(year, 0, 4);
+  const jan4Day = jan4.getDay() || 7; // Sun=0 -> 7
+  const week1Monday = new Date(jan4);
+  week1Monday.setDate(jan4.getDate() - (jan4Day - 1));
+  const target = new Date(week1Monday);
+  target.setDate(week1Monday.getDate() + (week - 1) * 7 + day);
+  target.setHours(0, 0, 0, 0);
+  return target;
+}
+
+// Find the most recent prior session for a given exercise. Used by both the
+// weight-defaulting in getLift and the "last performed" indicator in the UI.
+// `excludeKey` lets the caller skip the current session while looking up
+// what the previous one was.
+export function getLastPerformed(exName: string, excludeKey?: string): LastPerformed | null {
+  const data = loadData();
+  let best: { weekId: string; day: number; entry: LiftData } | null = null;
+
+  for (const key of Object.keys(data)) {
+    if (key === excludeKey) continue;
+    const m = key.match(LIFT_KEY_RE);
+    if (!m) continue;
+    const [, weekId, dayStr, name] = m;
+    if (name !== exName) continue;
+    const entry = data[key] as LiftData | undefined;
+    if (!entry || !entry.weight || !entry.grid) continue;
+    // Only count sessions where at least one rep was logged.
+    const hasWork = entry.grid.some(row => row.some(r => r));
+    if (!hasWork) continue;
+    if (!best || `${weekId}-${dayStr}` > `${best.weekId}-${best.day}`) {
+      best = { weekId, day: parseInt(dayStr, 10), entry };
+    }
+  }
+
+  if (!best) return null;
+  const date = dateForWeekDay(best.weekId, best.day);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const daysAgo = Math.round((today.getTime() - date.getTime()) / 86400000);
+  const grid = best.entry.grid;
+  const completedSets = grid.filter(row => row.some(r => r)).length;
+  const reps = grid.reduce((acc, row) => acc + row.filter(r => r).length, 0);
+  const prescribedSets = best.entry.prescribedSets ?? grid.length;
+  const prescribedReps = best.entry.prescribedReps ?? (grid[0]?.length ?? 0);
+  // Fully cleared = every cell of the prescribed area is checked. We compare
+  // against the prescription rather than the grid shape so a session that
+  // was logged with a stale grid size is judged correctly. If for some
+  // reason the stored grid is smaller than the prescription, that auto-fails.
+  let fullyCleared = prescribedSets > 0 && prescribedReps > 0;
+  if (fullyCleared) {
+    for (let s = 0; s < prescribedSets && fullyCleared; s++) {
+      for (let r = 0; r < prescribedReps; r++) {
+        if (!grid[s]?.[r]) { fullyCleared = false; break; }
+      }
+    }
+  }
+  return {
+    weekId: best.weekId,
+    day: best.day,
+    date,
+    weight: best.entry.weight,
+    prescribedSets,
+    prescribedReps,
+    completedSets,
+    reps,
+    fullyCleared,
+    daysAgo
+  };
+}
+
+export function getLift(day: number, exName: string, weekId: string): LiftData {
+  const data = loadData();
+  const key = `lift-${weekId}-${day}-${exName}`;
+  const stored = data[key] as LiftData | undefined;
+  const def = getDef(exName);
+
+  // Resolve the most recent prior session (if any). Used to carry forward
+  // both the prescription and to decide whether to auto-bump weight.
+  const last = getLastPerformed(exName, key);
+
+  // Resolve prescription:
+  //   1. If this session has been edited and stores its own prescription, use it.
+  //   2. Else carry forward last session's prescription.
+  //   3. Else fall back to the per-exercise default config.
+  const prescribedSets =
+    stored?.prescribedSets ?? last?.prescribedSets ?? def.sets;
+  const prescribedReps =
+    stored?.prescribedReps ?? last?.prescribedReps ?? def.reps;
+
+  // Resolve weight:
+  //   - Existing session: keep what's stored.
+  //   - No history: stock default.
+  //   - Last fully cleared at weight W and auto-bump enabled for this exercise:
+  //     prescribe W + def.inc. For bodyweight exercises this still adds to
+  //     the *added* weight, which is the right behavior for weighted dips/pull-ups.
+  //   - Last fully cleared but auto-bump disabled: stay at last weight; user
+  //     drives progression manually.
+  //   - Last under-performed: same weight as last time, deload is a manual choice.
+  let weight: number;
+  if (stored && stored.weight > 0) {
+    weight = stored.weight;
+  } else if (!last) {
+    weight = def.w;
+  } else if (last.fullyCleared && def.autoBump !== false) {
+    weight = last.weight + (def.inc ?? 0);
+  } else {
+    weight = last.weight;
+  }
+
+  // Build (or rebuild) the grid to match the resolved prescription, copying
+  // any already-checked cells from a stored partial session into the same
+  // positions in the new grid.
+  const grid: boolean[][] = [];
+  for (let s = 0; s < prescribedSets; s++) {
+    grid.push(new Array(prescribedReps).fill(false));
+  }
+  if (stored?.grid) {
+    for (let s = 0; s < Math.min(stored.grid.length, prescribedSets); s++) {
+      for (let r = 0; r < Math.min(stored.grid[s].length, prescribedReps); r++) {
+        grid[s][r] = stored.grid[s][r];
+      }
+    }
+  }
+
+  return {
+    weight,
+    grid,
+    skipped: stored?.skipped,
+    prescribedSets,
+    prescribedReps
+  };
+}
 
 export function getAllHistory(exName: string) {
   const data = loadData();

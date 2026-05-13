@@ -5,12 +5,24 @@ export interface ExerciseConfig {
   inc: number;
   bw: boolean;
   rest: number;
+  // Auto-progress weight after a fully-cleared session.
+  // Undefined or true = enabled (default). Set to false to opt this exercise
+  // out of progressive overload — useful for accessory work where you'd
+  // rather control weight by feel than mechanically.
+  autoBump?: boolean;
 }
 
 export interface LiftData {
   weight: number;
   grid: boolean[][];
   skipped?: boolean;
+  // Prescription = what was intended for the session, distinct from what was
+  // performed (which is `grid`). Carrying these forward — instead of looking
+  // at completed counts — is what prevents an under-performed session from
+  // silently lowering future targets. Optional for back-compat with existing
+  // localStorage; readers fall back to def.sets/reps and grid.length.
+  prescribedSets?: number;
+  prescribedReps?: number;
 }
 
 export interface CustomItem {

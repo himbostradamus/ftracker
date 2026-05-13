@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { ChevronLeft, Settings, Minus, Plus, Check } from 'lucide-react';
 import { TYPE_META, EXERCISES, AVAILABLE_EXERCISES } from '../constants';
-import { getWeekId, getMon, fmtDate, getWeekTemplate } from '../lib/helpers';
+import { getWeekId, getMon, fmtDate, formatLastPerformed, getWeekTemplate } from '../lib/helpers';
 import { 
-  loadData, saveData, getDef, getLift, saveConfigs, loadConfigs, updateWeekLifts, updateWeekActivities 
+  loadData, saveData, getDef, getLift, saveConfigs, loadConfigs, updateWeekLifts, updateWeekActivities, getLastPerformed
 } from '../lib/storage';
 import { cn } from '../lib/utils';
-import { ExerciseConfig } from '../types';
 import { ScheduleEditor } from './ScheduleEditor';
 
 interface WorkoutDetailProps {
@@ -217,10 +216,32 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
                 <ExerciseEditForm
                   key={name}
                   name={name}
-                  def={def}
+                  currentSets={ld.prescribedSets ?? ld.grid.length ?? def.sets}
+                  currentReps={ld.prescribedReps ?? ld.grid[0]?.length ?? def.reps}
+                  currentWeight={ld.weight}
+                  currentAutoBump={def.autoBump !== false}
                   skipped={!!ld.skipped}
-                  onSave={(s, r, w) => {
-                    saveConfigs({ ...loadConfigs(), [name]: { ...def, sets: s, reps: r, w } });
+                  onSave={(s, r, w, autoBump) => {
+                    // Update the per-exercise default config (drives future sessions).
+                    saveConfigs({ ...loadConfigs(), [name]: { ...def, sets: s, reps: r, w, autoBump } });
+                    // Also write the new prescription onto the current session so
+                    // the change takes effect immediately instead of next time.
+                    const key = `lift-${weekId}-${dayIdx}-${name}`;
+                    const stored = (data[key] as any) ?? {};
+                    const newData = {
+                      ...data,
+                      [key]: {
+                        ...stored,
+                        weight: w,
+                        prescribedSets: s,
+                        prescribedReps: r,
+                        // Drop the existing grid; getLift will rebuild against the new prescription
+                        // on the next read, copying any already-checked cells where they still fit.
+                        grid: stored.grid ?? []
+                      }
+                    };
+                    setData(newData);
+                    saveData(newData);
                     setEditingEx(null);
                   }}
                   onCancel={() => setEditingEx(null)}
@@ -236,10 +257,56 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
                   <span className={cn("text-xs font-bold text-[#ccc]", ld.skipped && "line-through text-[#666]")}>{name}</span>
                   <div className="flex items-center gap-2">
                     {ld.skipped && <span className="text-[9px] text-[#555] tracking-widest uppercase">SKIPPED</span>}
-                    {!ld.skipped && <span className="text-[9px] text-[#444] tracking-widest uppercase">{ld.grid.filter(r => r.some(x => x)).length}/{def.sets} sets</span>}
+                    {!ld.skipped && <span className="text-[9px] text-[#444] tracking-widest uppercase">{ld.grid.filter(r => r.some(x => x)).length}/{ld.prescribedSets ?? ld.grid.length} sets</span>}
                     <button onClick={() => setEditingEx(name)} className="text-[#333] hover:text-primary"><Settings size={12} /></button>
                   </div>
                 </div>
+
+                {!ld.skipped && (() => {
+                  const last = getLastPerformed(name, `lift-${weekId}-${dayIdx}-${name}`);
+                  if (!last) {
+                    return (
+                      <div className="text-[9px] text-[#444] mb-2 tracking-wide">First time logging this lift</div>
+                    );
+                  }
+                  // Average reps actually completed per attempted set. If you didn't
+                  // start a set, it doesn't drag the average down — that would
+                  // misrepresent how the work you did do actually went.
+                  const avgReps = last.completedSets > 0 ? Math.round(last.reps / last.completedSets) : 0;
+                  // Show prescription explicitly when it differed from performance,
+                  // so a partial session is obvious at a glance.
+                  const prescriptionMatched =
+                    last.completedSets === last.prescribedSets &&
+                    avgReps === last.prescribedReps;
+                  // Auto-bump: weight is going up vs last because last was fully cleared.
+                  const autoBumped =
+                    last.fullyCleared &&
+                    ld.weight > last.weight &&
+                    // Only show the bump cue if this session hasn't been edited yet
+                    // (i.e. is still on its suggested defaults).
+                    !ld.grid.some(row => row.some(r => r));
+                  return (
+                    <div className="text-[9px] text-[#666] mb-2 tracking-wide flex items-center gap-1.5 flex-wrap">
+                      <span className="text-[#888]">Last:</span>
+                      <span className="text-[#aaa] font-medium">{def.bw ? (last.weight > 0 ? `+${last.weight}` : 'BW') : `${last.weight} lbs`}</span>
+                      <span className="text-[#333]">·</span>
+                      {prescriptionMatched ? (
+                        <span>{last.prescribedSets}×{last.prescribedReps}</span>
+                      ) : (
+                        <span>
+                          <span className="text-[#aaa]">{last.completedSets}×{avgReps}</span>
+                          <span className="text-[#444]"> of </span>
+                          {last.prescribedSets}×{last.prescribedReps}
+                        </span>
+                      )}
+                      <span className="text-[#333]">·</span>
+                      <span>{formatLastPerformed(last.daysAgo, last.date)}</span>
+                      {autoBumped && (
+                        <span className="text-success font-bold ml-auto" title="Cleared all reps last time — weight bumped">↑ +{ld.weight - last.weight}</span>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 {!ld.skipped && (
                   <>
@@ -339,18 +406,27 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
 
 interface ExerciseEditFormProps {
   name: string;
-  def: ExerciseConfig;
+  // Pre-fill values from the current session's actual prescription / weight,
+  // which may differ from the per-exercise default after carry-forward or
+  // auto-bump. The parent's onSave handler is responsible for updating both
+  // the per-exercise default (drives future sessions) and this session's
+  // stored prescription.
+  currentSets: number;
+  currentReps: number;
+  currentWeight: number;
+  currentAutoBump: boolean;
   skipped: boolean;
-  onSave: (sets: number, reps: number, weight: number) => void;
+  onSave: (sets: number, reps: number, weight: number, autoBump: boolean) => void;
   onCancel: () => void;
   onSkipToggle: () => void;
   onRemove: () => void;
 }
 
-function ExerciseEditForm({ name, def, skipped, onSave, onCancel, onSkipToggle, onRemove }: ExerciseEditFormProps) {
-  const [sets, setSets] = useState(String(def.sets));
-  const [reps, setReps] = useState(String(def.reps));
-  const [weight, setWeight] = useState(String(def.w));
+function ExerciseEditForm({ name, currentSets, currentReps, currentWeight, currentAutoBump, skipped, onSave, onCancel, onSkipToggle, onRemove }: ExerciseEditFormProps) {
+  const [sets, setSets] = useState(String(currentSets));
+  const [reps, setReps] = useState(String(currentReps));
+  const [weight, setWeight] = useState(String(currentWeight));
+  const [autoBump, setAutoBump] = useState(currentAutoBump);
 
   const handleSave = () => {
     const s = parseInt(sets, 10);
@@ -359,7 +435,7 @@ function ExerciseEditForm({ name, def, skipped, onSave, onCancel, onSkipToggle, 
     if (!Number.isFinite(s) || !Number.isFinite(r) || !Number.isFinite(w) || s <= 0 || r <= 0 || w < 0) {
       return;
     }
-    onSave(s, r, w);
+    onSave(s, r, w, autoBump);
   };
 
   return (
@@ -377,6 +453,27 @@ function ExerciseEditForm({ name, def, skipped, onSave, onCancel, onSkipToggle, 
         <div className="flex items-center justify-between">
           <span className="text-[10px] text-[#555]">Weight</span>
           <input type="number" min={0} step="0.5" value={weight} onChange={(e) => setWeight(e.target.value)} className="bg-bg border border-border rounded p-1 text-xs text-center w-12" />
+        </div>
+        <div className="flex items-center justify-between pt-1 border-t border-border">
+          <div className="flex flex-col">
+            <span className="text-[10px] text-[#555]">Auto-progress weight</span>
+            <span className="text-[9px] text-[#444]">Bump up after fully clearing</span>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={autoBump}
+            aria-label="Auto-progress weight"
+            onClick={() => setAutoBump(v => !v)}
+            className={cn(
+              "px-2.5 py-1 rounded text-[10px] font-bold tracking-widest border transition-colors",
+              autoBump
+                ? "bg-success/15 text-success border-success/40"
+                : "bg-bg text-[#555] border-border"
+            )}
+          >
+            {autoBump ? "ON" : "OFF"}
+          </button>
         </div>
         <div className="flex gap-2 mt-2">
           <button onClick={handleSave} className="flex-1 py-2 bg-primary text-bg font-bold text-[10px] rounded">SAVE</button>

@@ -82,6 +82,19 @@ export function fmtDate(d: Date): string {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
+// Human-readable "how long ago" string for the last-performed indicator.
+// Tries to be useful at common ranges: today/yesterday/N days, weeks, months.
+export function formatLastPerformed(daysAgo: number, date: Date): string {
+  if (daysAgo < 0) return fmtDate(date); // future-dated session, just show date
+  if (daysAgo === 0) return "today";
+  if (daysAgo === 1) return "yesterday";
+  if (daysAgo < 7) return `${daysAgo} days ago`;
+  if (daysAgo < 14) return "1 week ago";
+  if (daysAgo < 60) return `${Math.floor(daysAgo / 7)} weeks ago`;
+  // Past 2 months, switch to date so the user can locate it on a calendar.
+  return fmtDate(date);
+}
+
 export function calcTDEE(p: NutritionProfile): number {
   let bmr;
   if (p.sex === "m") bmr = 10 * p.weightKg + 6.25 * p.heightCm - 5 * p.age + 5;
