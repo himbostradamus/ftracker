@@ -17,10 +17,9 @@ export interface LiftData {
   grid: boolean[][];
   skipped?: boolean;
   // Prescription = what was intended for the session, distinct from what was
-  // performed (which is `grid`). Carrying these forward — instead of looking
-  // at completed counts — is what prevents an under-performed session from
-  // silently lowering future targets. Optional for back-compat with existing
-  // localStorage; readers fall back to def.sets/reps and grid.length.
+  // performed (which is `grid`). Stored per-session so history remains
+  // accurate and in-progress workouts keep their original target even if the
+  // exercise defaults are edited later.
   prescribedSets?: number;
   prescribedReps?: number;
 }

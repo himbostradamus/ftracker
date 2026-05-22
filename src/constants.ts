@@ -52,24 +52,26 @@ export const AVAILABLE_EXERCISES = {
   ]
 } as const;
 
+export const DEFAULT_EXERCISE_SETS = 4;
+export const DEFAULT_EXERCISE_REPS = 8;
 
 export const STOCK_DEFAULTS: Record<string, ExerciseConfig> = {
-  "Incline Bench": { sets: 4, reps: 8, w: 135, inc: 5, bw: false, rest: 90 },
-  "Overhead Press": { sets: 4, reps: 8, w: 95, inc: 5, bw: false, rest: 90 },
-  "Tricep Pushdown": { sets: 3, reps: 12, w: 40, inc: 5, bw: false, rest: 60 },
-  "Pec Fly": { sets: 3, reps: 12, w: 30, inc: 5, bw: false, rest: 60 },
-  "Reverse Pec Fly": { sets: 3, reps: 12, w: 25, inc: 5, bw: false, rest: 60 },
-  "Seated Row": { sets: 4, reps: 10, w: 120, inc: 5, bw: false, rest: 90 },
-  "Lat Pulldown": { sets: 4, reps: 10, w: 100, inc: 5, bw: false, rest: 90 },
-  "Deadlift": { sets: 4, reps: 5, w: 185, inc: 10, bw: false, rest: 120 },
-  "Pull Up": { sets: 3, reps: 8, w: 0, inc: 5, bw: true, rest: 90 },
-  "Bicep Curl": { sets: 3, reps: 12, w: 25, inc: 5, bw: false, rest: 60 },
-  "Squat": { sets: 4, reps: 6, w: 185, inc: 10, bw: false, rest: 120 },
-  "Calf Raises": { sets: 4, reps: 15, w: 90, inc: 10, bw: false, rest: 60 },
-  "Leg Press": { sets: 4, reps: 10, w: 270, inc: 10, bw: false, rest: 90 },
-  "Romanian Deadlift": { sets: 4, reps: 8, w: 135, inc: 10, bw: false, rest: 90 },
-  "Hamstring Curl": { sets: 3, reps: 12, w: 70, inc: 5, bw: false, rest: 60 },
-  "Quad Extension": { sets: 3, reps: 12, w: 70, inc: 5, bw: false, rest: 60 }
+  "Incline Bench": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 135, inc: 5, bw: false, rest: 90 },
+  "Overhead Press": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 95, inc: 5, bw: false, rest: 90 },
+  "Tricep Pushdown": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 40, inc: 5, bw: false, rest: 60 },
+  "Pec Fly": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 30, inc: 5, bw: false, rest: 60 },
+  "Reverse Pec Fly": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 25, inc: 5, bw: false, rest: 60 },
+  "Seated Row": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 120, inc: 5, bw: false, rest: 90 },
+  "Lat Pulldown": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 100, inc: 5, bw: false, rest: 90 },
+  "Deadlift": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 185, inc: 10, bw: false, rest: 120 },
+  "Pull Up": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 0, inc: 5, bw: true, rest: 90 },
+  "Bicep Curl": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 25, inc: 5, bw: false, rest: 60 },
+  "Squat": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 185, inc: 10, bw: false, rest: 120 },
+  "Calf Raises": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 90, inc: 10, bw: false, rest: 60 },
+  "Leg Press": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 270, inc: 10, bw: false, rest: 90 },
+  "Romanian Deadlift": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 135, inc: 10, bw: false, rest: 90 },
+  "Hamstring Curl": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 70, inc: 5, bw: false, rest: 60 },
+  "Quad Extension": { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 70, inc: 5, bw: false, rest: 60 }
 };
 
 // Single source of truth for non-lift activities. Each entry's key matches an
@@ -125,4 +127,3 @@ export const ALL_EX_CATS = [
   { cat: "Core", items: ["Plank", "Hanging Leg Raise", "Ab Wheel", "Russian Twist", "Dead Bug", "Cable Crunch"] },
   { cat: "Cardio", items: ["Run / Bike", "HIIT Sprint", "Walk"] }
 ] as const;
-

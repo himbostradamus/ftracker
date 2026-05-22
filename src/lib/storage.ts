@@ -1,5 +1,5 @@
 import { ActivityId, ExerciseConfig, LiftData, NutritionProfile, UIPrefs, WeightEntry, DaySchedule } from '../types';
-import { ACTIVITY_REGISTRY, STOCK_DEFAULTS } from '../constants';
+import { ACTIVITY_REGISTRY, DEFAULT_EXERCISE_REPS, DEFAULT_EXERCISE_SETS, STOCK_DEFAULTS } from '../constants';
 
 const SK = "workout-tracker-v6";
 const CK = "exercise-config-v1";
@@ -49,7 +49,7 @@ export function saveUIPrefs(prefs: UIPrefs) {
 
 export function getDef(name: string): ExerciseConfig {
   const configs = loadConfigs();
-  const s = STOCK_DEFAULTS[name] || { sets: 3, reps: 8, w: 0, inc: 5, bw: false, rest: 90 };
+  const s = STOCK_DEFAULTS[name] || { sets: DEFAULT_EXERCISE_SETS, reps: DEFAULT_EXERCISE_REPS, w: 0, inc: 5, bw: false, rest: 90 };
   const c = configs[name];
   return c ? { ...s, ...c } : s;
 }
@@ -231,13 +231,21 @@ export function getLift(day: number, exName: string, weekId: string): LiftData {
   const last = getLastPerformed(exName, key);
 
   // Resolve prescription:
-  //   1. If this session has been edited and stores its own prescription, use it.
-  //   2. Else carry forward last session's prescription.
-  //   3. Else fall back to the per-exercise default config.
+  //   1. If this session stores its own prescription, use it.
+  //   2. Else, if this session already has a grid from an older version,
+  //      preserve that shape so editing defaults later does not mutate an
+  //      in-progress workout.
+  //   3. Else fall back to the current per-exercise default config.
+  //
+  // New sessions intentionally read from today's defaults rather than
+  // carrying forward last session's prescription. That keeps auto-progression
+  // stable when the user changes their default sets/reps: weight still keys
+  // off whether the last session was fully cleared, but the next target size
+  // comes from the current config.
   const prescribedSets =
-    stored?.prescribedSets ?? last?.prescribedSets ?? def.sets;
+    stored?.prescribedSets ?? stored?.grid?.length ?? def.sets;
   const prescribedReps =
-    stored?.prescribedReps ?? last?.prescribedReps ?? def.reps;
+    stored?.prescribedReps ?? stored?.grid?.[0]?.length ?? def.reps;
 
   // Resolve weight:
   //   - Existing session with a stored weight (including 0 for pure bodyweight): honor it.
@@ -312,5 +320,4 @@ export function getAllHistory(exName: string) {
   results.sort((a, b) => a.weekKey > b.weekKey ? 1 : a.weekKey < b.weekKey ? -1 : 0);
   return results;
 }
-
 
