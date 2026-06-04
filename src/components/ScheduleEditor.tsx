@@ -104,7 +104,7 @@ export function ScheduleEditor({
         })}
       </div>
       <p className="text-[9px] text-[#444] mt-3 leading-relaxed">
-        Tap activities to toggle them on/off for the day. Changes apply to this week only.
+        Weeks start blank. Use the lift dropdown and activity chips to build this week only.
       </p>
     </div>
   );

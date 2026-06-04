@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, Plus, Check } from 'lucide-react';
 import { ACTIVITY_REGISTRY, DAYS, TYPE_META } from '../constants';
-import { getWeekId, getMon, fmtDate, getWeekTemplate, getRotationIndex } from '../lib/helpers';
+import { getWeekId, getMon, fmtDate, getWeekTemplate } from '../lib/helpers';
 import { loadData, saveData, updateWeekLifts, updateWeekActivities } from '../lib/storage';
 import { cn } from '../lib/utils';
 import { CustomItem } from '../types';
@@ -55,15 +55,12 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-1">
         <span className="text-sm font-bold tracking-[4px] text-white">TRAINING</span>
-        <div className="flex items-center gap-2">
-          <button 
-            onClick={() => setEditingSchedule(!editingSchedule)}
-            className="text-[9px] font-bold tracking-widest text-primary uppercase"
-          >
-            {editingSchedule ? 'DONE' : 'EDIT'}
-          </button>
-          <span className="text-[9px] font-bold tracking-widest bg-card border border-[#252525] rounded px-2 py-1 text-[#777]">WK {getRotationIndex(parseInt(weekId.split("-W")[1], 10)) + 1}</span>
-        </div>
+        <button 
+          onClick={() => setEditingSchedule(!editingSchedule)}
+          className="text-[9px] font-bold tracking-widest text-primary uppercase"
+        >
+          {editingSchedule ? 'DONE' : 'EDIT'}
+        </button>
       </div>
 
       <div className="flex items-center justify-between">
@@ -117,6 +114,11 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
 
               {exp && (
                 <div className="p-2.5 pt-0 flex flex-col gap-0.5">
+                  {s.items.length === 0 && cust.length === 0 && addingTo !== s.day && (
+                    <div className="text-[10px] text-[#555] py-2">
+                      No workouts scheduled for this day.
+                    </div>
+                  )}
                   {s.items.map((item, ti) => {
                     const chk = data[k(s.day, ti)];
                     const meta = TYPE_META[item.type];

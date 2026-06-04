@@ -40,8 +40,8 @@ export interface UIPrefs {
 }
 
 // All possible activities a day can contain, except for "lift" which keeps its
-// own Push/Pull/Legs sub-type. Adding a new wellness/cardio activity = adding
-// an entry here, in ACTIVITY_REGISTRY (constants), and in DEFAULT_DAY_ACTIVITIES.
+// own Push/Pull/Legs sub-type. Adding a new wellness/cardio activity means
+// adding an entry here and in ACTIVITY_REGISTRY (constants).
 export type ActivityId =
   | 'run'
   | 'hiit'
