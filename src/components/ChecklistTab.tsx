@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, Plus, Check } from 'lucide-react';
 import { ACTIVITY_REGISTRY, DAYS, TYPE_META } from '../constants';
-import { getWeekId, getMon, fmtDate, getWeekTemplate } from '../lib/helpers';
+import { getWeekKey, getMon, fmtDate, getWeekTemplate, getWorkoutItemKey } from '../lib/helpers';
 import { loadData, saveData, updateWeekLifts, updateWeekActivities } from '../lib/storage';
 import { cn } from '../lib/utils';
-import { CustomItem } from '../types';
+import { CustomItem, WorkoutItem } from '../types';
 import { ScheduleEditor } from './ScheduleEditor';
 
 interface ChecklistTabProps {
@@ -30,7 +30,7 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
   const refDate = new Date(today);
   refDate.setDate(refDate.getDate() + viewOffset * 7);
   const mon = getMon(refDate);
-  const weekId = getWeekId(mon);
+  const weekKey = getWeekKey(mon);
 
   // Reset expansion to 'auto' whenever the user navigates to a different week.
   useEffect(() => { setExpandedDay('auto'); }, [viewOffset]);
@@ -38,9 +38,9 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
   const displayedExpandedDay: number | null =
     expandedDay === 'auto' ? (isCurWk ? todayIdx : null) : expandedDay;
 
-  const sched = getWeekTemplate(weekId, data);
-  const k = (dn: number, ti: number) => `${weekId}-${dn}-${ti}`;
-  const kcu = (dn: number) => `${weekId}-${dn}-custom`;
+  const sched = getWeekTemplate(weekKey, data);
+  const k = (dn: number, item: WorkoutItem) => getWorkoutItemKey(weekKey, dn, item);
+  const kcu = (dn: number) => `${weekKey}-${dn}-custom`;
 
   const toggle = (key: string) => { const newData = { ...data, [key]: !data[key] }; setData(newData); saveData(newData); };
   const getCust = (dn: number): CustomItem[] => data[kcu(dn)] || [];
@@ -73,15 +73,15 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
         <ScheduleEditor
           sched={sched}
           mon={mon}
-          customLifts={data[`week-lifts-${weekId}`]}
-          customActivities={data[`week-activities-${weekId}`]}
+          customLifts={data[`week-lifts-${weekKey}`]}
+          customActivities={data[`week-activities-${weekKey}`]}
           onLiftChange={(day, val) => {
-            const newData = updateWeekLifts(data, weekId, sched, day, val);
+            const newData = updateWeekLifts(data, weekKey, sched, day, val);
             setData(newData);
             saveData(newData);
           }}
           onActivitiesChange={(day, activities) => {
-            const newData = updateWeekActivities(data, weekId, sched, day, activities);
+            const newData = updateWeekActivities(data, weekKey, sched, day, activities);
             setData(newData);
             saveData(newData);
           }}
@@ -103,7 +103,7 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
                 {!exp && (
                   <div className="flex items-center gap-1">
                     {s.items.map((item, ti) => {
-                      const chk = data[k(s.day, ti)];
+                      const chk = data[k(s.day, item)];
                       const meta = TYPE_META[item.type];
                       return <span key={ti} className="text-[10px]" style={{ color: chk ? meta.color + "44" : meta.color }}>{meta.icon}</span>;
                     })}
@@ -120,7 +120,7 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
                     </div>
                   )}
                   {s.items.map((item, ti) => {
-                    const chk = data[k(s.day, ti)];
+                    const chk = data[k(s.day, item)];
                     const meta = TYPE_META[item.type];
                     const label = item.type === 'lift' ? item.liftType : meta.label;
                     const hasDetail =
@@ -135,7 +135,7 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
                           aria-pressed={!!chk}
                           className={cn("w-[18px] h-[18px] rounded border-2 flex items-center justify-center shrink-0", chk ? "bg-[var(--c)] border-[var(--c)]" : "border-[var(--c-dim)]")}
                           style={{ '--c': meta.color, '--c-dim': meta.color + "55" } as any}
-                          onClick={() => toggle(k(s.day, ti))}
+                          onClick={() => toggle(k(s.day, item))}
                         >
                           {chk && <Check size={12} className="text-bg font-bold" />}
                         </button>
@@ -154,7 +154,7 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
                           <button
                             type="button"
                             className="flex items-center gap-2 flex-1 text-left"
-                            onClick={() => toggle(k(s.day, ti))}
+                            onClick={() => toggle(k(s.day, item))}
                           >
                             <span className="text-xs w-3.5 text-center" style={{ color: chk ? meta.color + "44" : meta.color }}>{meta.icon}</span>
                             <span className={cn("text-xs font-medium text-[#ccc] flex-1", chk && "line-through text-[#555]")}>{label}</span>

@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { Download, Upload, Trash2, Database, Eye } from 'lucide-react';
-import { loadData, loadConfigs, loadNutrProfile, loadWeightLog, saveData, saveConfigs, saveNutrProfile, saveWeightLog } from '../lib/storage';
+import { loadData, normalizeWorkoutData, clearAppData, loadConfigs, loadNutrProfile, loadWeightLog, saveData, saveConfigs, saveNutrProfile, saveWeightLog, mergeWeightLogs } from '../lib/storage';
 import { cn } from '../lib/utils';
+import { toDateKey } from '../lib/helpers';
 import { UIPrefs } from '../types';
+
+function isRecord(value: unknown): value is Record<string, any> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
 
 interface DataTabProps {
   uiPrefs: UIPrefs;
@@ -19,7 +24,7 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
       nutrProfile: loadNutrProfile(),
       weightLog: loadWeightLog(),
       uiPrefs,
-      version: 7,
+      version: 8,
       exported: new Date().toISOString()
     }, null, 2);
 
@@ -27,7 +32,7 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `training-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `training-backup-${toDateKey(new Date())}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -42,6 +47,7 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
     reader.onload = (ev) => {
       try {
         const p = JSON.parse(ev.target?.result as string);
+        if (!isRecord(p)) throw new Error("Backup must be a JSON object");
         const hasExisting =
           Object.keys(loadData()).length > 0 ||
           Object.keys(loadConfigs()).length > 0 ||
@@ -55,19 +61,53 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
           e.target.value = "";
           return;
         }
-        if (p.checklist) saveData({ ...loadData(), ...p.checklist });
-        if (p.configs) saveConfigs({ ...loadConfigs(), ...p.configs });
-        if (p.nutrProfile) saveNutrProfile(p.nutrProfile);
-        if (p.weightLog) {
-          const currentLog = loadWeightLog();
-          const merged = [...currentLog, ...p.weightLog.filter((w: any) => !currentLog.find(e => e.date === w.date))];
-          merged.sort((a, b) => a.date > b.date ? 1 : -1);
-          saveWeightLog(merged);
+        const knownFields = ["checklist", "configs", "nutrProfile", "weightLog", "uiPrefs"];
+        if (!knownFields.some(field => Object.hasOwn(p, field))) {
+          throw new Error("No recognized backup data");
         }
-        if (p.uiPrefs) onUpdatePrefs({ ...uiPrefs, ...p.uiPrefs });
+
+        // Validate the entire payload before writing anything, so a malformed
+        // later section cannot leave the app with a partial import.
+        if (p.checklist !== undefined && !isRecord(p.checklist)) {
+          throw new Error("Invalid workout data");
+        }
+        if (p.configs !== undefined && !isRecord(p.configs)) {
+          throw new Error("Invalid exercise configuration");
+        }
+        if (Object.hasOwn(p, "nutrProfile") &&
+            p.nutrProfile !== null && !isRecord(p.nutrProfile)) {
+          throw new Error("Invalid nutrition profile");
+        }
+        if (p.weightLog !== undefined && (
+          !Array.isArray(p.weightLog) || !p.weightLog.every(w =>
+            isRecord(w) && typeof w.date === "string" &&
+            typeof w.weight === "number" && Number.isFinite(w.weight)
+          )
+        )) {
+          throw new Error("Invalid weight log");
+        }
+        if (p.uiPrefs !== undefined && !isRecord(p.uiPrefs)) {
+          throw new Error("Invalid UI preferences");
+        }
+
+        if (p.checklist !== undefined) {
+          saveData({ ...loadData(), ...normalizeWorkoutData(p.checklist) });
+        }
+        if (p.configs !== undefined) {
+          saveConfigs({ ...loadConfigs(), ...p.configs });
+        }
+        if (Object.hasOwn(p, "nutrProfile")) {
+          saveNutrProfile(p.nutrProfile as any);
+        }
+        if (p.weightLog !== undefined) {
+          saveWeightLog(mergeWeightLogs(loadWeightLog(), p.weightLog as any));
+        }
+        if (p.uiPrefs !== undefined) {
+          onUpdatePrefs({ ...uiPrefs, ...p.uiPrefs });
+        }
         setMsg({ type: 'ok', text: "Imported successfully" });
       } catch (err) {
-        setMsg({ type: 'err', text: "Could not parse file" });
+        setMsg({ type: 'err', text: "Invalid backup file" });
       }
     };
     reader.readAsText(file);
@@ -77,7 +117,7 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
   const clearAllData = () => {
     if (!confirm("Permanently delete all workout, configuration, nutrition, and weight data?")) return;
     if (!confirm("Are you absolutely sure? This cannot be undone.")) return;
-    localStorage.clear();
+    clearAppData();
     setMsg({ type: 'ok', text: "All data cleared" });
     setTimeout(() => window.location.reload(), 500);
   };

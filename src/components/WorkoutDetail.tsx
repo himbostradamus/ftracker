@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, Settings, Minus, Plus, Check } from 'lucide-react';
 import { TYPE_META, EXERCISES, AVAILABLE_EXERCISES } from '../constants';
-import { getWeekId, getMon, fmtDate, formatLastPerformed, getWeekTemplate } from '../lib/helpers';
+import { getWeekKey, getMon, fmtDate, formatLastPerformed, getWeekTemplate, getWorkoutItemKey } from '../lib/helpers';
 import { 
   loadData, saveData, getDef, getLift, saveConfigs, loadConfigs, updateWeekLifts, updateWeekActivities, getLastPerformed
 } from '../lib/storage';
@@ -26,9 +26,9 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
   const refDate = new Date(today);
   refDate.setDate(refDate.getDate() + viewOffset * 7);
   const mon = getMon(refDate);
-  const weekId = getWeekId(mon);
+  const weekKey = getWeekKey(mon);
 
-  const sched = getWeekTemplate(weekId, data);
+  const sched = getWeekTemplate(weekKey, data);
   const di = sched[dayIdx];
   const item = di?.items[typeIdx];
   
@@ -43,6 +43,7 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
     );
   }
 
+  const itemKey = getWorkoutItemKey(weekKey, dayIdx, item);
   const meta = TYPE_META[item.type];
   const label = item.type === 'lift' ? item.liftType : meta.label;
   const dd = new Date(mon); dd.setDate(mon.getDate() + dayIdx);
@@ -86,7 +87,7 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
 
 
   const toggleRep = (exName: string, si: number, ri: number) => {
-    const ld = getLift(dayIdx, exName, weekId);
+    const ld = getLift(dayIdx, exName, weekKey);
     const grid = ld.grid.map(r => [...r]);
     const row = grid[si];
     const wasDone = row.some(r => r);
@@ -100,7 +101,7 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
     
     grid[si] = row;
     const newLd = { ...ld, grid };
-    const key = `lift-${weekId}-${dayIdx}-${exName}`;
+    const key = `lift-${weekKey}-${dayIdx}-${exName}`;
     const newData = { ...data, [key]: newLd };
     setData(newData);
     saveData(newData);
@@ -109,23 +110,23 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
   };
 
   const setWeight = (exName: string, w: number) => {
-    const ld = getLift(dayIdx, exName, weekId);
+    const ld = getLift(dayIdx, exName, weekKey);
     const newLd = { ...ld, weight: Math.max(0, w) };
-    const key = `lift-${weekId}-${dayIdx}-${exName}`;
+    const key = `lift-${weekKey}-${dayIdx}-${exName}`;
     const newData = { ...data, [key]: newLd };
     setData(newData);
     saveData(newData);
   };
 
   const toggleExChk = (ei: number) => {
-    const key = `${weekId}-${dayIdx}-${typeIdx}-ex${ei}`;
+    const key = `${itemKey}-ex${ei}`;
     const newData = { ...data, [key]: !data[key] };
     setData(newData);
     saveData(newData);
   };
 
   const toggleComplete = () => {
-    const key = `${weekId}-${dayIdx}-${typeIdx}`;
+    const key = itemKey;
     const wasComplete = !!data[key];
     const newData = { ...data, [key]: !wasComplete };
     setData(newData);
@@ -137,24 +138,24 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
   };
 
   const toggleSkip = (exName: string) => {
-    const ld = getLift(dayIdx, exName, weekId);
+    const ld = getLift(dayIdx, exName, weekKey);
     const newLd = { ...ld, skipped: !ld.skipped };
-    const key = `lift-${weekId}-${dayIdx}-${exName}`;
+    const key = `lift-${weekKey}-${dayIdx}-${exName}`;
     const newData = { ...data, [key]: newLd };
     setData(newData);
     saveData(newData);
   };
 
   const isExDone = (name: string) => {
-    const ld = getLift(dayIdx, name, weekId);
-    return ld.skipped || ld.grid.every(row => row.some(r => r));
+    const ld = getLift(dayIdx, name, weekKey);
+    return ld.skipped || ld.grid.every(row => row.length > 0 && row.every(Boolean));
   };
 
   const completedExCount = isLift 
     ? exercises.filter(name => isExDone(name)).length
-    : exercises.filter((_, ei) => data[`${weekId}-${dayIdx}-${typeIdx}-ex${ei}`]).length;
+    : exercises.filter((_, ei) => data[`${itemKey}-ex${ei}`]).length;
 
-  const isWorkoutDone = data[`${weekId}-${dayIdx}-${typeIdx}`];
+  const isWorkoutDone = data[itemKey];
 
   return (
     <div className="flex flex-col gap-4 pb-20">
@@ -176,15 +177,15 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
         <ScheduleEditor
           sched={sched}
           mon={mon}
-          customLifts={data[`week-lifts-${weekId}`]}
-          customActivities={data[`week-activities-${weekId}`]}
+          customLifts={data[`week-lifts-${weekKey}`]}
+          customActivities={data[`week-activities-${weekKey}`]}
           onLiftChange={(day, val) => {
-            const newData = updateWeekLifts(data, weekId, sched, day, val);
+            const newData = updateWeekLifts(data, weekKey, sched, day, val);
             setData(newData);
             saveData(newData);
           }}
           onActivitiesChange={(day, activities) => {
-            const newData = updateWeekActivities(data, weekId, sched, day, activities);
+            const newData = updateWeekActivities(data, weekKey, sched, day, activities);
             setData(newData);
             saveData(newData);
           }}
@@ -212,7 +213,7 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
               <>
                 {exercises.map(name => {
                   const def = getDef(name);
-                const ld = getLift(dayIdx, name, weekId);
+                const ld = getLift(dayIdx, name, weekKey);
                 const done = isExDone(name);
                 const isEditing = editingEx === name;
 
@@ -231,7 +232,7 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
                     saveConfigs({ ...loadConfigs(), [name]: { ...def, sets: s, reps: r, w, autoBump } });
                     // Also write the new prescription onto the current session so
                     // the change takes effect immediately instead of next time.
-                    const key = `lift-${weekId}-${dayIdx}-${name}`;
+                    const key = `lift-${weekKey}-${dayIdx}-${name}`;
                     const stored = (data[key] as any) ?? {};
                     const newData = {
                       ...data,
@@ -268,7 +269,7 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
                 </div>
 
                 {!ld.skipped && (() => {
-                  const last = getLastPerformed(name, `lift-${weekId}-${dayIdx}-${name}`);
+                  const last = getLastPerformed(name, `lift-${weekKey}-${dayIdx}-${name}`);
                   if (!last) {
                     return (
                       <div className="text-[9px] text-[#444] mb-2 tracking-wide">First time logging this lift</div>
@@ -374,7 +375,7 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
         </>
         ) : (
           exercises.map((name, ei) => {
-            const chk = data[`${weekId}-${dayIdx}-${typeIdx}-ex${ei}`];
+            const chk = data[`${itemKey}-ex${ei}`];
             return (
               <div key={ei} className="flex items-center gap-2 p-2.5 bg-card border border-border rounded-lg">
                 <span className="text-xs font-medium text-[#ccc] flex-1">{name}</span>

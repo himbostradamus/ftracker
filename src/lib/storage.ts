@@ -1,4 +1,5 @@
 import { ActivityId, ExerciseConfig, LiftData, NutritionProfile, UIPrefs, WeightEntry, DaySchedule } from '../types';
+import { getWeekKey, getWeekTemplate, getWorkoutItemKey } from './helpers';
 import { ACTIVITY_REGISTRY, DEFAULT_EXERCISE_REPS, DEFAULT_EXERCISE_SETS, STOCK_DEFAULTS } from '../constants';
 
 const SK = "workout-tracker-v6";
@@ -7,8 +8,111 @@ const NK = "nutrition-v1";
 const WK = "weight-log-v1";
 const UK = "ui-prefs-v1";
 
+function isRecord(value: unknown): value is Record<string, any> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function readJSON(key: string, fallback: unknown): unknown {
+  const raw = localStorage.getItem(key);
+  if (raw === null) return fallback;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return fallback;
+  }
+}
+
+// Convert the old ISO week-number identity to the Monday date that the week
+// actually represents. This runs lazily on first data read after upgrading.
+function legacyWeekToDateKey(legacyKey: string): string | null {
+  const match = legacyKey.match(/^([0-9]{4})-W([0-9]{2})$/);
+  if (!match) return null;
+
+  const year = parseInt(match[1], 10);
+  const week = parseInt(match[2], 10);
+  const jan4 = new Date(year, 0, 4);
+  const jan4Day = jan4.getDay() || 7;
+  const monday = new Date(year, 0, 4 - (jan4Day - 1) + (week - 1) * 7);
+  return getWeekKey(monday);
+}
+
+function migrateLegacyWeekKeys(data: Record<string, any>): { data: Record<string, any>; changed: boolean } {
+  const next = { ...data };
+  let changed = false;
+
+  for (const key of Object.keys(data)) {
+    const lift = key.match(/^lift-([0-9]{4}-W[0-9]{2})-(.+)$/);
+    const schedule = key.match(/^(week-(?:lifts|activities))-([0-9]{4}-W[0-9]{2})$/);
+    const checklist = key.match(/^([0-9]{4}-W[0-9]{2})-(.+)$/);
+
+    let convertedKey: string | null = null;
+    if (lift) {
+      const monday = legacyWeekToDateKey(lift[1]);
+      if (monday) convertedKey = `lift-${monday}-${lift[2]}`;
+    } else if (schedule) {
+      const monday = legacyWeekToDateKey(schedule[2]);
+      if (monday) convertedKey = `${schedule[1]}-${monday}`;
+    } else if (checklist) {
+      const monday = legacyWeekToDateKey(checklist[1]);
+      if (monday) convertedKey = `${monday}-${checklist[2]}`;
+    }
+
+    if (!convertedKey) continue;
+    // If both formats exist, keep the newer date-keyed value. Otherwise move
+    // the legacy value, then remove the obsolete week-number key.
+    if (!Object.hasOwn(next, convertedKey)) next[convertedKey] = data[key];
+    delete next[key];
+    changed = true;
+  }
+
+  return { data: next, changed };
+}
+
+function migrateIndexedWorkoutKeys(data: Record<string, any>): { data: Record<string, any>; changed: boolean } {
+  const next = { ...data };
+  const schedules = new Map<string, DaySchedule[]>();
+  let changed = false;
+
+  for (const key of Object.keys(data)) {
+    const match = key.match(/^([0-9]{4}-[0-9]{2}-[0-9]{2})-([0-6])-([0-9]+)(-ex[0-9]+)?$/);
+    if (!match) continue;
+
+    const [, weekKey, dayText, itemText, suffix = ""] = match;
+    const day = parseInt(dayText, 10);
+    const itemIndex = parseInt(itemText, 10);
+    let schedule = schedules.get(weekKey);
+    if (!schedule) {
+      schedule = getWeekTemplate(weekKey, data);
+      schedules.set(weekKey, schedule);
+    }
+    const item = schedule[day]?.items[itemIndex];
+    if (!item) continue;
+
+    const convertedKey = `${getWorkoutItemKey(weekKey, day, item)}${suffix}`;
+    if (!Object.hasOwn(next, convertedKey)) next[convertedKey] = data[key];
+    delete next[key];
+    changed = true;
+  }
+
+  return { data: next, changed };
+}
+
+function migrateWorkoutData(data: Record<string, any>): { data: Record<string, any>; changed: boolean } {
+  const legacy = migrateLegacyWeekKeys(data);
+  const indexed = migrateIndexedWorkoutKeys(legacy.data);
+  return { data: indexed.data, changed: legacy.changed || indexed.changed };
+}
+
+export function normalizeWorkoutData(data: Record<string, any>): Record<string, any> {
+  return migrateWorkoutData(data).data;
+}
+
 export function loadData() {
-  return JSON.parse(localStorage.getItem(SK) || "{}");
+  const stored = readJSON(SK, {});
+  const parsed = isRecord(stored) ? stored : {};
+  const migrated = migrateWorkoutData(parsed);
+  if (migrated.changed) saveData(migrated.data);
+  return migrated.data;
 }
 
 export function saveData(data: any) {
@@ -16,7 +120,8 @@ export function saveData(data: any) {
 }
 
 export function loadConfigs() {
-  return JSON.parse(localStorage.getItem(CK) || "{}");
+  const stored = readJSON(CK, {});
+  return isRecord(stored) ? stored : {};
 }
 
 export function saveConfigs(configs: any) {
@@ -24,7 +129,8 @@ export function saveConfigs(configs: any) {
 }
 
 export function loadNutrProfile(): NutritionProfile | null {
-  return JSON.parse(localStorage.getItem(NK) || "null");
+  const stored = readJSON(NK, null);
+  return stored === null || isRecord(stored) ? stored as NutritionProfile | null : null;
 }
 
 export function saveNutrProfile(profile: NutritionProfile | null) {
@@ -32,19 +138,35 @@ export function saveNutrProfile(profile: NutritionProfile | null) {
 }
 
 export function loadWeightLog(): WeightEntry[] {
-  return JSON.parse(localStorage.getItem(WK) || "[]");
+  const stored = readJSON(WK, []);
+  if (!Array.isArray(stored)) return [];
+  return stored.filter((entry): entry is WeightEntry =>
+    isRecord(entry) && typeof entry.date === "string" &&
+    typeof entry.weight === "number" && Number.isFinite(entry.weight)
+  );
 }
 
 export function saveWeightLog(log: WeightEntry[]) {
   localStorage.setItem(WK, JSON.stringify(log));
 }
 
+export function mergeWeightLogs(current: WeightEntry[], backup: WeightEntry[]): WeightEntry[] {
+  const byDate = new Map(current.map(entry => [entry.date, entry]));
+  backup.forEach(entry => byDate.set(entry.date, entry));
+  return [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
+}
+
 export function loadUIPrefs(): UIPrefs {
-  return JSON.parse(localStorage.getItem(UK) || "{}");
+  const stored = readJSON(UK, {});
+  return isRecord(stored) ? stored : {};
 }
 
 export function saveUIPrefs(prefs: UIPrefs) {
   localStorage.setItem(UK, JSON.stringify(prefs));
+}
+
+export function clearAppData() {
+  [SK, CK, NK, WK, UK].forEach(key => localStorage.removeItem(key));
 }
 
 export function getDef(name: string): ExerciseConfig {
@@ -56,8 +178,8 @@ export function getDef(name: string): ExerciseConfig {
 
 // Reads the per-week lift override map (day -> 'Push' | 'Pull' | 'Legs' | 'None'),
 // or undefined if the user hasn't customized this week yet.
-export function getCustomLifts(data: any, weekId: string): Record<number, string> | undefined {
-  return data[`week-lifts-${weekId}`];
+export function getCustomLifts(data: any, weekKey: string): Record<number, string> | undefined {
+  return data[`week-lifts-${weekKey}`];
 }
 
 // Returns a new top-level data object with one day's lift override set.
@@ -65,12 +187,12 @@ export function getCustomLifts(data: any, weekId: string): Record<number, string
 // non-edited days don't snap back to the rotation default.
 export function updateWeekLifts(
   data: any,
-  weekId: string,
+  weekKey: string,
   sched: DaySchedule[],
   day: number,
   value: string
 ): any {
-  const key = `week-lifts-${weekId}`;
+  const key = `week-lifts-${weekKey}`;
   let customLifts: Record<number, string> = data[key];
   if (!customLifts) {
     customLifts = {};
@@ -82,8 +204,8 @@ export function updateWeekLifts(
   return { ...data, [key]: { ...customLifts, [day]: value } };
 }
 
-export function getCustomActivities(data: any, weekId: string): Record<number, ActivityId[]> | undefined {
-  return data[`week-activities-${weekId}`];
+export function getCustomActivities(data: any, weekKey: string): Record<number, ActivityId[]> | undefined {
+  return data[`week-activities-${weekKey}`];
 }
 
 // Sets a day's activity list (everything except the lift slot). On first
@@ -91,12 +213,12 @@ export function getCustomActivities(data: any, weekId: string): Record<number, A
 // day's activities doesn't reset the others to defaults.
 export function updateWeekActivities(
   data: any,
-  weekId: string,
+  weekKey: string,
   sched: DaySchedule[],
   day: number,
   activities: ActivityId[]
 ): any {
-  const key = `week-activities-${weekId}`;
+  const key = `week-activities-${weekKey}`;
   let map: Record<number, ActivityId[]> = data[key];
   if (!map) {
     map = {};
@@ -109,12 +231,12 @@ export function updateWeekActivities(
   return { ...data, [key]: { ...map, [day]: activities } };
 }
 
-// Matches lift keys of form `lift-YYYY-Www-d-<exName>`. The exercise name capture
-// uses a greedy `(.+)$` so it correctly preserves spaces, hyphens, etc.
-const LIFT_KEY_RE = /^lift-(\d{4}-W\d{2})-(\d)-(.+)$/;
+// Matches lift keys of form `lift-YYYY-MM-DD-d-<exName>`. The exercise name
+// capture is greedy so it correctly preserves spaces, hyphens, etc.
+const LIFT_KEY_RE = /^lift-([0-9]{4}-[0-9]{2}-[0-9]{2})-([0-9])-(.+)$/;
 
 export interface LastPerformed {
-  weekId: string;
+  weekKey: string;
   day: number;
   date: Date;
   weight: number;
@@ -131,23 +253,20 @@ export interface LastPerformed {
   daysAgo: number;
 }
 
-// Computes the Monday of an ISO week, then offsets by `day` (0..6) to get
-// the actual calendar date a session was performed on.
-function dateForWeekDay(weekId: string, day: number): Date {
-  const m = weekId.match(/^(\d{4})-W(\d{2})$/);
-  if (!m) return new Date(NaN);
-  const year = parseInt(m[1], 10);
-  const week = parseInt(m[2], 10);
-  // ISO 8601: week 1 is the week containing Jan 4. The Monday of week 1 is
-  // Jan 4 minus the weekday-1 offset (where Mon=1).
-  const jan4 = new Date(year, 0, 4);
-  const jan4Day = jan4.getDay() || 7; // Sun=0 -> 7
-  const week1Monday = new Date(jan4);
-  week1Monday.setDate(jan4.getDate() - (jan4Day - 1));
-  const target = new Date(week1Monday);
-  target.setDate(week1Monday.getDate() + (week - 1) * 7 + day);
-  target.setHours(0, 0, 0, 0);
-  return target;
+// Offsets the stored Monday date by `day` (0..6) to get the actual
+// calendar date a session was performed on. Parse as local time to avoid UTC
+// conversion moving the date backward in western time zones.
+function dateForWeekDay(weekKey: string, day: number): Date {
+  const match = weekKey.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/);
+  if (!match) return new Date(NaN);
+
+  const date = new Date(
+    parseInt(match[1], 10),
+    parseInt(match[2], 10) - 1,
+    parseInt(match[3], 10) + day
+  );
+  date.setHours(0, 0, 0, 0);
+  return date;
 }
 
 // Find the most recent prior session for a given exercise. Used by both the
@@ -163,13 +282,13 @@ export function getLastPerformed(exName: string, excludeKey?: string): LastPerfo
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  let best: { weekId: string; day: number; entry: LiftData; date: Date } | null = null;
+  let best: { weekKey: string; day: number; entry: LiftData; date: Date } | null = null;
 
   for (const key of Object.keys(data)) {
     if (key === excludeKey) continue;
     const m = key.match(LIFT_KEY_RE);
     if (!m) continue;
-    const [, weekId, dayStr, name] = m;
+    const [, weekKey, dayStr, name] = m;
     if (name !== exName) continue;
     const entry = data[key] as LiftData | undefined;
     // We accept weight === 0 (bodyweight sessions with no added weight) but
@@ -180,10 +299,10 @@ export function getLastPerformed(exName: string, excludeKey?: string): LastPerfo
     const hasWork = entry.grid.some(row => row.some(r => r));
     if (!hasWork) continue;
     // Filter out future-dated sessions.
-    const date = dateForWeekDay(weekId, parseInt(dayStr, 10));
+    const date = dateForWeekDay(weekKey, parseInt(dayStr, 10));
     if (date.getTime() > today.getTime()) continue;
-    if (!best || `${weekId}-${dayStr}` > `${best.weekId}-${best.day}`) {
-      best = { weekId, day: parseInt(dayStr, 10), entry, date };
+    if (!best || `${weekKey}-${dayStr}` > `${best.weekKey}-${best.day}`) {
+      best = { weekKey, day: parseInt(dayStr, 10), entry, date };
     }
   }
 
@@ -207,7 +326,7 @@ export function getLastPerformed(exName: string, excludeKey?: string): LastPerfo
     }
   }
   return {
-    weekId: best.weekId,
+    weekKey: best.weekKey,
     day: best.day,
     date: best.date,
     weight: best.entry.weight,
@@ -220,9 +339,9 @@ export function getLastPerformed(exName: string, excludeKey?: string): LastPerfo
   };
 }
 
-export function getLift(day: number, exName: string, weekId: string): LiftData {
+export function getLift(day: number, exName: string, weekKey: string): LiftData {
   const data = loadData();
-  const key = `lift-${weekId}-${day}-${exName}`;
+  const key = `lift-${weekKey}-${day}-${exName}`;
   const stored = data[key] as LiftData | undefined;
   const def = getDef(exName);
 
@@ -293,21 +412,22 @@ export function getLift(day: number, exName: string, weekId: string): LiftData {
 
 export function getAllHistory(exName: string) {
   const data = loadData();
-  const results: { weekKey: string; weight: number; completedSets: number; totalSets: number; reps: number; volume: number }[] = [];
+  const results: { date: Date; weight: number; completedSets: number; totalSets: number; reps: number; volume: number }[] = [];
   
   Object.keys(data).forEach(key => {
     const m = key.match(LIFT_KEY_RE);
     if (!m) return;
-    const [, weekId, day, name] = m;
+    const [, weekKey, day, name] = m;
     if (name !== exName) return;
     const d = data[key];
-    if (!d || !d.weight) return;
+    // Zero is a valid added weight for bodyweight exercises.
+    if (!d || typeof d.weight !== 'number') return;
     
     if (d.grid) {
       const cs = d.grid.filter((row: boolean[]) => row.some(r => r)).length;
       const reps = d.grid.reduce((acc: number, row: boolean[]) => acc + row.filter(r => r).length, 0);
       if (cs > 0) results.push({
-        weekKey: `${weekId}-${day}`,
+        date: dateForWeekDay(weekKey, parseInt(day, 10)),
         weight: d.weight,
         completedSets: cs,
         totalSets: d.grid.length,
@@ -317,7 +437,7 @@ export function getAllHistory(exName: string) {
     }
   });
   
-  results.sort((a, b) => a.weekKey > b.weekKey ? 1 : a.weekKey < b.weekKey ? -1 : 0);
+  results.sort((a, b) => a.date.getTime() - b.date.getTime());
   return results;
 }
 

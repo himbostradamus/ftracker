@@ -1,18 +1,30 @@
 import { ExerciseConfig, NutritionProfile, DaySchedule, WorkoutItem } from '../types';
 import { ACTIVITY_REGISTRY } from '../constants';
 
-export function getWeekId(date: Date): string {
-  const d = new Date(date);
-  d.setHours(0, 0, 0, 0);
-  const thu = new Date(d);
-  thu.setDate(d.getDate() - ((d.getDay() + 6) % 7) + 3);
-  const j = new Date(thu.getFullYear(), 0, 1);
-  return `${thu.getFullYear()}-W${String(Math.ceil(((thu.getTime() - j.getTime()) / 864e5 + 1) / 7)).padStart(2, "0")}`;
+// A week is identified by its Monday calendar date (YYYY-MM-DD). Using the
+// date directly keeps storage and UI aligned and avoids a second, less useful
+// ISO week-number identity for the same seven-day period.
+export function getWeekKey(date: Date): string {
+  return toDateKey(getMon(date));
 }
 
-export function getWeekTemplate(wid: string, data: any): DaySchedule[] {
-  const customLifts: Record<number, string> | undefined = data[`week-lifts-${wid}`];
-  const customActivities: Record<number, string[]> | undefined = data[`week-activities-${wid}`];
+export function getWorkoutItemKey(weekKey: string, day: number, item: WorkoutItem): string {
+  const itemId = item.type === "lift" ? `lift-${item.liftType ?? "None"}` : item.type;
+  return `${weekKey}-${day}-item-${itemId}`;
+}
+
+// Calendar-date storage must use local components. `toISOString()` converts
+// to UTC first and can incorrectly assign evening entries to tomorrow.
+export function toDateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+export function getWeekTemplate(weekKey: string, data: any): DaySchedule[] {
+  const customLifts: Record<number, string> | undefined = data[`week-lifts-${weekKey}`];
+  const customActivities: Record<number, string[]> | undefined = data[`week-activities-${weekKey}`];
 
   return [0, 1, 2, 3, 4, 5, 6].map(day => {
     const items: WorkoutItem[] = [];

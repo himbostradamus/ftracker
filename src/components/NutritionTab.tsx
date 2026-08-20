@@ -3,7 +3,7 @@ import { Plus, Trash2, ChevronRight, Scale, Target, Activity, Calendar } from 'l
 import { 
   loadNutrProfile, saveNutrProfile, loadWeightLog, saveWeightLog 
 } from '../lib/storage';
-import { calcTarget, lbToKg, ftInToCm } from '../lib/helpers';
+import { calcTarget, lbToKg, ftInToCm, toDateKey } from '../lib/helpers';
 import { cn } from '../lib/utils';
 import { NutritionProfile } from '../types';
 
@@ -54,7 +54,7 @@ export function NutritionTab() {
   const logWeight = () => {
     const v = parseFloat(newWeight);
     if (!v || v <= 0) return;
-    const d = new Date().toISOString().slice(0, 10);
+    const d = toDateKey(new Date());
     const newLog = [...weightLog.filter(e => e.date !== d), { date: d, weight: v }];
     newLog.sort((a, b) => a.date > b.date ? 1 : -1);
     setWeightLog(newLog);
@@ -69,9 +69,19 @@ export function NutritionTab() {
   };
 
   const deleteEntry = (date: string) => {
+    const wasLatest = weightLog.at(-1)?.date === date;
     const newLog = weightLog.filter(e => e.date !== date);
     setWeightLog(newLog);
     saveWeightLog(newLog);
+
+    // Current weight follows the newest log entry. If that entry is removed,
+    // roll back to the previous log (or the journey start if none remain).
+    if (profile && wasLatest) {
+      const weight = newLog.at(-1)?.weight ?? profile.startWeight;
+      const updated = { ...profile, weight, weightKg: lbToKg(weight) };
+      setProfile(updated);
+      saveNutrProfile(updated);
+    }
   };
 
   if (view === 'edit' || !profile) {

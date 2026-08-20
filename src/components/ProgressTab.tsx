@@ -3,9 +3,9 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell 
 } from 'recharts';
 import { ChevronLeft, ChevronRight, Trophy } from 'lucide-react';
-import { ALL_EX_CATS } from '../constants';
-import { getDef, getAllHistory } from '../lib/storage';
-import { weightDisplay } from '../lib/helpers';
+import { ALL_EX_CATS, AVAILABLE_EXERCISES } from '../constants';
+import { getDef, getAllHistory, loadData } from '../lib/storage';
+import { fmtDate, weightDisplay } from '../lib/helpers';
 import { cn } from '../lib/utils';
 
 export function ProgressTab() {
@@ -19,7 +19,7 @@ export function ProgressTab() {
     const maxVal = hist.length ? Math.max(...hist.map(h => h[metric])) : 0;
     
     const chartData = hist.slice(-15).map(h => ({
-      name: h.weekKey.split('-W')[1],
+      name: fmtDate(h.date),
       weight: h.weight,
       volume: h.volume,
       reps: h.reps,
@@ -33,10 +33,14 @@ export function ProgressTab() {
     }[metric];
 
     const unit = {
-      weight: def.bw ? "lbs" : "lbs",
+      weight: "lbs",
       volume: "lbs",
       reps: "reps"
     }[metric];
+
+    const bestDisplay = metric === "weight"
+      ? `${weightDisplay(maxVal, def)}${def.bw ? "" : " lbs"}`
+      : `${maxVal} ${unit}`;
 
     return (
       <div className="flex flex-col gap-4">
@@ -119,7 +123,7 @@ export function ProgressTab() {
             <div className="flex-1">
               <div className="text-[9px] text-success font-bold tracking-[2px] uppercase">Best {metricLabel}</div>
               <div className="text-sm text-[#ccc] font-bold">
-                {metric === 'weight' ? weightDisplay(maxVal, def) : maxVal} {unit}
+                {bestDisplay}
               </div>
             </div>
           </div>
@@ -135,7 +139,7 @@ export function ProgressTab() {
               const isBest = h[metric] === maxVal;
               return (
                 <div key={i} className="flex items-start gap-2 p-2.5 bg-card border border-border rounded-lg">
-                  <span className="text-[10px] text-[#555] w-[50px] shrink-0 pt-0.5">{h.weekKey.split('-').slice(0, 2).join(' ')}</span>
+                  <span className="text-[10px] text-[#555] w-[50px] shrink-0 pt-0.5">{fmtDate(h.date)}</span>
                   <div className="flex-1">
                     <div className="text-sm text-[#ccc] font-bold">{weightDisplay(h.weight, def)}{!def.bw && " lbs"}</div>
                     <div className="text-[10px] text-[#555] mt-0.5">
@@ -156,6 +160,24 @@ export function ProgressTab() {
   }
 
   const cat = ALL_EX_CATS.find(c => c.cat === progCat);
+  const data = loadData();
+  const baseItems: readonly string[] = cat?.items ?? [];
+  const isLiftCategory = Object.hasOwn(AVAILABLE_EXERCISES, progCat);
+  const configuredRoutine = isLiftCategory ? data[`custom-routine-${progCat}`] : undefined;
+  const routineItems: string[] = Array.isArray(configuredRoutine)
+    ? configuredRoutine.filter((name): name is string => typeof name === "string")
+    : [...baseItems];
+  const availableItems: readonly string[] = isLiftCategory
+    ? AVAILABLE_EXERCISES[progCat as keyof typeof AVAILABLE_EXERCISES]
+    : [];
+  const knownItems = [...new Set([...baseItems, ...availableItems])];
+  // Keep the active routine visible and retain access to history for exercises
+  // that were later removed from it. Previously, added exercises never appeared
+  // in Progress at all.
+  const progressItems = [...new Set([
+    ...routineItems,
+    ...knownItems.filter(name => getAllHistory(name).length > 0)
+  ])];
 
   return (
     <div className="flex flex-col gap-4">
@@ -177,7 +199,7 @@ export function ProgressTab() {
       </div>
 
       <div className="flex flex-col gap-1">
-        {(cat ? cat.items : []).map(name => {
+        {progressItems.map(name => {
           const hist = getAllHistory(name);
           const def = getDef(name);
           const maxW = hist.length ? Math.max(...hist.map(h => h.weight)) : 0;
@@ -189,7 +211,7 @@ export function ProgressTab() {
               className="flex items-center gap-2 p-2.5 bg-card border border-border rounded-lg text-left group active:bg-[#151515]"
             >
               <span className="text-xs font-medium text-[#ccc] flex-1">{name}</span>
-              {maxW > 0 && (
+              {hist.length > 0 && (def.bw || maxW > 0) && (
                 <span className="text-[9px] text-success tracking-widest">{weightDisplay(maxW, def)}{!def.bw && " lbs"}</span>
               )}
               <span className="text-[9px] text-[#444] tracking-widest">{def.sets}×{def.reps}</span>
