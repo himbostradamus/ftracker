@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pose, solve } from './pose';
+import { PartName, Pose, Pt, solve } from './pose';
 import { BodyColors, buildBody, Shape } from './body';
 
 // Flat, solid-fill figure drawn from a solved pose. Colours come from a small
@@ -50,6 +50,25 @@ function Part({ shapes, edge = true }: { shapes: Shape[]; edge?: boolean }) {
     <g>
       {edge && <path d={shapes.map(x => x.d).join('')} fill="#1E1F1D" stroke="#1E1F1D" strokeWidth={1.9} strokeLinejoin="round" opacity={0.2} />}
       {shapes.map((x, i) => <path key={i} d={x.d} fill={x.fill} />)}
+    </g>
+  );
+}
+
+// A movement arrow: a curved line with a head, in the accent colour.
+function ArrowMark({ pts, both, k }: { pts: Pt[]; both: boolean; k: number }) {
+  // Keep the line weight and head size constant on screen, whatever the zoom.
+  const z = Math.min(1, 1.25 / k);
+  const [a, c, b] = pts;
+  const head = (tip: Pt, from: Pt) => {
+    const dx = tip.x - from.x, dy = tip.y - from.y, l = Math.hypot(dx, dy) || 1;
+    const ux = dx / l, uy = dy / l;
+    return `M${(tip.x - (ux * 7.5 + uy * 4.6) * z).toFixed(1)} ${(tip.y - (uy * 7.5 - ux * 4.6) * z).toFixed(1)}L${tip.x.toFixed(1)} ${tip.y.toFixed(1)}L${(tip.x - (ux * 7.5 - uy * 4.6) * z).toFixed(1)} ${(tip.y - (uy * 7.5 + ux * 4.6) * z).toFixed(1)}`;
+  };
+  return (
+    <g fill="none" stroke="#1F6F66" strokeWidth={3 * z} strokeLinecap="round" strokeLinejoin="round">
+      <path d={`M${a.x.toFixed(1)} ${a.y.toFixed(1)}Q${c.x.toFixed(1)} ${c.y.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`} />
+      <path d={head(b, c)} />
+      {both && <path d={head(a, c)} />}
     </g>
   );
 }
@@ -130,6 +149,8 @@ export function Figure({ pose, seed, size = 96, badge = true, title, className }
   const flip = pose.face === -1 ? -1 : 1;
   const side = s.front ? pose.look ?? 0 : flip;
   const body = buildBody(s, v, side, flip);
+  const parts: Record<PartName, Shape[]> = { aF: body.farArm, lF: body.farLeg, torso: body.torso, head: body.head, lN: body.nearLeg, aN: body.nearArm };
+  const order: PartName[] = pose.order ?? (s.front ? ['lF', 'lN', 'torso', 'aF', 'aN', 'head'] : ['aF', 'lF', 'torso', 'head', 'lN', 'aN']);
 
   return (
     <svg
@@ -142,20 +163,8 @@ export function Figure({ pose, seed, size = 96, badge = true, title, className }
       <g clipPath={`url(#${clipId})`}><g transform={`translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${k.toFixed(3)})`}>
         {!names.includes('mat') && <ellipse cx={(s.minX + s.maxX) / 2} cy={1.5} rx={Math.max(16, (s.maxX - s.minX) / 2)} ry={3} fill="#20211F" opacity={0.08} />}
         <Props names={names} s={s} />
-        {s.front ? (
-          <>
-            <Part shapes={body.farLeg} /><Part shapes={body.nearLeg} />
-            <Part shapes={body.torso} />
-            <Part shapes={body.farArm} /><Part shapes={body.nearArm} />
-            <Part shapes={body.head} />
-          </>
-        ) : (
-          <>
-            <Part shapes={body.farArm} edge={false} /><Part shapes={body.farLeg} edge={false} />
-            <Part shapes={body.torso} /><Part shapes={body.head} />
-            <Part shapes={body.nearLeg} /><Part shapes={body.nearArm} />
-          </>
-        )}
+        {order.map(name => <Part key={name} shapes={parts[name]} edge={s.front || !name.endsWith('F')} />)}
+        {s.arrows.map((a, i) => <ArrowMark key={i} pts={a} both={s.arrowBoth[i]} k={k} />)}
       </g></g>
     </svg>
   );
