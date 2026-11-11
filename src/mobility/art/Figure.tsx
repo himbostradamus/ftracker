@@ -6,7 +6,7 @@ import { Pose, Pt, solve, LEN } from './pose';
 // while every illustration keeps the same construction.
 
 export interface Variant {
-  skin: string; skinFar: string; hair: string; top: string; topFar: string; bottom: string;
+  skin: string; skinFar: string; hair: string; top: string; topFar: string; bottom: string; bottomLow: string;
   bottomFar: string; hairStyle: 'short' | 'bun' | 'tail'; shorts: boolean; build: number;
 }
 
@@ -16,8 +16,9 @@ const SKINS: [string, string][] = [
 ];
 const HAIRS = ['#2B2420', '#4A3327', '#7A4B2A', '#B9853F', '#8E8E89'];
 const TOPS: [string, string][] = [['#217E73', '#1B6A61'], ['#C66D4E', '#AD5C40'], ['#D9AE48', '#C29A3C'], ['#83A58D', '#70907A'], ['#5B7FA6', '#4C6D91'], ['#D8A8B5', '#C2919F']];
-const BOTTOMS: [string, string][] = [
-  ['#2F3B45', '#252F37'], ['#4B5D52', '#3D4C43'], ['#5A4A63', '#493C51'], ['#3A4E6B', '#2F4058'],
+// near thigh, far leg, near lower leg (a shade apart so a folded leg reads as two parts)
+const BOTTOMS: [string, string, string][] = [
+  ['#34424D', '#222B33', '#2B3740'], ['#52665A', '#3A4840', '#465A4E'], ['#62516C', '#44384C', '#55465E'], ['#405674', '#2C3B52', '#364A66'],
 ];
 export const BADGE_BG = ['#DDE9E0', '#F3E3C3', '#F0D5CB', '#F1DCE2', '#D9E8EE', '#E3E6D8'];
 
@@ -35,7 +36,7 @@ export function variantFor(seed: string): Variant {
     skin: skin[0], skinFar: skin[1],
     hair: HAIRS[(h >>> 3) % HAIRS.length],
     top: TOPS[(h >>> 6) % TOPS.length][0], topFar: TOPS[(h >>> 6) % TOPS.length][1],
-    bottom: bottom[0], bottomFar: bottom[1],
+    bottom: bottom[0], bottomFar: bottom[1], bottomLow: bottom[2],
     hairStyle: (['short', 'bun', 'tail'] as const)[(h >>> 12) % 3],
     shorts: ((h >>> 15) & 1) === 1,
     build: [0.94, 1, 1.07, 1.15][(h >>> 17) % 4],
@@ -79,7 +80,7 @@ function Leg({ pts, v, far }: { pts: Pt[]; v: Variant; far?: boolean }) {
         </>
       ) : (
         <>
-          <Taper a={knee} b={ankle} ra={5.2 * k} rb={3.7 * k} fill={cloth} />
+          <Taper a={knee} b={ankle} ra={5.2 * k} rb={3.7 * k} fill={far ? cloth : v.bottomLow} />
           <Taper a={hip} b={knee} ra={7.8 * k} rb={5.6 * k} fill={cloth} />
         </>
       )}
@@ -164,11 +165,15 @@ export function Figure({ pose, seed, size = 96, badge = true, title, className }
   const figH = -s.minY;
   // The figure is drawn at a constant scale unless it would not fit the frame.
   const zoom = pose.zoom;
-  const k = zoom ?? Math.min(1.22, 156 / figH, 172 / figW);
+  // Scale to fill the frame. In a badge the bounding box has to sit inside
+  // the circle, so wide, low figures are centred rather than cut off.
+  const k = zoom ?? (badge
+    ? Math.min(1.5, 160 / figH, 172 / figW, 212 / Math.hypot(figW, figH))
+    : Math.min(1.6, 178 / figH, 186 / figW));
   const clipId = `c${hash(seed + (badge ? 'b' : 'p')).toString(36)}`;
   // A zoomed pose is a bust crop centred on the chest (neck and wrist work).
   const tx = zoom ? 100 - s.chest.x * k : 100;
-  const ty = zoom ? 128 - s.chest.y * k : badge ? 174 : 182;
+  const ty = zoom ? 128 - s.chest.y * k : Math.min(badge ? 180 : 190, 100 + (figH * k) / 2 + 2);
   const u = unit(s.neck, s.head);
   const flip = pose.face === -1 ? -1 : 1;
   const side = s.front ? pose.look ?? 0 : flip;

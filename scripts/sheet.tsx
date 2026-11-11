@@ -10,7 +10,7 @@ const filter = process.argv[2] && process.argv[2] !== 'all' ? process.argv[2].sp
 const size = Number(process.argv[3] ?? 150);
 const from = Number(process.argv[4] ?? 0), count = Number(process.argv[5] ?? 9999);
 let ids = Object.keys(POSES);
-if (filter) ids = ids.filter(id => filter.some(f => id.includes(f)));
+if (filter) ids = ids.filter(id => filter.some(f => (f.endsWith('*') ? id.includes(f.slice(0, -1)) : id === f)));
 ids = ids.slice(from, from + count);
 const cells = ids.map(id => (
   `<div style="width:${size}px;text-align:center;font:11px sans-serif;margin:3px">` +

@@ -53,11 +53,13 @@ Not done, or not verified:
       install, notifications and behaviour when the phone locks are implemented against the
       web standards but unverified on the target device.
 - [ ] **Demonstration videos: none.** Every entry is marked "no video". Illustrations and written steps are the reference.
-- [ ] **Illustration review.** All 193 figures are generated from joint angles. They were reviewed
-      on contact sheets, not one by one against each movement. Known weak spots: twists and
-      side-lying poses (a flat side view cannot show rotation), neck close-ups, and
-      `curtsy-lunge-hold`, `plow`, `bent-arm-pike`, `toe-raises`. Fix a pose in
-      `src/mobility/data/poses.ts`, check it with `npm run art:sheet <id>`, then `npm run art:export`.
+- [ ] **Illustration review.** All 193 figures are generated from joint angles. Two passes have been
+      made on contact sheets (figure redrawn with tapered limbs; forward folds, folded-leg floor poses,
+      twists, side-lying poses and neck close-ups reworked). Still weak: the front-view wide-leg
+      movements (`toe-touch-twist`, `wide-leg-toe-touches`, `wide-leg-torso-circles`), twists in general
+      (a flat view cannot show rotation), and the neck close-ups. Fix a pose with `scripts/poses.py`
+      or directly in `src/mobility/data/poses.ts`, check it with `scripts/view.sh <ids> out.png`,
+      then `npm run art:export`.
 - [ ] **Exercise text has not been checked against outside sources.** It was written from general
       knowledge. Treat it as ordinary exercise guidance, not medical advice.
 - [ ] Screen-reader pass with VoiceOver. Labels, roles and live regions are in place but untested with a real reader.

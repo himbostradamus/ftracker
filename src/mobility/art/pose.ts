@@ -96,13 +96,14 @@ export function solve(pose: Pose): Solved {
   // Feet default to pointing forward (profile) or down-and-out (front view).
   // Profile: toes point toward the front of the body, except when the shin
   // trails backward along the floor (kneeling, prone), where the foot points.
-  const footDef = (shin: number) => {
-    if (front) return 90;
+  const footDef = (shin: number, out = 0) => {
+    // Facing the viewer, feet turn out a little instead of pointing straight down.
+    if (front) return 90 - out * 32;
     const d = ((shin + 540) % 360) - 180;
     return Math.abs(d) > 145 ? shin : shin - 90;
   };
-  let legN = limb(hipN, lN, LEN.thigh, LEN.shin, LEN.foot, footDef(lN[1]), pose.fs?.lN);
-  let legF = limb(hipF, lF, LEN.thigh, LEN.shin, LEN.foot, footDef(lF[1]), pose.fs?.lF ?? (pose.lF ? undefined : pose.fs?.lN));
+  let legN = limb(hipN, lN, LEN.thigh, LEN.shin, LEN.foot * (front ? 0.75 : 1), footDef(lN[1], 1), pose.fs?.lN);
+  let legF = limb(hipF, lF, LEN.thigh, LEN.shin, LEN.foot * (front ? 0.75 : 1), footDef(lF[1], -1), pose.fs?.lF ?? (pose.lF ? undefined : pose.fs?.lN));
 
   let all: Record<string, Pt | Pt[]> = { pelvis, mid, chest, neck, head, hipN, hipF, shN, shF, armN, armF, legN, legF };
   const map = (f: (p: Pt) => Pt) => {
