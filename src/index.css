@@ -14,6 +14,21 @@
   --color-warning: #F59E0B;
   --color-info: #47B8E8;
   --color-accent: #C084FC;
+
+}
+
+/* Stretching section colours. `inline` makes utilities read the variables
+   where they are used, so the values set on .mob (light or dark) apply. */
+@theme inline {
+  --color-m-canvas: var(--m-canvas);
+  --color-m-surface: var(--m-surface);
+  --color-m-text: var(--m-text);
+  --color-m-muted: var(--m-muted);
+  --color-m-line: var(--m-line);
+  --color-m-accent: var(--m-accent);
+  --color-m-ink: var(--m-accent-ink);
+  --color-m-soft: var(--m-soft);
+  --color-m-danger: var(--m-danger);
 }
 
 @layer base {

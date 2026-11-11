@@ -1,6 +1,9 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
+import { createHash } from 'node:crypto';
+import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { join, relative } from 'node:path';
 
 // Derive the GitHub Pages base path automatically.
 //
@@ -26,9 +29,34 @@ function resolveBase(): string {
   return '/';
 }
 
+// After the build, write the list of emitted files into the service worker so
+// the whole app (shell, catalog, illustrations) is cached for offline use.
+function precache(): Plugin {
+  let outDir = 'dist';
+  return {
+    name: 'precache-manifest',
+    apply: 'build',
+    configResolved(c) { outDir = c.build.outDir; },
+    closeBundle() {
+      const walk = (dir: string): string[] => readdirSync(dir).flatMap(f => {
+        const p = join(dir, f);
+        return statSync(p).isDirectory() ? walk(p) : [p];
+      });
+      const files = walk(outDir).map(f => relative(outDir, f).split('\\').join('/')).filter(f => f !== 'sw.js').sort();
+      const hash = createHash('sha1');
+      for (const f of files) hash.update(f).update(readFileSync(join(outDir, f)));
+      const swPath = join(outDir, 'sw.js');
+      const sw = readFileSync(swPath, 'utf8')
+        .replace('__PRECACHE__', JSON.stringify(files))
+        .replace('__VERSION__', hash.digest('hex').slice(0, 12));
+      writeFileSync(swPath, sw);
+    },
+  };
+}
+
 export default defineConfig({
   base: resolveBase(),
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), precache()],
   server: {
     // HMR is disabled in AI Studio via DISABLE_HMR env var.
     hmr: process.env.DISABLE_HMR !== 'true',

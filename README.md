@@ -2,6 +2,15 @@
 
 A minimalist mobile-first workout, progress, and macro tracker. All data lives in the browser's `localStorage`; nothing is sent to any server.
 
+## Stretching section
+
+The **Stretch** tab opens a stretching, mobility and bodyweight-strength app: 193 illustrated
+movements, 121 prepared routines, a routine builder, a rule-based planner, a session player,
+history and streaks. It stores its data under its own keys and never writes the tracker's data.
+See [docs/MOBILITY.md](docs/MOBILITY.md) for what is finished, what is untested and the platform limits.
+
+Both halves work offline once the site has been opened online, and can be added to the Home Screen.
+
 ## Run locally
 
 Requires Node.js 20+.
@@ -19,6 +28,7 @@ The dev server runs at http://localhost:3000.
 - `npm run build` — production bundle into `dist/`
 - `npm run preview` — preview the production bundle locally
 - `npm run lint` — type-check with `tsc --noEmit`
+- `npm test` — unit tests (also run by the deploy workflow)
 
 ## Deploying to GitHub Pages
 

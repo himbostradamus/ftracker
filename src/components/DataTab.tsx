@@ -4,6 +4,8 @@ import { loadData, normalizeWorkoutData, clearAppData, loadConfigs, loadNutrProf
 import { cn } from '../lib/utils';
 import { toDateKey } from '../lib/helpers';
 import { UIPrefs } from '../types';
+import { exportMobility, validateBackup } from '../mobility/lib/backup';
+import { getState as getMobilityState, setState as setMobilityState } from '../mobility/lib/store';
 
 function isRecord(value: unknown): value is Record<string, any> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
@@ -24,7 +26,9 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
       nutrProfile: loadNutrProfile(),
       weightLog: loadWeightLog(),
       uiPrefs,
-      version: 8,
+      // Stretching data rides along so one file backs up the whole app.
+      mobility: exportMobility(getMobilityState()),
+      version: 9,
       exported: new Date().toISOString()
     }, null, 2);
 
@@ -61,7 +65,7 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
           e.target.value = "";
           return;
         }
-        const knownFields = ["checklist", "configs", "nutrProfile", "weightLog", "uiPrefs"];
+        const knownFields = ["checklist", "configs", "nutrProfile", "weightLog", "uiPrefs", "mobility"];
         if (!knownFields.some(field => Object.hasOwn(p, field))) {
           throw new Error("No recognized backup data");
         }
@@ -89,6 +93,16 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
         if (p.uiPrefs !== undefined && !isRecord(p.uiPrefs)) {
           throw new Error("Invalid UI preferences");
         }
+        // Stretching data is optional (older backups have none). It is
+        // validated up front like everything else, and it replaces rather
+        // than merges, so ask before overwriting sessions already here.
+        const mob = p.mobility !== undefined ? validateBackup(p) : null;
+        if (mob && !mob.ok) throw new Error("Invalid stretching data");
+        const cur = getMobilityState();
+        const replaceMobility = !!mob?.state && (
+          (cur.history.length === 0 && cur.customRoutines.length === 0) ||
+          confirm(`This backup also contains stretching data (${mob.summary?.sessions ?? 0} sessions, ${mob.summary?.routines ?? 0} custom routines). Replace the stretching data on this device with it?`)
+        );
 
         if (p.checklist !== undefined) {
           saveData({ ...loadData(), ...normalizeWorkoutData(p.checklist) });
@@ -105,6 +119,7 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
         if (p.uiPrefs !== undefined) {
           onUpdatePrefs({ ...uiPrefs, ...p.uiPrefs });
         }
+        if (replaceMobility && mob?.state) setMobilityState(mob.state);
         setMsg({ type: 'ok', text: "Imported successfully" });
       } catch (err) {
         setMsg({ type: 'err', text: "Invalid backup file" });

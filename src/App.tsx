@@ -5,6 +5,7 @@ import { TabBar } from './components/TabBar';
 import { RestTimer } from './components/RestTimer';
 import { loadUIPrefs, saveUIPrefs } from './lib/storage';
 import { UIPrefs } from './types';
+import { getState as getMobilityState, updateSettings as updateMobilitySettings } from './mobility/lib/store';
 
 // Lazy chunks: kept out of the initial bundle since the user lands on the
 // Checklist tab. Recharts (Progress) is the biggest win.
@@ -21,6 +22,9 @@ const WorkoutDetail = lazy(() =>
   import('./components/WorkoutDetail').then(m => ({ default: m.WorkoutDetail }))
 );
 
+// The stretching section is a self-contained module with its own storage.
+const MobilityApp = lazy(() => import('./mobility/ui/MobilityApp'));
+
 function TabFallback() {
   return (
     <div className="flex items-center justify-center py-16 text-[#444] text-[10px] tracking-widest uppercase">
@@ -30,6 +34,9 @@ function TabFallback() {
 }
 
 export default function App() {
+  // Which half of the app is showing. Remembered in the stretching section's
+  // own settings, so the tracker's stored data is not involved.
+  const [section, setSection] = useState<'tracker' | 'mobility'>(() => getMobilityState().settings.lastSection ?? 'tracker');
   const [activeTab, setActiveTab] = useState('check');
   const [viewOffset, setViewOffset] = useState(0);
   const [openWorkout, setOpenWorkout] = useState<{ dayIdx: number; typeIdx: number } | null>(null);
@@ -105,6 +112,14 @@ export default function App() {
     }
   };
 
+  if (section === 'mobility') {
+    return (
+      <Suspense fallback={<TabFallback />}>
+        <MobilityApp onExit={() => setSection('tracker')} />
+      </Suspense>
+    );
+  }
+
   return (
     <div className="max-w-[375px] mx-auto p-3 safe-top safe-bottom min-h-screen">
       {renderTab()}
@@ -113,7 +128,10 @@ export default function App() {
         <TabBar
           activeTab={activeTab}
           uiPrefs={uiPrefs}
-          onTabChange={(t) => { setActiveTab(t); setViewOffset(0); }}
+          onTabChange={(t) => {
+            if (t === 'stretch') { updateMobilitySettings({ lastSection: 'mobility' }); setSection('mobility'); return; }
+            setActiveTab(t); setViewOffset(0);
+          }}
         />
       )}
 

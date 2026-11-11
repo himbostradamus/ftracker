@@ -22,6 +22,7 @@ export function TabBar({ activeTab, uiPrefs, onTabChange }: TabBarProps) {
     { id: 'check', label: 'Check',    icon: '☐' },
     { id: 'prog',  label: 'Progress', icon: '◆' },
     { id: 'nutr',  label: 'Macros',   icon: '⚖', hidden: !!uiPrefs.hideNutrition },
+    { id: 'stretch', label: 'Stretch', icon: '∿' },
     { id: 'data',  label: 'Data',     icon: '⇄' },
   ];
   const visible = tabs.filter(t => !t.hidden);
