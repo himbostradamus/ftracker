@@ -9,16 +9,16 @@ const HIPS_N: [number, number] = [110, 30];   // near hand on hip (profile)
 
 export const POSES: Record<string, Pose> = {
   // ── Neck (bust crops) ────────────────────────────────────────────────
-  'chin-retractions': { t: -90, h: -100, aN: [94, 86], lN: [90, 90], props: NONE, zoom: 1.7 },
-  'ear-to-shoulder': { v: 'front', t: -90, h: -58, aN: [-62, -172], aF: [98, 94], lN: [90, 90], fs: { aN: [1, 0.8] }, props: NONE, zoom: 1.7 },
-  'neck-extension': { t: -90, h: -130, aN: [94, 86], lN: [90, 90], props: NONE, zoom: 1.7 },
-  'neck-flex': { t: -90, h: -36, aN: [-96, 168], lN: [90, 90], fs: { aN: [0.9, 0.55] }, props: NONE, zoom: 1.7 },
-  'neck-flexion': { t: -90, h: -50, aN: [94, 86], lN: [90, 90], props: NONE, zoom: 1.7 },
-  'neck-laterals': { v: 'front', t: -90, h: -66, aN: [94, 90], lN: [90, 90], props: NONE, zoom: 1.7 },
-  'neck-roll': { v: 'front', t: -90, h: -118, look: -1, aN: [94, 90], lN: [90, 90], props: NONE, zoom: 1.7 },
-  'neck-rotation': { v: 'front', t: -90, h: -90, look: 1, aN: [94, 90], lN: [90, 90], props: NONE, zoom: 1.7 },
-  'scalene-stretch': { v: 'front', t: -90, h: -120, aN: [84, -118], aF: [70, -8], lN: [90, 90], fs: { aN: [1, 0.7], aF: [1, 0.9] }, props: NONE, zoom: 1.7 },
-  'scapula-stretch': { v: 'front', t: -90, h: -56, look: 1, aN: [-66, -176], aF: [96, 92], lN: [90, 90], fs: { aN: [1, 0.75] }, props: NONE, zoom: 1.7 },
+  'chin-retractions': { t: -90, h: -100, aN: [94, 86], lN: [90, 90], props: NONE, zoom: 2.5 },
+  'ear-to-shoulder': { v: 'front', t: -90, h: -58, aN: [-62, -172], aF: [98, 94], lN: [90, 90], fs: { aN: [1, 0.8] }, props: NONE, zoom: 2.5 },
+  'neck-extension': { t: -90, h: -130, aN: [94, 86], lN: [90, 90], props: NONE, zoom: 2.5 },
+  'neck-flex': { t: -90, h: -36, aN: [-96, 168], lN: [90, 90], fs: { aN: [0.9, 0.55] }, props: NONE, zoom: 2.5 },
+  'neck-flexion': { t: -90, h: -50, aN: [94, 86], lN: [90, 90], props: NONE, zoom: 2.5 },
+  'neck-laterals': { v: 'front', t: -90, h: -66, aN: [94, 90], lN: [90, 90], props: NONE, zoom: 2.5 },
+  'neck-roll': { v: 'front', t: -90, h: -118, look: -1, aN: [94, 90], lN: [90, 90], props: NONE, zoom: 2.5 },
+  'neck-rotation': { v: 'front', t: -90, h: -90, look: 1, aN: [94, 90], lN: [90, 90], props: NONE, zoom: 2.5 },
+  'scalene-stretch': { v: 'front', t: -90, h: -120, aN: [84, -118], aF: [70, -8], lN: [90, 90], fs: { aN: [1, 0.7], aF: [1, 0.9] }, props: NONE, zoom: 2.5 },
+  'scapula-stretch': { v: 'front', t: -90, h: -56, look: 1, aN: [-66, -176], aF: [96, 92], lN: [90, 90], fs: { aN: [1, 0.75] }, props: NONE, zoom: 2.5 },
 
   // ── Shoulders, chest and arms ────────────────────────────────────────
   'bear-hug': { v: 'front', t: -90, h: -90, aN: [150, 188], lN: [86, 90], props: NONE },
@@ -44,8 +44,8 @@ export const POSES: Record<string, Pose> = {
 
   // ── Wrists and forearms ──────────────────────────────────────────────
   'forearm-stretch': { t: -8, h: 5, aN: [74, 74, 180], lN: [68, 180] },
-  'wrist-extension': { t: -90, aN: [0, 0, -88], aF: [14, -16], lN: [90, 90], props: NONE, zoom: 1.6 },
-  'wrist-flexion': { t: -90, aN: [0, 0, 95], aF: [16, 10], lN: [90, 90], props: NONE, zoom: 1.6 },
+  'wrist-extension': { t: -90, aN: [0, 0, -88], aF: [14, -16], lN: [90, 90], props: NONE, zoom: 2.1 },
+  'wrist-flexion': { t: -90, aN: [0, 0, 95], aF: [16, 10], lN: [90, 90], props: NONE, zoom: 2.1 },
 
   // ── Spine, trunk and rotation ────────────────────────────────────────
   'cat-cow': { t: [-28, 26], h: 62, aN: [90, 90], lN: [90, 180] },
@@ -160,13 +160,13 @@ export const POSES: Record<string, Pose> = {
   'leg-swings': { t: -92, aN: [138, 128], aF: [30, 28], lF: [90, 90], lN: [34, 40], props: NONE },
   'lying-ankle-circles': { t: 180, h: 180, aN: [-58, -84], lF: [0, 0], lN: [-102, -74] },
   'runners-lunge-twist': { t: [-4, -16], h: -42, aF: [90, 90], aN: [-92, -90], lN: [-20, 86, 0], lF: [160, 165, 90] },
-  'shoulder-rolls': { v: 'front', t: -90, aN: [98, 94], lN: [90, 90], props: NONE, zoom: 1.6 },
+  'shoulder-rolls': { v: 'front', t: -90, aN: [98, 94], lN: [90, 90], props: NONE, zoom: 2.1 },
   'standing-hip-openers': { t: -90, aN: HIPS_N, lF: [90, 90], lN: [-28, 70], props: NONE },
   'toe-touch-twist': { v: 'front', t: 112, h: 120, ts: 0.55, aN: [134, 130], aF: [-92, -90], lN: [64, 64] },
   'trunk-twist': { v: 'front', t: -90, look: -1, aN: [150, 190], aF: [150, 120], lN: [84, 88], props: NONE },
   'wide-leg-toe-touches': { v: 'front', t: 62, h: 60, ts: 0.55, aN: [72, 70], aF: [52, 50], lN: [64, 64] },
   'wide-leg-torso-circles': { v: 'front', t: [-62, -30], aN: [60, 150], aF: [120, 30], lN: [64, 64] },
-  'wrist-circles': { t: -90, aN: [58, -24], aF: [68, -12], lN: [90, 90], props: NONE, zoom: 1.5 },
+  'wrist-circles': { t: -90, aN: [58, -24], aF: [68, -12], lN: [90, 90], props: NONE, zoom: 1.9 },
   'zombie-walks': { t: -90, aN: [0, 0], lF: [92, 92], lN: [8, 8], props: NONE },
 
   // ── Planks and upper-body strength holds ─────────────────────────────

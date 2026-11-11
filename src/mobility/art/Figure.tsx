@@ -1,14 +1,12 @@
 import React from 'react';
-import { Pose, Pt, solve, LEN } from './pose';
+import { Pose, solve } from './pose';
+import { BodyColors, buildBody, Shape } from './body';
 
 // Flat, solid-fill figure drawn from a solved pose. Colours come from a small
 // set of body variants so the catalog shows a range of skin tones and hair
 // while every illustration keeps the same construction.
 
-export interface Variant {
-  skin: string; skinFar: string; hair: string; top: string; topFar: string; bottom: string; bottomLow: string;
-  bottomFar: string; hairStyle: 'short' | 'bun' | 'tail'; shorts: boolean; build: number;
-}
+export type Variant = BodyColors;
 
 const SKINS: [string, string][] = [
   ['#F1C9A5', '#DDB08A'], ['#E0A97E', '#C99368'], ['#C68B5E', '#AE774D'],
@@ -37,7 +35,7 @@ export function variantFor(seed: string): Variant {
     hair: HAIRS[(h >>> 3) % HAIRS.length],
     top: TOPS[(h >>> 6) % TOPS.length][0], topFar: TOPS[(h >>> 6) % TOPS.length][1],
     bottom: bottom[0], bottomFar: bottom[1], bottomLow: bottom[2],
-    hairStyle: (['short', 'bun', 'tail'] as const)[(h >>> 12) % 3],
+    hairStyle: (['short', 'bun', 'tail', 'bob'] as const)[(h >>> 12) % 4],
     shorts: ((h >>> 15) & 1) === 1,
     build: [0.94, 1, 1.07, 1.15][(h >>> 17) % 4],
   };
@@ -45,60 +43,13 @@ export function variantFor(seed: string): Variant {
 
 export const bgFor = (seed: string) => BADGE_BG[(hash(seed) >>> 20) % BADGE_BG.length];
 
-const line = (pts: Pt[]) => pts.map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
-const unit = (a: Pt, b: Pt): Pt => {
-  const dx = b.x - a.x, dy = b.y - a.y, l = Math.hypot(dx, dy) || 1;
-  return { x: dx / l, y: dy / l };
-};
-
-// A limb segment that narrows from one joint to the next: two circles joined
-// by their outer edges.
-function Taper({ a, b, ra, rb, fill }: { a: Pt; b: Pt; ra: number; rb: number; fill: string }) {
-  const u = unit(a, b);
-  const n = { x: -u.y, y: u.x };
-  const d = `M${(a.x + n.x * ra).toFixed(1)} ${(a.y + n.y * ra).toFixed(1)} L${(b.x + n.x * rb).toFixed(1)} ${(b.y + n.y * rb).toFixed(1)} L${(b.x - n.x * rb).toFixed(1)} ${(b.y - n.y * rb).toFixed(1)} L${(a.x - n.x * ra).toFixed(1)} ${(a.y - n.y * ra).toFixed(1)}Z`;
-  return (
-    <g fill={fill}>
-      <path d={d} /><circle cx={a.x} cy={a.y} r={ra} /><circle cx={b.x} cy={b.y} r={rb} />
-    </g>
-  );
-}
-const between = (a: Pt, b: Pt, t: number): Pt => ({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
-
-function Leg({ pts, v, far }: { pts: Pt[]; v: Variant; far?: boolean }) {
-  const cloth = far ? v.bottomFar : v.bottom;
-  const skin = far ? v.skinFar : v.skin;
-  const k = v.build;
-  const [hip, knee, ankle, toe] = pts;
+// One body part: a soft edge around its whole silhouette (so an arm stays
+// readable against a leg of the same colour), then the flat fills.
+function Part({ shapes, edge = true }: { shapes: Shape[]; edge?: boolean }) {
   return (
     <g>
-      {v.shorts ? (
-        <>
-          <Taper a={knee} b={ankle} ra={5 * k} rb={3.5 * k} fill={skin} />
-          <Taper a={hip} b={knee} ra={7.4 * k} rb={5.4 * k} fill={skin} />
-          <Taper a={hip} b={between(hip, knee, 0.5)} ra={8 * k} rb={7 * k} fill={cloth} />
-        </>
-      ) : (
-        <>
-          <Taper a={knee} b={ankle} ra={5.2 * k} rb={3.7 * k} fill={far ? cloth : v.bottomLow} />
-          <Taper a={hip} b={knee} ra={7.8 * k} rb={5.6 * k} fill={cloth} />
-        </>
-      )}
-      <Taper a={ankle} b={toe} ra={3.9} rb={2.9} fill={skin} />
-    </g>
-  );
-}
-
-function Arm({ pts, v, far }: { pts: Pt[]; v: Variant; far?: boolean }) {
-  const skin = far ? v.skinFar : v.skin;
-  const k = v.build;
-  const [sh, elbow, wrist, hand] = pts;
-  return (
-    <g>
-      <Taper a={sh} b={elbow} ra={4.7 * k} rb={3.7 * k} fill={skin} />
-      <Taper a={sh} b={between(sh, elbow, 0.3)} ra={5.2 * k} rb={4.6 * k} fill={far ? v.topFar : v.top} />
-      <Taper a={elbow} b={wrist} ra={3.7 * k} rb={2.8} fill={skin} />
-      <Taper a={wrist} b={hand} ra={3} rb={3.3} fill={skin} />
+      {edge && <path d={shapes.map(x => x.d).join('')} fill="#1E1F1D" stroke="#1E1F1D" strokeWidth={1.9} strokeLinejoin="round" opacity={0.2} />}
+      {shapes.map((x, i) => <path key={i} d={x.d} fill={x.fill} />)}
     </g>
   );
 }
@@ -172,44 +123,13 @@ export function Figure({ pose, seed, size = 96, badge = true, title, className }
     : Math.min(1.6, 178 / figH, 186 / figW));
   const clipId = `c${hash(seed + (badge ? 'b' : 'p')).toString(36)}`;
   // A zoomed pose is a bust crop centred on the chest (neck and wrist work).
-  const tx = zoom ? 100 - s.chest.x * k : 100;
-  const ty = zoom ? 128 - s.chest.y * k : Math.min(badge ? 180 : 190, 100 + (figH * k) / 2 + 2);
-  const u = unit(s.neck, s.head);
+  // ...shifted toward an outstretched hand so wrist work stays in frame.
+  const reach = s.armN[3].x - s.chest.x;
+  const tx = zoom ? 100 - (s.chest.x + (Math.abs(reach) > 25 ? reach * 0.45 : 0)) * k : 100;
+  const ty = zoom ? 100 + zoom * 15 - s.chest.y * k : Math.min(badge ? 180 : 190, 100 + (figH * k) / 2 + 2);
   const flip = pose.face === -1 ? -1 : 1;
   const side = s.front ? pose.look ?? 0 : flip;
-  const profile = side !== 0;
-  const f: Pt = { x: -u.y * side, y: u.x * side };
-  const hairC = { x: s.head.x - f.x * 3.2 + u.x * 2.6, y: s.head.y - f.y * 3.2 + u.y * 2.6 };
-  const knot = { x: s.head.x - f.x * 11 + u.x * (profile ? 5 : 11), y: s.head.y - f.y * 11 + u.y * (profile ? 5 : 11) };
-  const k2 = v.build;
-  // Torso: wider at the chest than the waist; shoulders and hips only show
-  // their width when the figure faces the viewer.
-  const torso = s.front ? (
-    <g>
-      <Taper a={s.hipF} b={s.hipN} ra={8.2 * k2} rb={8.2 * k2} fill={v.bottom} />
-      <Taper a={between(s.pelvis, s.mid, 0.25)} b={s.mid} ra={11.5 * k2} rb={10.5 * k2} fill={v.top} />
-      <Taper a={s.mid} b={between(s.mid, s.chest, 0.8)} ra={10.5 * k2} rb={11.5 * k2} fill={v.top} />
-      <Taper a={s.shF} b={s.shN} ra={5.4 * k2} rb={5.4 * k2} fill={v.top} />
-    </g>
-  ) : (
-    <g>
-      <Taper a={s.pelvis} b={between(s.pelvis, s.mid, 0.3)} ra={8.6 * k2} rb={8.2 * k2} fill={v.bottom} />
-      <Taper a={between(s.pelvis, s.mid, 0.3)} b={s.mid} ra={8.2 * k2} rb={8 * k2} fill={v.top} />
-      <Taper a={s.mid} b={s.chest} ra={8 * k2} rb={9.2 * k2} fill={v.top} />
-    </g>
-  );
-  const head = (
-    <g>
-      <Taper a={s.chest} b={s.head} ra={3.6} rb={3.4} fill={v.skin} />
-      {v.hairStyle !== 'short' && <circle cx={knot.x} cy={knot.y} r={v.hairStyle === 'bun' ? 4.6 : 3.6} fill={v.hair} />}
-      {v.hairStyle === 'tail' && profile && (
-        <path d={line([knot, { x: knot.x - f.x * 5 - u.x * 9, y: knot.y - f.y * 5 - u.y * 9 }])} stroke={v.hair} strokeWidth={5} strokeLinecap="round" />
-      )}
-      <circle cx={hairC.x} cy={hairC.y} r={LEN.head + 0.4} fill={v.hair} />
-      <circle cx={s.head.x + f.x * 0.8 - u.x * 0.6} cy={s.head.y + f.y * 0.8 - u.y * 0.6} r={LEN.head - 0.8} fill={v.skin} />
-      {profile && <circle cx={s.head.x + f.x * 9.8 - u.x * 1.5} cy={s.head.y + f.y * 9.8 - u.y * 1.5} r={1.9} fill={v.skin} />}
-    </g>
-  );
+  const body = buildBody(s, v, side, flip);
 
   return (
     <svg
@@ -224,16 +144,16 @@ export function Figure({ pose, seed, size = 96, badge = true, title, className }
         <Props names={names} s={s} />
         {s.front ? (
           <>
-            <Leg pts={s.legF} v={v} /><Leg pts={s.legN} v={v} />
-            {torso}
-            <Arm pts={s.armF} v={v} /><Arm pts={s.armN} v={v} />
-            {head}
+            <Part shapes={body.farLeg} /><Part shapes={body.nearLeg} />
+            <Part shapes={body.torso} />
+            <Part shapes={body.farArm} /><Part shapes={body.nearArm} />
+            <Part shapes={body.head} />
           </>
         ) : (
           <>
-            <Arm pts={s.armF} v={v} far /><Leg pts={s.legF} v={v} far />
-            {torso}{head}
-            <Leg pts={s.legN} v={v} /><Arm pts={s.armN} v={v} />
+            <Part shapes={body.farArm} edge={false} /><Part shapes={body.farLeg} edge={false} />
+            <Part shapes={body.torso} /><Part shapes={body.head} />
+            <Part shapes={body.nearLeg} /><Part shapes={body.nearArm} />
           </>
         )}
       </g></g>

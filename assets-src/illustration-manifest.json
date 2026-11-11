@@ -12,7 +12,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#7A4B2A",
-        "hairStyle": "bun",
+        "hairStyle": "tail",
         "top": "#D9AE48",
         "bottom": "#62516C",
         "shorts": false,
@@ -32,7 +32,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#C66D4E",
         "bottom": "#52665A",
         "shorts": false,
@@ -72,7 +72,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#C66D4E",
         "bottom": "#405674",
         "shorts": true,
@@ -92,7 +92,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": false,
@@ -132,7 +132,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#C66D4E",
         "bottom": "#62516C",
         "shorts": false,
@@ -152,7 +152,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": true,
@@ -192,7 +192,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#8E8E89",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#217E73",
         "bottom": "#52665A",
         "shorts": false,
@@ -212,7 +212,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#7A4B2A",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#D9AE48",
         "bottom": "#52665A",
         "shorts": true,
@@ -232,7 +232,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#4A3327",
-        "hairStyle": "bun",
+        "hairStyle": "short",
         "top": "#217E73",
         "bottom": "#405674",
         "shorts": true,
@@ -252,7 +252,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#7A4B2A",
-        "hairStyle": "bun",
+        "hairStyle": "bob",
         "top": "#C66D4E",
         "bottom": "#52665A",
         "shorts": false,
@@ -272,7 +272,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#8E8E89",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#5B7FA6",
         "bottom": "#52665A",
         "shorts": true,
@@ -312,7 +312,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#D9AE48",
         "bottom": "#405674",
         "shorts": true,
@@ -332,7 +332,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#7A4B2A",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#D9AE48",
         "bottom": "#405674",
         "shorts": false,
@@ -352,7 +352,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#C66D4E",
         "bottom": "#34424D",
         "shorts": true,
@@ -392,7 +392,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#7A4B2A",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#C66D4E",
         "bottom": "#34424D",
         "shorts": true,
@@ -432,7 +432,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#D8A8B5",
         "bottom": "#405674",
         "shorts": false,
@@ -472,7 +472,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#2B2420",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": true,
@@ -492,7 +492,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#7A4B2A",
-        "hairStyle": "bun",
+        "hairStyle": "short",
         "top": "#D9AE48",
         "bottom": "#52665A",
         "shorts": true,
@@ -512,7 +512,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#4A3327",
-        "hairStyle": "bun",
+        "hairStyle": "short",
         "top": "#83A58D",
         "bottom": "#52665A",
         "shorts": false,
@@ -572,7 +572,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#C66D4E",
         "bottom": "#62516C",
         "shorts": false,
@@ -592,7 +592,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#7A4B2A",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#217E73",
         "bottom": "#62516C",
         "shorts": true,
@@ -612,7 +612,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#8E8E89",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#217E73",
         "bottom": "#405674",
         "shorts": false,
@@ -632,7 +632,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#5B7FA6",
         "bottom": "#34424D",
         "shorts": false,
@@ -652,7 +652,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "bun",
+        "hairStyle": "short",
         "top": "#83A58D",
         "bottom": "#405674",
         "shorts": false,
@@ -672,7 +672,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#217E73",
         "bottom": "#62516C",
         "shorts": true,
@@ -712,7 +712,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#8E8E89",
-        "hairStyle": "bun",
+        "hairStyle": "bob",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": true,
@@ -732,7 +732,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#5B7FA6",
         "bottom": "#405674",
         "shorts": true,
@@ -772,7 +772,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#7A4B2A",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#D9AE48",
         "bottom": "#34424D",
         "shorts": true,
@@ -792,7 +792,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#8E8E89",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#D8A8B5",
         "bottom": "#52665A",
         "shorts": true,
@@ -812,7 +812,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#83A58D",
         "bottom": "#34424D",
         "shorts": true,
@@ -832,7 +832,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#2B2420",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#D8A8B5",
         "bottom": "#52665A",
         "shorts": false,
@@ -852,7 +852,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#7A4B2A",
-        "hairStyle": "bun",
+        "hairStyle": "tail",
         "top": "#D8A8B5",
         "bottom": "#52665A",
         "shorts": false,
@@ -872,7 +872,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#2B2420",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#5B7FA6",
         "bottom": "#405674",
         "shorts": true,
@@ -892,7 +892,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#D9AE48",
         "bottom": "#34424D",
         "shorts": true,
@@ -912,7 +912,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#8E8E89",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#C66D4E",
         "bottom": "#62516C",
         "shorts": false,
@@ -932,7 +932,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#8E8E89",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#83A58D",
         "bottom": "#34424D",
         "shorts": true,
@@ -972,7 +972,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#B9853F",
-        "hairStyle": "bun",
+        "hairStyle": "tail",
         "top": "#83A58D",
         "bottom": "#405674",
         "shorts": false,
@@ -1012,7 +1012,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#7A4B2A",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#C66D4E",
         "bottom": "#405674",
         "shorts": true,
@@ -1032,7 +1032,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#4A3327",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#D9AE48",
         "bottom": "#62516C",
         "shorts": false,
@@ -1052,7 +1052,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#C66D4E",
         "bottom": "#405674",
         "shorts": true,
@@ -1072,7 +1072,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#8E8E89",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#217E73",
         "bottom": "#405674",
         "shorts": false,
@@ -1092,7 +1092,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#4A3327",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": false,
@@ -1132,7 +1132,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#2B2420",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": false,
@@ -1152,7 +1152,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#83A58D",
         "bottom": "#34424D",
         "shorts": true,
@@ -1192,7 +1192,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#8E8E89",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#D9AE48",
         "bottom": "#62516C",
         "shorts": true,
@@ -1212,7 +1212,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#8E8E89",
-        "hairStyle": "bun",
+        "hairStyle": "short",
         "top": "#C66D4E",
         "bottom": "#52665A",
         "shorts": false,
@@ -1232,7 +1232,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#8E8E89",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#217E73",
         "bottom": "#34424D",
         "shorts": false,
@@ -1252,7 +1252,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#8E8E89",
-        "hairStyle": "bun",
+        "hairStyle": "tail",
         "top": "#83A58D",
         "bottom": "#405674",
         "shorts": true,
@@ -1292,7 +1292,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#4A3327",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#83A58D",
         "bottom": "#52665A",
         "shorts": false,
@@ -1312,7 +1312,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#8E8E89",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#D8A8B5",
         "bottom": "#405674",
         "shorts": true,
@@ -1332,7 +1332,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#217E73",
         "bottom": "#62516C",
         "shorts": true,
@@ -1352,7 +1352,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#8E8E89",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#217E73",
         "bottom": "#405674",
         "shorts": true,
@@ -1392,7 +1392,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#4A3327",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#5B7FA6",
         "bottom": "#34424D",
         "shorts": false,
@@ -1412,7 +1412,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": true,
@@ -1432,7 +1432,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#D9AE48",
         "bottom": "#62516C",
         "shorts": true,
@@ -1452,7 +1452,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#217E73",
         "bottom": "#405674",
         "shorts": false,
@@ -1472,7 +1472,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#4A3327",
-        "hairStyle": "bun",
+        "hairStyle": "tail",
         "top": "#83A58D",
         "bottom": "#52665A",
         "shorts": true,
@@ -1532,7 +1532,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#8E8E89",
-        "hairStyle": "bun",
+        "hairStyle": "short",
         "top": "#83A58D",
         "bottom": "#52665A",
         "shorts": true,
@@ -1552,7 +1552,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#D9AE48",
         "bottom": "#52665A",
         "shorts": true,
@@ -1572,7 +1572,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#8E8E89",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#D8A8B5",
         "bottom": "#52665A",
         "shorts": false,
@@ -1592,7 +1592,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": false,
@@ -1612,7 +1612,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#2B2420",
-        "hairStyle": "bun",
+        "hairStyle": "bob",
         "top": "#217E73",
         "bottom": "#62516C",
         "shorts": false,
@@ -1632,7 +1632,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#83A58D",
         "bottom": "#405674",
         "shorts": true,
@@ -1652,7 +1652,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#5B7FA6",
         "bottom": "#62516C",
         "shorts": false,
@@ -1692,7 +1692,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#8E8E89",
-        "hairStyle": "bun",
+        "hairStyle": "tail",
         "top": "#D9AE48",
         "bottom": "#52665A",
         "shorts": false,
@@ -1752,7 +1752,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#5B7FA6",
         "bottom": "#62516C",
         "shorts": true,
@@ -1792,7 +1792,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#2B2420",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#83A58D",
         "bottom": "#405674",
         "shorts": true,
@@ -1832,7 +1832,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#8E8E89",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#D9AE48",
         "bottom": "#405674",
         "shorts": false,
@@ -1852,7 +1852,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#8E8E89",
-        "hairStyle": "bun",
+        "hairStyle": "tail",
         "top": "#5B7FA6",
         "bottom": "#34424D",
         "shorts": true,
@@ -1872,7 +1872,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#D9AE48",
         "bottom": "#34424D",
         "shorts": false,
@@ -1892,7 +1892,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#7A4B2A",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#217E73",
         "bottom": "#62516C",
         "shorts": false,
@@ -1912,7 +1912,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#5B7FA6",
         "bottom": "#34424D",
         "shorts": true,
@@ -1932,7 +1932,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#7A4B2A",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#D8A8B5",
         "bottom": "#405674",
         "shorts": false,
@@ -1952,7 +1952,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#7A4B2A",
-        "hairStyle": "bun",
+        "hairStyle": "tail",
         "top": "#C66D4E",
         "bottom": "#405674",
         "shorts": true,
@@ -1992,7 +1992,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#2B2420",
-        "hairStyle": "bun",
+        "hairStyle": "tail",
         "top": "#D9AE48",
         "bottom": "#405674",
         "shorts": false,
@@ -2012,7 +2012,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#B9853F",
-        "hairStyle": "bun",
+        "hairStyle": "tail",
         "top": "#217E73",
         "bottom": "#62516C",
         "shorts": false,
@@ -2032,7 +2032,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#5B7FA6",
         "bottom": "#62516C",
         "shorts": true,
@@ -2092,7 +2092,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#4A3327",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": false,
@@ -2112,7 +2112,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#4A3327",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#5B7FA6",
         "bottom": "#405674",
         "shorts": false,
@@ -2132,7 +2132,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "bun",
+        "hairStyle": "short",
         "top": "#C66D4E",
         "bottom": "#52665A",
         "shorts": true,
@@ -2172,7 +2172,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#217E73",
         "bottom": "#62516C",
         "shorts": true,
@@ -2192,7 +2192,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#D8A8B5",
         "bottom": "#52665A",
         "shorts": false,
@@ -2212,7 +2212,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#83A58D",
         "bottom": "#405674",
         "shorts": true,
@@ -2232,7 +2232,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#D9AE48",
         "bottom": "#34424D",
         "shorts": true,
@@ -2252,7 +2252,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#D8A8B5",
         "bottom": "#405674",
         "shorts": false,
@@ -2272,7 +2272,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#5B7FA6",
         "bottom": "#405674",
         "shorts": true,
@@ -2292,7 +2292,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#2B2420",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#83A58D",
         "bottom": "#34424D",
         "shorts": true,
@@ -2332,7 +2332,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": true,
@@ -2352,7 +2352,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "bun",
+        "hairStyle": "bob",
         "top": "#83A58D",
         "bottom": "#52665A",
         "shorts": false,
@@ -2372,7 +2372,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#D9AE48",
         "bottom": "#405674",
         "shorts": true,
@@ -2392,7 +2392,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#D9AE48",
         "bottom": "#405674",
         "shorts": false,
@@ -2412,7 +2412,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#8E8E89",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#D9AE48",
         "bottom": "#62516C",
         "shorts": true,
@@ -2432,7 +2432,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#D8A8B5",
         "bottom": "#405674",
         "shorts": false,
@@ -2452,7 +2452,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#7A4B2A",
-        "hairStyle": "bun",
+        "hairStyle": "bob",
         "top": "#D9AE48",
         "bottom": "#62516C",
         "shorts": false,
@@ -2492,7 +2492,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#4A3327",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#C66D4E",
         "bottom": "#34424D",
         "shorts": false,
@@ -2512,7 +2512,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#C66D4E",
         "bottom": "#62516C",
         "shorts": false,
@@ -2532,7 +2532,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#7A4B2A",
-        "hairStyle": "bun",
+        "hairStyle": "short",
         "top": "#C66D4E",
         "bottom": "#34424D",
         "shorts": true,
@@ -2552,7 +2552,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#4A3327",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#83A58D",
         "bottom": "#62516C",
         "shorts": false,
@@ -2572,7 +2572,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#8E8E89",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#83A58D",
         "bottom": "#405674",
         "shorts": true,
@@ -2592,7 +2592,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": true,
@@ -2632,7 +2632,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#7A4B2A",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#217E73",
         "bottom": "#62516C",
         "shorts": false,
@@ -2652,7 +2652,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#4A3327",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#D9AE48",
         "bottom": "#405674",
         "shorts": false,
@@ -2672,7 +2672,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#4A3327",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#217E73",
         "bottom": "#405674",
         "shorts": false,
@@ -2692,7 +2692,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "bun",
+        "hairStyle": "short",
         "top": "#83A58D",
         "bottom": "#34424D",
         "shorts": true,
@@ -2732,7 +2732,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#4A3327",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#C66D4E",
         "bottom": "#405674",
         "shorts": true,
@@ -2752,7 +2752,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#8E8E89",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#217E73",
         "bottom": "#34424D",
         "shorts": true,
@@ -2792,7 +2792,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#C66D4E",
         "bottom": "#405674",
         "shorts": false,
@@ -2832,7 +2832,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#8E8E89",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#83A58D",
         "bottom": "#34424D",
         "shorts": true,
@@ -2852,7 +2852,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#2B2420",
-        "hairStyle": "bun",
+        "hairStyle": "bob",
         "top": "#217E73",
         "bottom": "#405674",
         "shorts": false,
@@ -2892,7 +2892,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#C66D4E",
         "bottom": "#34424D",
         "shorts": false,
@@ -2912,7 +2912,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#C66D4E",
         "bottom": "#52665A",
         "shorts": false,
@@ -2952,7 +2952,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#7A4B2A",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#217E73",
         "bottom": "#52665A",
         "shorts": true,
@@ -2972,7 +2972,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#8E8E89",
-        "hairStyle": "bun",
+        "hairStyle": "bob",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": true,
@@ -3032,7 +3032,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "bun",
+        "hairStyle": "short",
         "top": "#217E73",
         "bottom": "#34424D",
         "shorts": true,
@@ -3052,7 +3052,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#7A4B2A",
-        "hairStyle": "bun",
+        "hairStyle": "tail",
         "top": "#217E73",
         "bottom": "#405674",
         "shorts": true,
@@ -3072,7 +3072,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#5B7FA6",
         "bottom": "#405674",
         "shorts": true,
@@ -3092,7 +3092,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#B9853F",
-        "hairStyle": "bun",
+        "hairStyle": "bob",
         "top": "#C66D4E",
         "bottom": "#34424D",
         "shorts": true,
@@ -3112,7 +3112,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "bun",
+        "hairStyle": "bob",
         "top": "#217E73",
         "bottom": "#405674",
         "shorts": true,
@@ -3172,7 +3172,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#4A3327",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": false,
@@ -3192,7 +3192,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#217E73",
         "bottom": "#62516C",
         "shorts": true,
@@ -3212,7 +3212,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#7A4B2A",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#83A58D",
         "bottom": "#405674",
         "shorts": true,
@@ -3232,7 +3232,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#D8A8B5",
         "bottom": "#405674",
         "shorts": false,
@@ -3252,7 +3252,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#4A3327",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#5B7FA6",
         "bottom": "#52665A",
         "shorts": false,
@@ -3292,7 +3292,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#5B7FA6",
         "bottom": "#34424D",
         "shorts": false,
@@ -3312,7 +3312,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#7A4B2A",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#D9AE48",
         "bottom": "#34424D",
         "shorts": true,
@@ -3352,7 +3352,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#4A3327",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#C66D4E",
         "bottom": "#52665A",
         "shorts": true,
@@ -3372,7 +3372,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "bun",
+        "hairStyle": "short",
         "top": "#5B7FA6",
         "bottom": "#405674",
         "shorts": false,
@@ -3392,7 +3392,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#217E73",
         "bottom": "#405674",
         "shorts": true,
@@ -3412,7 +3412,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#D9AE48",
         "bottom": "#34424D",
         "shorts": true,
@@ -3452,7 +3452,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#2B2420",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#D8A8B5",
         "bottom": "#62516C",
         "shorts": false,
@@ -3472,7 +3472,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#2B2420",
-        "hairStyle": "bun",
+        "hairStyle": "tail",
         "top": "#D9AE48",
         "bottom": "#405674",
         "shorts": false,
@@ -3492,7 +3492,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#4A3327",
-        "hairStyle": "bun",
+        "hairStyle": "bob",
         "top": "#C66D4E",
         "bottom": "#405674",
         "shorts": true,
@@ -3512,7 +3512,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#2B2420",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#D9AE48",
         "bottom": "#62516C",
         "shorts": true,
@@ -3572,7 +3572,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#2B2420",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#D9AE48",
         "bottom": "#34424D",
         "shorts": false,
@@ -3592,7 +3592,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#4A3327",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#5B7FA6",
         "bottom": "#52665A",
         "shorts": true,
@@ -3612,7 +3612,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#D9AE48",
         "bottom": "#62516C",
         "shorts": false,
@@ -3632,7 +3632,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#217E73",
         "bottom": "#62516C",
         "shorts": true,
@@ -3652,7 +3652,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#4A3327",
-        "hairStyle": "bun",
+        "hairStyle": "short",
         "top": "#5B7FA6",
         "bottom": "#34424D",
         "shorts": false,
@@ -3672,7 +3672,7 @@
       "variant": {
         "skin": "#E0A97E",
         "hair": "#7A4B2A",
-        "hairStyle": "tail",
+        "hairStyle": "short",
         "top": "#D8A8B5",
         "bottom": "#405674",
         "shorts": false,
@@ -3692,7 +3692,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#4A3327",
-        "hairStyle": "short",
+        "hairStyle": "bun",
         "top": "#D9AE48",
         "bottom": "#52665A",
         "shorts": false,
@@ -3712,7 +3712,7 @@
       "variant": {
         "skin": "#C68B5E",
         "hair": "#8E8E89",
-        "hairStyle": "short",
+        "hairStyle": "tail",
         "top": "#83A58D",
         "bottom": "#62516C",
         "shorts": false,
@@ -3752,7 +3752,7 @@
       "variant": {
         "skin": "#9A623F",
         "hair": "#4A3327",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#5B7FA6",
         "bottom": "#34424D",
         "shorts": true,
@@ -3792,7 +3792,7 @@
       "variant": {
         "skin": "#F1C9A5",
         "hair": "#B9853F",
-        "hairStyle": "tail",
+        "hairStyle": "bob",
         "top": "#5B7FA6",
         "bottom": "#52665A",
         "shorts": true,
@@ -3812,7 +3812,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#B9853F",
-        "hairStyle": "short",
+        "hairStyle": "bob",
         "top": "#C66D4E",
         "bottom": "#34424D",
         "shorts": false,
@@ -3832,7 +3832,7 @@
       "variant": {
         "skin": "#6E4530",
         "hair": "#8E8E89",
-        "hairStyle": "tail",
+        "hairStyle": "bun",
         "top": "#C66D4E",
         "bottom": "#405674",
         "shorts": true,
