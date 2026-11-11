@@ -67,14 +67,15 @@ export function SettingsView({ nav }: { nav: Nav }) {
 
       <Section title={t('Audio')}>
         <div className="m-card px-4 py-1">
-          <Toggle label={t('Sound cues')} hint={t('Countdown beeps and a tone at each change')} checked={s.sounds} onChange={v => set({ sounds: v })} />
+          <Toggle label={t('Sound cues')} hint={t('Warning beeps before each change and a tone when it happens')} checked={s.sounds} onChange={v => set({ sounds: v })} />
+          <Select label={t('Warning beeps before each change')} value={String(s.countdownBeeps)} onChange={v => set({ countdownBeeps: Number(v) })} options={[['5', t('Last 5 seconds')], ['3', t('Last 3 seconds')], ['0', t('None')]]} />
           <Toggle label={t('Speak exercise names')} checked={s.speakNames} onChange={v => set({ speakNames: v })} />
           <Toggle label={t('Speak side changes')} checked={s.speakSides} onChange={v => set({ speakSides: v })} />
           {!speechSupported() && <p className="text-sm text-m-muted pb-2">{t('This browser has no speech synthesis, so spoken prompts are unavailable.')}</p>}
           <label className="block py-2"><span className="font-medium">{t('Volume')}</span>
             <input type="range" min={0.1} max={1} step={0.1} value={s.volume} onChange={e => set({ volume: Number(e.target.value) })} className="w-full" /></label>
           <Btn kind="secondary" className="mb-3" onClick={() => { unlockAudio(); window.setTimeout(() => playSound('change', s.volume), 60); }}>{t('Test sound')}</Btn>
-          <p className="text-sm text-m-muted pb-3">{t('Browsers only allow sound after a tap, and your phone\'s silent switch still applies. The app never starts music and does not stop audio from other apps.')}</p>
+          <p className="text-sm text-m-muted pb-3">{t('Browsers only allow sound after a tap. On iPhone the beeps are silent while the ring/silent switch is set to silent. The app never starts music and does not stop audio from other apps.')}</p>
         </div>
       </Section>
 

@@ -16,7 +16,7 @@
         "top": "#D9AE48",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Upper body in profile with the chin drawn back and the neck long.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -36,7 +36,7 @@
         "top": "#C66D4E",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure facing forward with the head tipped to one side and a hand resting on the head.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -56,7 +56,7 @@
         "top": "#D9AE48",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Upper body in profile with the chin lifted and the gaze toward the ceiling.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -76,7 +76,7 @@
         "top": "#C66D4E",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Upper body in profile with hands clasped behind the head and the chin lowered to the chest.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -116,7 +116,7 @@
         "top": "#217E73",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure facing forward with the head tipped slightly to one side and arms relaxed.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -136,7 +136,7 @@
         "top": "#C66D4E",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure facing forward with the head lowered and tipped toward one shoulder mid-roll.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -156,7 +156,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure facing forward with the head turned to look over one shoulder.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -176,7 +176,7 @@
         "top": "#C66D4E",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure facing forward with both hands on one collarbone and the head tipped away and slightly back.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -196,7 +196,7 @@
         "top": "#217E73",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure facing forward with the head turned and lowered toward one armpit, hand on the back of the head.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -216,7 +216,7 @@
         "top": "#D9AE48",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure facing forward with both arms wrapped across the chest.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -236,7 +236,7 @@
         "top": "#217E73",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure facing forward with elbows at shoulder height and forearms pointing up.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -256,7 +256,7 @@
         "top": "#C66D4E",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure in profile with hands clasped behind the back and arms lifted away.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -296,7 +296,7 @@
         "top": "#D9AE48",
         "bottom": "#2F3B45",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure in profile folded forward at the hips with clasped hands reaching up and over the back.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -316,7 +316,7 @@
         "top": "#D9AE48",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure in profile with one forearm against a door frame, leaning the chest forward.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -336,7 +336,7 @@
         "top": "#D9AE48",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure in profile with elbows crossed and lifted in front of the chest, forearms vertical.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -356,7 +356,7 @@
         "top": "#C66D4E",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure facing forward with one bent arm across the chest and the other hand at its elbow.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -376,7 +376,7 @@
         "top": "#5B7FA6",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Standing figure in profile with both arms stretched straight overhead.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -396,7 +396,7 @@
         "top": "#C66D4E",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure facing forward with one elbow pointing up beside the head and the other hand holding it.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -416,7 +416,7 @@
         "top": "#5B7FA6",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Kneeling figure in profile with hips above knees, arms stretched forward and chest lowered to the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -436,7 +436,7 @@
         "top": "#D8A8B5",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure in profile with both elbows bent behind the back and hands meeting at the spine.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -456,7 +456,7 @@
         "top": "#217E73",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Seated figure in profile with knees bent, arms straight behind and hips slid forward.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -496,7 +496,7 @@
         "top": "#D9AE48",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure facing forward with one straight arm across the chest held by the other forearm.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -536,7 +536,7 @@
         "top": "#5B7FA6",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure in profile with arms overhead, palms together and the chest lifted slightly back.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -576,7 +576,7 @@
         "top": "#C66D4E",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure in profile hinged at the hips with a level back and hands pressed against a wall.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -596,7 +596,7 @@
         "top": "#217E73",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure in profile with one straight arm reaching back to a wall at shoulder height.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -616,7 +616,7 @@
         "top": "#217E73",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure on hands and knees in profile with fingers pointing back toward the knees and hips shifted back.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -656,7 +656,7 @@
         "top": "#83A58D",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Standing figure in profile with one arm straight forward, wrist bent down and the other hand pressing on it.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -676,7 +676,7 @@
         "top": "#217E73",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure on hands and knees in profile with the back rounded up toward the ceiling.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -716,7 +716,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Cross-legged seated figure in profile, upright, with one hand on the floor behind and one on the knee.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -736,7 +736,7 @@
         "top": "#5B7FA6",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure lying on the back with knees bent, feet flat and arms resting by the sides.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -756,7 +756,7 @@
         "top": "#C66D4E",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Seated figure in profile with one leg extended, the other knee raised and crossed over, one hand behind.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -776,7 +776,7 @@
         "top": "#D9AE48",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure facing forward bending to one side with the opposite arm reaching overhead.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -796,7 +796,7 @@
         "top": "#D8A8B5",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure lying on the back with arms wide and both bent knees lowered to one side.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -816,7 +816,7 @@
         "top": "#83A58D",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure in a high lunge in profile with the torso leaned over the front thigh and hands together at the chest.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -836,7 +836,7 @@
         "top": "#D8A8B5",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Kneeling figure in profile with hips high, one shoulder and the head resting on the floor and one arm reaching forward.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -856,7 +856,7 @@
         "top": "#D8A8B5",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure seated on a chair in profile, upright, with one hand on the chair back behind.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -876,7 +876,7 @@
         "top": "#5B7FA6",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure lying face down propped on the forearms with the chest lifted and one knee bent, foot in the air.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -896,7 +896,7 @@
         "top": "#D9AE48",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure facing forward in a wide stance bending sideways with one arm overhead and one hand on the leg.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -916,7 +916,7 @@
         "top": "#C66D4E",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Seated figure in profile, upright, with one bent leg in front and the other bent leg behind.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -936,7 +936,7 @@
         "top": "#83A58D",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Seated figure facing forward with soles together, knees open to the sides and hands at the feet.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -956,7 +956,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Seated figure facing forward with shins stacked one over the other and hands on the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -996,7 +996,7 @@
         "top": "#217E73",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure on forearms and wide knees in profile with the hips pushed back.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1036,7 +1036,7 @@
         "top": "#D9AE48",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure lying on the back with knees bent toward the chest, feet in the air and hands reaching to the feet.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1076,7 +1076,7 @@
         "top": "#217E73",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Seated figure in profile with one bent leg in front and one behind, torso folded forward over the front shin.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1136,7 +1136,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure in a low lunge in profile with the back knee on the floor, torso upright and hands on the front thigh.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1156,7 +1156,7 @@
         "top": "#83A58D",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure lying on the back with one ankle crossed over the opposite knee and the legs drawn toward the chest.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1196,7 +1196,7 @@
         "top": "#D9AE48",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure lying on the back with knees bent and open, feet together and arms resting by the sides.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1216,7 +1216,7 @@
         "top": "#C66D4E",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure lying face down with the head on the hands and the knees bent out, feet raised behind.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1236,7 +1236,7 @@
         "top": "#217E73",
         "bottom": "#2F3B45",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure seated on a chair in profile with one ankle across the opposite knee, leaning forward.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1276,7 +1276,7 @@
         "top": "#D8A8B5",
         "bottom": "#2F3B45",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure facing forward in a wide stance with one knee bent and the other leg straight out to the side.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1296,7 +1296,7 @@
         "top": "#83A58D",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure in a deep squat in profile with heels down, chest lifted and hands together in front.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1336,7 +1336,7 @@
         "top": "#217E73",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure lying on the back with knees open and the feet together in the air, held by the hands.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1376,7 +1376,7 @@
         "top": "#217E73",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure in profile folded forward at the hips with arms hanging toward the feet.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1396,7 +1396,7 @@
         "top": "#5B7FA6",
         "bottom": "#2F3B45",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure lying on the back holding behind one raised thigh with that knee partly straightened.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1416,7 +1416,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Seated figure in profile with one leg extended and the other folded in, torso folded over the straight leg.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1476,7 +1476,7 @@
         "top": "#83A58D",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Kneeling figure in profile with hips above the rear knee, front leg straight ahead and torso hinged over it.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1516,7 +1516,7 @@
         "top": "#D9AE48",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure seated on a chair in profile with one leg extended, heel on the floor, leaning forward.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1536,7 +1536,7 @@
         "top": "#83A58D",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure in profile with straight legs, folded forward with fingertips at the toes.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1576,7 +1576,7 @@
         "top": "#D8A8B5",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Half-kneeling figure in profile with the back foot lifted and held near the glute.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1596,7 +1596,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure lying on one side with the head on the lower arm and the top foot held behind near the glute.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1616,7 +1616,7 @@
         "top": "#217E73",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Seated figure in profile leaning back on the hands with one leg straight ahead and the other folded back beside the hip.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1636,7 +1636,7 @@
         "top": "#83A58D",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure kneeling with the feet beside the hips, reclined back onto the elbows.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1656,7 +1656,7 @@
         "top": "#5B7FA6",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure in profile balanced on one leg, holding the other foot behind near the glute.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1676,7 +1676,7 @@
         "top": "#5B7FA6",
         "bottom": "#2F3B45",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure in profile hinged forward over one straight front leg with the toes lifted.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1696,7 +1696,7 @@
         "top": "#D9AE48",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure in profile facing a wall with the front knee bent forward to touch it and hands on the wall.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1716,7 +1716,7 @@
         "top": "#83A58D",
         "bottom": "#2F3B45",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure in profile leaning with both hands on a wall, back leg straight with the heel down.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1736,7 +1736,7 @@
         "top": "#217E73",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure in profile in a split stance, leaning forward with hands on the front thigh and back heel down.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1756,7 +1756,7 @@
         "top": "#5B7FA6",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Standing figure in profile with one foot behind, toes pointed down so the top of the foot rests on the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1776,7 +1776,7 @@
         "top": "#5B7FA6",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure in profile with hands on a wall and both knees bent, back heel down.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1796,7 +1796,7 @@
         "top": "#83A58D",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Kneeling figure in profile sitting upright on the heels with hands on the thighs.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1816,7 +1816,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Kneeling figure in profile sitting on the heels with the toes tucked under.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1836,7 +1836,7 @@
         "top": "#D9AE48",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure seated on a chair in profile with one ankle across the opposite knee, hands at the foot.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1856,7 +1856,7 @@
         "top": "#5B7FA6",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Standing figure in profile close to a wall with the toes of the front foot propped up against it.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1876,7 +1876,7 @@
         "top": "#D9AE48",
         "bottom": "#2F3B45",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure lying on the belly holding both ankles with the chest and thighs lifted in a bow shape.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1916,7 +1916,7 @@
         "top": "#5B7FA6",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Kneeling figure in profile folded forward with hips on the heels and arms stretched along the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1936,7 +1936,7 @@
         "top": "#D8A8B5",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure in an inverted V in profile with hands and feet on the floor and hips high.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -1976,7 +1976,7 @@
         "top": "#C66D4E",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure lying on the back hugging both knees to the chest.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2016,7 +2016,7 @@
         "top": "#217E73",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure lying on the belly with the chest, arms and straight legs lifted off the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2036,7 +2036,7 @@
         "top": "#5B7FA6",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure on the shoulders with hips lifted and straight legs taken overhead, toes on the floor behind the head.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2056,7 +2056,7 @@
         "top": "#217E73",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure balanced on the shoulders with hands supporting the back and legs pointing straight up.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2096,7 +2096,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure in profile with straight arms, chest lifted and legs stretched behind just off the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2136,7 +2136,7 @@
         "top": "#C66D4E",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Seated figure in profile with knees raised mid-switch and both arms held out in front.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2156,7 +2156,7 @@
         "top": "#D8A8B5",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure in profile rising tall onto the knees from a 90/90 seat with arms forward.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2196,7 +2196,7 @@
         "top": "#D8A8B5",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Standing figure in profile with one foot lifted slightly forward off the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2216,7 +2216,7 @@
         "top": "#83A58D",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Standing figure facing forward with both arms extended out to the sides.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2236,7 +2236,7 @@
         "top": "#D9AE48",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Standing figure facing forward with arms swung across the chest, one over the other.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2276,7 +2276,7 @@
         "top": "#5B7FA6",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Standing figure in profile on one leg, pulling the other heel up behind with the opposite arm raised.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2316,7 +2316,7 @@
         "top": "#83A58D",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure facing forward in a wide stance folded halfway with hands reaching to the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2336,7 +2336,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Standing figure facing forward on one leg with the other knee lifted and opened out to the side.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2356,7 +2356,7 @@
         "top": "#83A58D",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Standing figure in profile hinged forward at the hips with a flat back and hands behind the head.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2376,7 +2376,7 @@
         "top": "#D9AE48",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure in profile hinged over a straight front leg with toes up and arms sweeping toward the foot.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2396,7 +2396,7 @@
         "top": "#D9AE48",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure in profile risen onto the balls of the feet with heels lifted.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2416,7 +2416,7 @@
         "top": "#D9AE48",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure in profile on one leg with the other knee lifted high and elbows bent in front.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2436,7 +2436,7 @@
         "top": "#D8A8B5",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure in profile running on the spot with one knee driven up to hip height and arms pumping.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2556,7 +2556,7 @@
         "top": "#83A58D",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure facing forward with weight shifted to one side and the feet tilted on their edges.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2576,7 +2576,7 @@
         "top": "#83A58D",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure facing forward on one leg with the other leg swung out to the side.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2596,7 +2596,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure facing forward in a wide stance with one knee bent, hips back and hands in front of the chest.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2636,7 +2636,7 @@
         "top": "#217E73",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure lying on the back holding one thigh with that lower leg raised in the air.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2656,7 +2656,7 @@
         "top": "#D9AE48",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure in a long lunge in profile with one hand on the floor and the other arm reaching straight up.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2676,7 +2676,7 @@
         "top": "#217E73",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure facing forward with arms relaxed and the shoulders lifted toward the ears.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2696,7 +2696,7 @@
         "top": "#83A58D",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure in profile on one leg with the other knee lifted to hip height in front.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2716,7 +2716,7 @@
         "top": "#83A58D",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure facing forward in a wide stance, bent over with one hand at the opposite foot and the other arm up.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2736,7 +2736,7 @@
         "top": "#C66D4E",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure facing forward with elbows bent and the torso turned to one side.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2836,7 +2836,7 @@
         "top": "#83A58D",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure in a pike in profile with hips high, elbows bent and head lowered near the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2856,7 +2856,7 @@
         "top": "#217E73",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure in a hand plank in profile with one arm reaching forward and the opposite leg lifted.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2896,7 +2896,7 @@
         "top": "#C66D4E",
         "bottom": "#2F3B45",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure in profile supported on hands on a chair seat behind, hips off the seat, elbows bent and knees bent.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2916,7 +2916,7 @@
         "top": "#C66D4E",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure in an inverted V in profile resting on the forearms and feet with hips high.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2936,7 +2936,7 @@
         "top": "#D9AE48",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure in profile holding a straight plank on the forearms and toes.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2956,7 +2956,7 @@
         "top": "#217E73",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure in an elbow plank in profile with one straight leg lifted to hip height.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2976,7 +2976,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure in a side plank resting on one forearm with the body in a straight sloping line.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -2996,7 +2996,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure in an elbow side plank with the top leg raised away from the lower leg.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3016,7 +3016,7 @@
         "top": "#83A58D",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure in profile holding a straight-arm plank on hands and toes.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3036,7 +3036,7 @@
         "top": "#217E73",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure in a straight-arm plank in profile with one straight leg lifted to hip height.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3056,7 +3056,7 @@
         "top": "#217E73",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure in a side plank on one straight arm with the other arm reaching up.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3076,7 +3076,7 @@
         "top": "#5B7FA6",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure in a straight-arm side plank with the top arm up and top leg raised, forming a star.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3096,7 +3096,7 @@
         "top": "#C66D4E",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure in profile hovering low above the floor on hands and toes with elbows bent close to the body.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3116,7 +3116,7 @@
         "top": "#217E73",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure in a tight inverted V in profile with straight arms, hips high above the shoulders.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3176,7 +3176,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure facing up in a reverse plank in profile with one straight leg raised.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3196,7 +3196,7 @@
         "top": "#217E73",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure in a plank in profile supported on one straight arm with the other arm held behind the back.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3216,7 +3216,7 @@
         "top": "#83A58D",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure low on hands and one foot in profile with the other knee drawn forward toward the elbow.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3236,7 +3236,7 @@
         "top": "#D8A8B5",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure upside down in profile on straight arms with the body vertical and toes touching a wall.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3276,7 +3276,7 @@
         "top": "#D9AE48",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure in profile leaning in a straight line with straight arms and hands on a wall.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3296,7 +3296,7 @@
         "top": "#5B7FA6",
         "bottom": "#2F3B45",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure lying on the belly with the chest lifted and arms stretched out to the sides.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3336,7 +3336,7 @@
         "top": "#5B7FA6",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure lying on the back with shoulders lifted, one knee drawn in and the other leg extended.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3356,7 +3356,7 @@
         "top": "#C66D4E",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure on one hand and one knee in profile with the other arm reaching forward and opposite leg stretched back.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3376,7 +3376,7 @@
         "top": "#5B7FA6",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure lying on the back with knees bent, feet flat and the hips lifted in a straight line to the shoulders.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3396,7 +3396,7 @@
         "top": "#217E73",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure in a bridge with hips lifted and one leg extended straight in line with the other thigh.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3456,7 +3456,7 @@
         "top": "#D8A8B5",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure lying on the back in a shallow curve with shoulders, arms and straight legs lifted off the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3476,7 +3476,7 @@
         "top": "#D9AE48",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure lying on the back with both straight legs raised at an angle off the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3496,7 +3496,7 @@
         "top": "#C66D4E",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure lying on one side with the head on the lower arm and the top leg raised.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3536,7 +3536,7 @@
         "top": "#83A58D",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure lying on the belly with both arms stretched forward and both legs lifted off the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3576,7 +3576,7 @@
         "top": "#D9AE48",
         "bottom": "#2F3B45",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Seated figure in profile balanced with torso leaning back and straight legs raised, forming a V.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3596,7 +3596,7 @@
         "top": "#5B7FA6",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure in profile risen high onto the balls of the feet.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3616,7 +3616,7 @@
         "top": "#D9AE48",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Standing figure facing forward in a curtsy with one leg crossed behind the other and both knees bent.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3636,7 +3636,7 @@
         "top": "#217E73",
         "bottom": "#5A4A63",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure in a deep long lunge in profile with the front knee far forward, back knee just off the floor and torso upright.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3656,7 +3656,7 @@
         "top": "#5B7FA6",
         "bottom": "#2F3B45",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Standing figure in profile in a half squat with feet together and arms reaching forward and up.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3676,7 +3676,7 @@
         "top": "#D8A8B5",
         "bottom": "#3A4E6B",
         "shorts": false,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Figure in profile in a deep one-leg squat with the other leg and both arms extended forward.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3696,7 +3696,7 @@
         "top": "#D9AE48",
         "bottom": "#4B5D52",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure facing forward low in a side lunge with one thigh level, the other leg straight and hands in front.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3716,7 +3716,7 @@
         "top": "#83A58D",
         "bottom": "#5A4A63",
         "shorts": false,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure in profile balanced on one leg, torso and other leg level, arms reaching down.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3736,7 +3736,7 @@
         "top": "#5B7FA6",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure in profile balanced on one leg with the other knee lifted to hip height and hands on hips.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3756,7 +3756,7 @@
         "top": "#5B7FA6",
         "bottom": "#2F3B45",
         "shorts": true,
-        "build": 1.2
+        "build": 1.15
       },
       "alt": "Figure in profile holding a lunge with both knees bent at right angles and hands on hips.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3796,7 +3796,7 @@
         "top": "#5B7FA6",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 1.1
+        "build": 1.07
       },
       "alt": "Standing figure in profile holding a squat with thighs level and arms straight forward.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3816,7 +3816,7 @@
         "top": "#C66D4E",
         "bottom": "#2F3B45",
         "shorts": false,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure facing forward in a wide squat with knees out over the toes and hands together at the chest.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3836,7 +3836,7 @@
         "top": "#C66D4E",
         "bottom": "#3A4E6B",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Standing figure in profile with heels down and the fronts of both feet lifted off the floor.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",
@@ -3856,7 +3856,7 @@
         "top": "#D8A8B5",
         "bottom": "#4B5D52",
         "shorts": true,
-        "build": 0.92
+        "build": 0.94
       },
       "alt": "Figure in profile sitting against a wall with thighs level, shins vertical and arms by the sides.",
       "provenance": "Original. Generated from the pose in src/mobility/data/poses.ts by src/mobility/art/Figure.tsx.",

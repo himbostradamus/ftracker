@@ -9,7 +9,7 @@ export const SCHEMA = 1;
 
 export const DEFAULT_SETTINGS: Settings = {
   appearance: 'system', textSize: 'normal', reduceMotion: 'system',
-  sounds: true, speakNames: false, speakSides: false, volume: 0.7,
+  sounds: true, speakNames: false, speakSides: false, volume: 0.7, countdownBeeps: 3,
   prepSec: 5, transitionSec: 5, switchSec: 4, pauseOnInfo: true, keepAwake: true,
   level: 'beginner', cautions: [], timezone: 'auto',
   scheduleDays: [0, 1, 2, 3, 4, 5, 6], dayThresholdMin: 2, showGauge: true,

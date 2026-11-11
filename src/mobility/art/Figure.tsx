@@ -6,7 +6,7 @@ import { Pose, Pt, solve, LEN } from './pose';
 // while every illustration keeps the same construction.
 
 export interface Variant {
-  skin: string; skinFar: string; hair: string; top: string; bottom: string;
+  skin: string; skinFar: string; hair: string; top: string; topFar: string; bottom: string;
   bottomFar: string; hairStyle: 'short' | 'bun' | 'tail'; shorts: boolean; build: number;
 }
 
@@ -15,7 +15,7 @@ const SKINS: [string, string][] = [
   ['#9A623F', '#855234'], ['#6E4530', '#5C3927'],
 ];
 const HAIRS = ['#2B2420', '#4A3327', '#7A4B2A', '#B9853F', '#8E8E89'];
-const TOPS = ['#217E73', '#C66D4E', '#D9AE48', '#83A58D', '#5B7FA6', '#D8A8B5'];
+const TOPS: [string, string][] = [['#217E73', '#1B6A61'], ['#C66D4E', '#AD5C40'], ['#D9AE48', '#C29A3C'], ['#83A58D', '#70907A'], ['#5B7FA6', '#4C6D91'], ['#D8A8B5', '#C2919F']];
 const BOTTOMS: [string, string][] = [
   ['#2F3B45', '#252F37'], ['#4B5D52', '#3D4C43'], ['#5A4A63', '#493C51'], ['#3A4E6B', '#2F4058'],
 ];
@@ -34,11 +34,11 @@ export function variantFor(seed: string): Variant {
   return {
     skin: skin[0], skinFar: skin[1],
     hair: HAIRS[(h >>> 3) % HAIRS.length],
-    top: TOPS[(h >>> 6) % TOPS.length],
+    top: TOPS[(h >>> 6) % TOPS.length][0], topFar: TOPS[(h >>> 6) % TOPS.length][1],
     bottom: bottom[0], bottomFar: bottom[1],
     hairStyle: (['short', 'bun', 'tail'] as const)[(h >>> 12) % 3],
     shorts: ((h >>> 15) & 1) === 1,
-    build: [0.92, 1, 1.1, 1.2][(h >>> 17) % 4],
+    build: [0.94, 1, 1.07, 1.15][(h >>> 17) % 4],
   };
 }
 
@@ -50,31 +50,54 @@ const unit = (a: Pt, b: Pt): Pt => {
   return { x: dx / l, y: dy / l };
 };
 
+// A limb segment that narrows from one joint to the next: two circles joined
+// by their outer edges.
+function Taper({ a, b, ra, rb, fill }: { a: Pt; b: Pt; ra: number; rb: number; fill: string }) {
+  const u = unit(a, b);
+  const n = { x: -u.y, y: u.x };
+  const d = `M${(a.x + n.x * ra).toFixed(1)} ${(a.y + n.y * ra).toFixed(1)} L${(b.x + n.x * rb).toFixed(1)} ${(b.y + n.y * rb).toFixed(1)} L${(b.x - n.x * rb).toFixed(1)} ${(b.y - n.y * rb).toFixed(1)} L${(a.x - n.x * ra).toFixed(1)} ${(a.y - n.y * ra).toFixed(1)}Z`;
+  return (
+    <g fill={fill}>
+      <path d={d} /><circle cx={a.x} cy={a.y} r={ra} /><circle cx={b.x} cy={b.y} r={rb} />
+    </g>
+  );
+}
+const between = (a: Pt, b: Pt, t: number): Pt => ({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
+
 function Leg({ pts, v, far }: { pts: Pt[]; v: Variant; far?: boolean }) {
   const cloth = far ? v.bottomFar : v.bottom;
   const skin = far ? v.skinFar : v.skin;
-  const w = 11.5 * v.build;
+  const k = v.build;
+  const [hip, knee, ankle, toe] = pts;
   return (
-    <g strokeLinecap="round" strokeLinejoin="round" fill="none">
+    <g>
       {v.shorts ? (
         <>
-          <path d={line(pts.slice(0, 3))} stroke={skin} strokeWidth={w * 0.86} />
-          <path d={line([pts[0], { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 }])} stroke={cloth} strokeWidth={w + 1} />
+          <Taper a={knee} b={ankle} ra={5 * k} rb={3.5 * k} fill={skin} />
+          <Taper a={hip} b={knee} ra={7.4 * k} rb={5.4 * k} fill={skin} />
+          <Taper a={hip} b={between(hip, knee, 0.5)} ra={8 * k} rb={7 * k} fill={cloth} />
         </>
       ) : (
-        <path d={line(pts.slice(0, 3))} stroke={cloth} strokeWidth={w} />
+        <>
+          <Taper a={knee} b={ankle} ra={5.2 * k} rb={3.7 * k} fill={cloth} />
+          <Taper a={hip} b={knee} ra={7.8 * k} rb={5.6 * k} fill={cloth} />
+        </>
       )}
-      <path d={line(pts.slice(2, 4))} stroke={skin} strokeWidth={6.5} />
+      <Taper a={ankle} b={toe} ra={3.9} rb={2.9} fill={skin} />
     </g>
   );
 }
 
 function Arm({ pts, v, far }: { pts: Pt[]; v: Variant; far?: boolean }) {
   const skin = far ? v.skinFar : v.skin;
+  const k = v.build;
+  const [sh, elbow, wrist, hand] = pts;
   return (
-    <g strokeLinecap="round" strokeLinejoin="round" fill="none">
-      <path d={line(pts.slice(0, 3))} stroke={skin} strokeWidth={7.5 * v.build} />
-      <path d={line(pts.slice(2, 4))} stroke={skin} strokeWidth={6.5} />
+    <g>
+      <Taper a={sh} b={elbow} ra={4.7 * k} rb={3.7 * k} fill={skin} />
+      <Taper a={sh} b={between(sh, elbow, 0.3)} ra={5.2 * k} rb={4.6 * k} fill={far ? v.topFar : v.top} />
+      <Taper a={elbow} b={wrist} ra={3.7 * k} rb={2.8} fill={skin} />
+      <Taper a={wrist} b={hand} ra={3} rb={3.3} fill={skin} />
     </g>
   );
 }
@@ -83,7 +106,7 @@ function Props({ names, s }: { names: string[]; s: ReturnType<typeof solve> }) {
   const out: React.ReactNode[] = [];
   const w = s.maxX - s.minX;
   for (const n of names) {
-    if (n === 'mat') out.push(<rect key={n} x={s.minX - 10} y={-1} width={w + 20} height={5} rx={2.5} fill="#B9CCBF" />);
+    if (n === 'mat') out.push(<rect key={n} x={s.minX - 10} y={-0.5} width={w + 20} height={4.5} rx={2.2} fill="#B9CCBF" />);
     if (n === 'wall') out.push(<rect key={n} x={s.maxX - 0.5} y={-176} width={9} height={178} rx={2} fill="#C9CDC6" />);
     if (n === 'wallL') out.push(<rect key={n} x={s.minX - 8.5} y={-176} width={9} height={178} rx={2} fill="#C9CDC6" />);
     if (n === 'door') out.push(<rect key={n} x={s.maxX - 1} y={-176} width={6} height={178} rx={2} fill="#B8A58A" />);
@@ -153,17 +176,26 @@ export function Figure({ pose, seed, size = 96, badge = true, title, className }
   const f: Pt = { x: -u.y * side, y: u.x * side };
   const hairC = { x: s.head.x - f.x * 3.2 + u.x * 2.6, y: s.head.y - f.y * 3.2 + u.y * 2.6 };
   const knot = { x: s.head.x - f.x * 11 + u.x * (profile ? 5 : 11), y: s.head.y - f.y * 11 + u.y * (profile ? 5 : 11) };
-  const tw = 19 * v.build;
-
-  const torso = (
-    <g strokeLinecap="round" strokeLinejoin="round" fill="none">
-      <path d={line([s.pelvis, s.mid, s.chest])} stroke={v.top} strokeWidth={s.front ? tw + 6 : tw} />
-      <path d={line([s.hipF, s.hipN])} stroke={v.bottom} strokeWidth={s.front ? 13 * v.build : tw} />
+  const k2 = v.build;
+  // Torso: wider at the chest than the waist; shoulders and hips only show
+  // their width when the figure faces the viewer.
+  const torso = s.front ? (
+    <g>
+      <Taper a={s.hipF} b={s.hipN} ra={8.2 * k2} rb={8.2 * k2} fill={v.bottom} />
+      <Taper a={between(s.pelvis, s.mid, 0.25)} b={s.mid} ra={11.5 * k2} rb={10.5 * k2} fill={v.top} />
+      <Taper a={s.mid} b={between(s.mid, s.chest, 0.8)} ra={10.5 * k2} rb={11.5 * k2} fill={v.top} />
+      <Taper a={s.shF} b={s.shN} ra={5.4 * k2} rb={5.4 * k2} fill={v.top} />
+    </g>
+  ) : (
+    <g>
+      <Taper a={s.pelvis} b={between(s.pelvis, s.mid, 0.3)} ra={8.6 * k2} rb={8.2 * k2} fill={v.bottom} />
+      <Taper a={between(s.pelvis, s.mid, 0.3)} b={s.mid} ra={8.2 * k2} rb={8 * k2} fill={v.top} />
+      <Taper a={s.mid} b={s.chest} ra={8 * k2} rb={9.2 * k2} fill={v.top} />
     </g>
   );
   const head = (
     <g>
-      <path d={line([s.chest, s.head])} stroke={v.skin} strokeWidth={7} strokeLinecap="round" />
+      <Taper a={s.chest} b={s.head} ra={3.6} rb={3.4} fill={v.skin} />
       {v.hairStyle !== 'short' && <circle cx={knot.x} cy={knot.y} r={v.hairStyle === 'bun' ? 4.6 : 3.6} fill={v.hair} />}
       {v.hairStyle === 'tail' && profile && (
         <path d={line([knot, { x: knot.x - f.x * 5 - u.x * 9, y: knot.y - f.y * 5 - u.y * 9 }])} stroke={v.hair} strokeWidth={5} strokeLinecap="round" />
@@ -183,6 +215,7 @@ export function Figure({ pose, seed, size = 96, badge = true, title, className }
       {badge && <circle cx="100" cy="100" r="100" fill={bgFor(seed)} />}
       <clipPath id={clipId}>{badge ? <circle cx="100" cy="100" r="100" /> : <rect width="200" height="200" />}</clipPath>
       <g clipPath={`url(#${clipId})`}><g transform={`translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${k.toFixed(3)})`}>
+        {!names.includes('mat') && <ellipse cx={(s.minX + s.maxX) / 2} cy={1.5} rx={Math.max(16, (s.maxX - s.minX) / 2)} ry={3} fill="#20211F" opacity={0.08} />}
         <Props names={names} s={s} />
         {s.front ? (
           <>

@@ -46,7 +46,7 @@ export function createSession(routine: Pick<Routine, 'id' | 'name' | 'items'>, t
 }
 
 // Consume `ms` of running time, moving through segments as they complete.
-function advance(s: PlayerState, ms: number, cues: Cue[] | null): PlayerState {
+function advance(s: PlayerState, ms: number, cues: Cue[] | null, countFrom = 3): PlayerState {
   let { idx, elapsedMs } = s;
   const workMs = [...s.workMs];
   const doneSegs = [...s.doneSegs];
@@ -56,11 +56,12 @@ function advance(s: PlayerState, ms: number, cues: Cue[] | null): PlayerState {
     const seg = s.segs[idx];
     const durMs = seg.dur * 1000;
     const use = Math.min(durMs - elapsedMs, left);
-    if (cues && seg.kind === 'work') {
-      // Countdown beeps for the final three seconds of an exercise.
+    if (cues && countFrom > 0) {
+      // Countdown beeps for the final seconds of every segment, so there is a
+      // warning both before a movement ends and before the next one begins.
       const before = Math.ceil((durMs - elapsedMs) / 1000);
       const after = Math.ceil((durMs - elapsedMs - use) / 1000);
-      for (let n = Math.min(before - 1, 3); n >= Math.max(after, 1); n--) cues.push({ type: 'count', n });
+      for (let n = Math.min(before - 1, countFrom); n >= Math.max(after, 1); n--) cues.push({ type: 'count', n });
     }
     if (seg.kind === 'work') workMs[seg.item] += use;
     elapsedMs += use;
@@ -75,7 +76,7 @@ function advance(s: PlayerState, ms: number, cues: Cue[] | null): PlayerState {
   return { ...s, idx, elapsedMs, workMs, doneSegs, finished, running: finished ? false : s.running };
 }
 
-export function tick(s: PlayerState, now: number): { state: PlayerState; cues: Cue[] } {
+export function tick(s: PlayerState, now: number, countFrom = 3): { state: PlayerState; cues: Cue[] } {
   if (!s.running || s.finished || s.interrupted) return { state: s, cues: [] };
   const dt = now - s.lastTick;
   if (dt <= 0) return { state: s, cues: [] };
@@ -85,7 +86,7 @@ export function tick(s: PlayerState, now: number): { state: PlayerState; cues: C
     return { state: { ...s, running: false, interrupted: { gapMs: dt }, lastTick: now }, cues: [] };
   }
   const cues: Cue[] = [];
-  const state = advance(s, dt, cues);
+  const state = advance(s, dt, cues, countFrom);
   return { state: { ...state, lastTick: now }, cues };
 }
 

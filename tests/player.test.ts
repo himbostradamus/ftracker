@@ -52,6 +52,19 @@ describe('session engine', () => {
     expect(s.workMs[0]).toBe(4000);
   });
 
+  it('warns before a movement begins as well as before it ends, for 3 or 5 seconds', () => {
+    const one = { id: null as any, name: 'x', items: [{ ex: 'forward-fold', dose: 10 }] };
+    const counts = (n: number) => {
+      let s = P.start(P.createSession(one, T, 0, 'a'), 0);
+      const out: string[] = [];
+      for (let t = 250; t <= 15000; t += 250) { const r = P.tick(s, t, n); s = r.state; for (const c of r.cues) out.push(c.type === 'count' ? String(c.n) : c.type === 'segment' ? '|' : 'end'); }
+      return out.join(' ');
+    };
+    expect(counts(3)).toBe('3 2 1 | 3 2 1 end');          // 5 s get-ready, then a 10 s hold
+    expect(counts(5)).toBe('4 3 2 1 | 5 4 3 2 1 end');    // the 5 s get-ready has only four whole seconds left to warn about
+    expect(counts(0)).toBe('| end');
+  });
+
   it('plays three countdown cues before each exercise ends', () => {
     let s = P.start(P.createSession({ id: null as any, name: 'x', items: [{ ex: 'forward-fold', dose: 10 }] }, { ...T, prepSec: 0 }, 0, 'a'), 0);
     const { cues } = run(s, 0, 10000);

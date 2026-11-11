@@ -6,8 +6,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const [base, out] = process.argv.slice(2);
-const port = 9333;
-const chrome = spawn('google-chrome', ['--headless=new', '--no-sandbox', '--disable-gpu', `--remote-debugging-port=${port}`, `--user-data-dir=${mkdtempSync(join(tmpdir(), 'shots-'))}`, 'about:blank'], { stdio: 'ignore' });
+const port = 9400 + Math.floor(Math.random() * 500);
+const chrome = spawn('google-chrome', ['--headless=new', '--no-sandbox', '--disable-gpu', `--remote-debugging-port=${port}`, `--user-data-dir=${mkdtempSync(join(tmpdir(), 'shots-'))}`, 'about:blank'], { stdio: 'ignore', detached: true });
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 let ws, id = 0; const pending = new Map(); const errors = [];
 async function connect() {
@@ -71,4 +71,4 @@ await size(320, 640); await go(); await shot('22-narrow');
 console.log('keys:', await ev('JSON.stringify(Object.keys(localStorage))'));
 console.log('history:', await ev(`JSON.stringify(JSON.parse(localStorage.getItem('mobility-v1')).history.map(h => [h.routineName, h.activeSec, h.completed, h.skipped, h.total]))`));
 console.log('errors:', errors.length ? errors : 'none');
-ws.close(); chrome.kill();
+ws.close(); try { process.kill(-chrome.pid); } catch { chrome.kill(); }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Pencil, Plus, Trash2 } from 'lucide-react';
 import { update, useMobility, uid } from '../lib/store';
-import { addDays, dateKeyInTz, formatDateKey, isDateKey, monthOf, resolveTz, weekdayOf } from '../lib/dates';
+import { addDays, dateKeyInTz, fmtActive, formatDateKey, isDateKey, monthOf, resolveTz, weekdayOf } from '../lib/dates';
 import { activeDays, breakdown, consistency, dayTotals, goalProgress, streaks, totals, WINDOW_DAYS } from '../lib/stats';
 import { allRoutines } from '../lib/routines';
 import { Btn, Empty, Field, Header, IconBtn, Nav, Section, Sheet, inputCls } from './common';
@@ -76,7 +76,7 @@ export function Progress({ nav }: { nav: Nav }) {
       {view === 'stats' && (
         <>
           <dl className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-5">
-            {[[t('Current streak'), t('{n} days', { n: streak.current })], [t('Longest streak'), t('{n} days', { n: streak.longest })], [t('Sessions'), String(tot.sessions)], [t('Active time'), t('{n} min', { n: Math.round(tot.activeSec / 60) })]].map(([k, v]) => (
+            {[[t('Current streak'), t('{n} days', { n: streak.current })], [t('Longest streak'), t('{n} days', { n: streak.longest })], [t('Sessions'), String(tot.sessions)], [t('Active time'), fmtActive(tot.activeSec)]].map(([k, v]) => (
               <div key={k} className="m-card p-3.5"><dt className="text-sm text-m-muted">{k}</dt><dd className="text-xl font-bold tabular-nums">{v}</dd></div>
             ))}
           </dl>
@@ -131,7 +131,7 @@ export function Progress({ nav }: { nav: Nav }) {
                   if (!d) return <span key={i} />;
                   const info = per.get(d);
                   const on = days.has(d);
-                  const label = `${formatDateKey(d, { day: 'numeric', month: 'long' })}: ${info ? t('{n} min active', { n: Math.round(info.activeSec / 60) }) + (info.manual ? `, ${t('includes a manual entry')}` : '') : t('no activity')}`;
+                  const label = `${formatDateKey(d, { day: 'numeric', month: 'long' })}: ${info ? t('{d} active', { d: fmtActive(info.activeSec) }) + (info.manual ? `, ${t('includes a manual entry')}` : '') : t('no activity')}`;
                   return (
                     <span key={d} title={label} aria-label={label} role="img"
                       className={`relative grid aspect-square place-items-center rounded-lg text-sm tabular-nums ${on ? 'bg-m-accent text-m-ink font-bold' : info ? 'bg-m-soft' : ''} ${d === today ? 'ring-2 ring-m-text' : ''} ${d > today ? 'text-m-muted opacity-50' : ''}`}>
@@ -177,7 +177,7 @@ export function Progress({ nav }: { nav: Nav }) {
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold">{h.routineName}</p>
                       <p className="text-sm text-m-muted">
-                        {formatDateKey(h.dateKey, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })} · {t('{n} min active', { n: Math.max(1, Math.round(h.activeSec / 60)) })}
+                        {formatDateKey(h.dateKey, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })} · {t('{d} active', { d: fmtActive(h.activeSec) })}
                         {h.source === 'session' ? ` · ${t('{c} of {n} movements', { c: h.completed, n: h.total })}` : ''}
                         {h.effort ? ` · ${t('effort {n}/5', { n: h.effort })}` : ''}
                       </p>

@@ -31,8 +31,8 @@ export interface Pose {
 export interface Pt { x: number; y: number }
 
 export const LEN = {
-  torso: 44, neck: 7, head: 10.5, upperArm: 23, foreArm: 21, hand: 6,
-  thigh: 31, shin: 30, foot: 10,
+  torso: 44, neck: 7, head: 10.5, upperArm: 23, foreArm: 21, hand: 5,
+  thigh: 31, shin: 30, foot: 11,
 };
 
 const rad = (d: number) => (d * Math.PI) / 180;

@@ -5,7 +5,7 @@ import { EXERCISES, EX, GROUP_LABELS } from '../data/catalog';
 import { FAMILY_LABELS, ROUTINES, SERIES } from '../data/routines';
 import { allRoutines, conflicts, findRoutine, timingOf } from '../lib/routines';
 import { routineAreas, routineEquipment, routineTotals } from '../lib/timeline';
-import { formatDateKey } from '../lib/dates';
+import { fmtActive, formatDateKey } from '../lib/dates';
 import { Art, Btn, Chip, Empty, Header, inputCls, Nav, RoutineRow, Section, Sheet } from './common';
 import { AREA_LABEL, CATEGORY_LABEL, DIFFICULTY_LABEL, EQUIPMENT_LABEL, POSITION_LABEL, t } from '../i18n';
 import { Area, Category, CatalogGroup, Difficulty, Equipment, Exercise, Position, Routine, RoutineFamily } from '../types';
@@ -187,7 +187,7 @@ export function Library({ nav }: { nav: Nav }) {
                 <li key={h.id} className="m-card flex items-center gap-3 p-3">
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold truncate">{h.routineName}</p>
-                    <p className="text-sm text-m-muted">{formatDateKey(h.dateKey)} · {t('{n} min active', { n: Math.round(h.activeSec / 60) })}{h.source === 'manual' ? ` · ${t('added by hand')}` : ''}</p>
+                    <p className="text-sm text-m-muted">{formatDateKey(h.dateKey)} · {t('{d} active', { d: fmtActive(h.activeSec) })}{h.source === 'manual' ? ` · ${t('added by hand')}` : ''}</p>
                   </div>
                   {r && <Btn kind="secondary" onClick={() => nav.push({ type: 'routine', id: r.id })}>{t('Open')}</Btn>}
                 </li>

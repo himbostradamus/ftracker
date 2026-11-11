@@ -3,8 +3,8 @@ import { spawn } from 'node:child_process';
 import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-const base = process.argv[2], port = 9334;
-const chrome = spawn('google-chrome', ['--headless=new', '--no-sandbox', '--disable-gpu', `--remote-debugging-port=${port}`, `--user-data-dir=${mkdtempSync(join(tmpdir(), 'off-'))}`, 'about:blank'], { stdio: 'ignore' });
+const base = process.argv[2], port = 9400 + Math.floor(Math.random() * 500);
+const chrome = spawn('google-chrome', ['--headless=new', '--no-sandbox', '--disable-gpu', `--remote-debugging-port=${port}`, `--user-data-dir=${mkdtempSync(join(tmpdir(), 'off-'))}`, 'about:blank'], { stdio: 'ignore', detached: true });
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 let ws, id = 0; const pending = new Map();
 for (let i = 0; i < 40 && !ws; i++) { try { const l = await (await fetch(`http://127.0.0.1:${port}/json`)).json(); ws = new WebSocket(l.find(t => t.type === 'page').webSocketDebuggerUrl); await new Promise((a, b) => { ws.onopen = a; ws.onerror = b; }); } catch { ws = null; await sleep(250); } }
@@ -24,4 +24,4 @@ console.log('offline stretching loads:', await ev(`document.body.innerText.inclu
 await ev(`[...document.querySelectorAll('button')].find(b => b.textContent.trim() === 'Library').click()`); await sleep(500);
 await ev(`[...document.querySelectorAll('button')].find(b => b.textContent.trim() === 'Exercises').click()`); await sleep(500);
 console.log('offline illustrations:', await ev(`document.querySelectorAll('svg[role=img]').length`));
-ws.close(); chrome.kill();
+ws.close(); try { process.kill(-chrome.pid); } catch { chrome.kill(); }

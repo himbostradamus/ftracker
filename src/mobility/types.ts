@@ -142,6 +142,7 @@ export interface Settings {
   speakNames: boolean;
   speakSides: boolean;
   volume: number;        // 0..1
+  countdownBeeps: number; // warning beeps before each change: 0, 3 or 5
   prepSec: number;
   transitionSec: number;
   switchSec: number;

@@ -15,8 +15,11 @@ const SIDE_TEXT: Record<string, string> = { left: 'Left side', right: 'Right sid
 export function Player({ session, setSession, onClose }: { session: P.PlayerState; setSession: (s: P.PlayerState | null) => void; onClose: () => void }) {
   const st = useMobility();
   const set = st.settings;
+  // `ref` is the live clock state. It runs ahead of the `session` prop between
+  // structural changes, so it is only replaced when the prop itself changes.
   const ref = useRef(session);
-  ref.current = session;
+  const seenProp = useRef(session);
+  if (seenProp.current !== session) { seenProp.current = session; ref.current = session; }
   const settingsRef = useRef(set);
   settingsRef.current = set;
   const [, force] = useState(0);
@@ -60,7 +63,7 @@ export function Player({ session, setSession, onClose }: { session: P.PlayerStat
     const step = () => {
       const cur = ref.current;
       if (!cur.running) return;
-      const { state, cues } = P.tick(cur, Date.now());
+      const { state, cues } = P.tick(cur, Date.now(), settingsRef.current.countdownBeeps);
       const structural = state.idx !== cur.idx || state.finished !== cur.finished || !!state.interrupted !== !!cur.interrupted;
       ref.current = state;
       if (structural) commit(state);
@@ -186,7 +189,7 @@ export function Player({ session, setSession, onClose }: { session: P.PlayerStat
 
       {sound && (
         <Sheet title={t('Sound and screen')} onClose={() => setSound(false)}>
-          <Toggle label={t('Sound cues')} hint={t('Beeps for the last three seconds and at each change')} checked={set.sounds} onChange={v => { unlockAudio(); updateSettings({ sounds: v }); }} />
+          <Toggle label={t('Sound cues')} hint={t('A beep for each of the last seconds before every change')} checked={set.sounds} onChange={v => { unlockAudio(); updateSettings({ sounds: v }); }} />
           <Toggle label={t('Speak exercise names')} checked={set.speakNames} onChange={v => updateSettings({ speakNames: v })} />
           <Toggle label={t('Speak side changes')} checked={set.speakSides} onChange={v => updateSettings({ speakSides: v })} />
           {!speechSupported() && <p className="text-sm text-m-muted">{t('This browser has no speech synthesis, so spoken prompts are unavailable.')}</p>}

@@ -65,6 +65,12 @@ export function fmtDuration(sec: number): string {
   return `${m}:${String(r).padStart(2, '0')}`;
 }
 
+// Active time for history and stats: seconds under a minute, so a very
+// short session is not rounded up to something it was not.
+export function fmtActive(sec: number): string {
+  return sec < 60 ? `${Math.round(sec)} sec` : `${Math.round(sec / 60)} min`;
+}
+
 export function fmtMinutes(sec: number): string {
   if (sec < 90) return `${Math.max(1, Math.round(sec / 60))} min`;
   return `${Math.round(sec / 60)} min`;
