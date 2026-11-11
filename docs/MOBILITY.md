@@ -53,13 +53,14 @@ Not done, or not verified:
       install, notifications and behaviour when the phone locks are implemented against the
       web standards but unverified on the target device.
 - [ ] **Demonstration videos: none.** Every entry is marked "no video". Illustrations and written steps are the reference.
-- [ ] **Illustration review.** All 193 figures are generated: joint angles in
-      `src/mobility/data/poses.ts`, drawn by `src/mobility/art/body.ts` (contoured limbs, shaped
-      torso, feet with heel and sole, head with jaw and hair, a soft edge around each body part).
-      Reviewed on contact sheets, not one by one. Still weak: the front-view wide-leg movements,
-      twists (a flat view only hints at rotation), and hands. Hand-drawn SVG per pose remains the
-      fallback if the generated figure is not good enough. Edit a pose with `scripts/poses.py` or
-      in the data file, check it with `scripts/view.sh <ids> out.png`, then `npm run art:export`.
+- [ ] **Illustration review.** All 193 figures are generated: each pose is composed individually in
+      `src/mobility/data/poses.ts` (joint angles, hands and feet placed on a body point or the floor,
+      its own layer order, movement arrows) and drawn by `src/mobility/art/body.ts`. Every group has
+      been gone through on contact sheets. Still weak: standing forward folds (head and arms
+      overlap), twists (a flat view only hints at rotation), the front-view wide-leg movements, and
+      hands. Externally generated images or hand-drawn SVG remain the fallback. Edit a pose with
+      `scripts/poses.py`, add arrows with `scripts/arrows.py`, check with
+      `scripts/view.sh <ids> out.png`, then `npm run art:export`.
 - [ ] **Exercise text has not been checked against outside sources.** It was written from general
       knowledge. Treat it as ordinary exercise guidance, not medical advice.
 - [ ] Screen-reader pass with VoiceOver. Labels, roles and live regions are in place but untested with a real reader.
