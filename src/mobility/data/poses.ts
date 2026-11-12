@@ -30,7 +30,7 @@ export const POSES: Record<string, Pose> = {
   'eagle-arm': { t: -90, aN: [-8, -90], aF: [-2, -86], lN: [90, 90], props: NONE },
   'one-arm-hug': { v: 'front', t: -90, aN: { to: 'shF', off: [-4, 0], bend: -1 }, aF: { to: 'elbowN', off: [0, 2], bend: 1 }, lN: [86, 90], props: NONE },
   'overhead-reach': { t: -90, aN: [-88, -92], lN: [90, 90], props: NONE },
-  'overhead-tricep': { v: 'front', t: -90, aN: [-76, 140], aF: { to: 'elbowN', off: [-2, 2], bend: -1 }, lN: [86, 90], fs: { aN: [1, 0.7] }, order: ['lF', 'lN', 'torso', 'aN', 'head', 'aF'], props: NONE },
+  'overhead-tricep': { v: 'front', t: -90, aN: [-76, 140], aF: { to: 'elbowN', off: [-2, 2], bend: 1 }, lN: [86, 90], fs: { aN: [1, 0.7] }, order: ['lF', 'lN', 'torso', 'aN', 'aF', 'head'], props: NONE },
   'puppy-pose': { t: [24, 30], h: 14, aN: { to: 'floor', off: [42, 0], bend: -1 }, lN: [90, 180] },
   'reverse-prayer-pose': { t: -90, aN: [122, -118], lN: [90, 90], props: NONE },
   'reverse-shoulder': { t: -112, h: -100, aN: { to: 'floor', off: [-24, 0], bend: -1, end: 180 }, lN: [-42, 68, 0], lF: [-36, 64, 0] },
