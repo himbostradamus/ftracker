@@ -62,10 +62,10 @@ function ArrowMark({ pts, both, k }: { pts: Pt[]; both: boolean; k: number }) {
   const head = (tip: Pt, from: Pt) => {
     const dx = tip.x - from.x, dy = tip.y - from.y, l = Math.hypot(dx, dy) || 1;
     const ux = dx / l, uy = dy / l;
-    return `M${(tip.x - (ux * 7.5 + uy * 4.6) * z).toFixed(1)} ${(tip.y - (uy * 7.5 - ux * 4.6) * z).toFixed(1)}L${tip.x.toFixed(1)} ${tip.y.toFixed(1)}L${(tip.x - (ux * 7.5 - uy * 4.6) * z).toFixed(1)} ${(tip.y - (uy * 7.5 + ux * 4.6) * z).toFixed(1)}`;
+    return `M${(tip.x - (ux * 5.8 + uy * 3.8) * z).toFixed(1)} ${(tip.y - (uy * 5.8 - ux * 3.8) * z).toFixed(1)}L${tip.x.toFixed(1)} ${tip.y.toFixed(1)}L${(tip.x - (ux * 5.8 - uy * 3.8) * z).toFixed(1)} ${(tip.y - (uy * 5.8 + ux * 3.8) * z).toFixed(1)}`;
   };
   return (
-    <g fill="none" stroke="#1F6F66" strokeWidth={3 * z} strokeLinecap="round" strokeLinejoin="round">
+    <g fill="none" stroke="#1F6F66" strokeWidth={2.6 * z} strokeLinecap="round" strokeLinejoin="round">
       <path d={`M${a.x.toFixed(1)} ${a.y.toFixed(1)}Q${c.x.toFixed(1)} ${c.y.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`} />
       <path d={head(b, c)} />
       {both && <path d={head(a, c)} />}

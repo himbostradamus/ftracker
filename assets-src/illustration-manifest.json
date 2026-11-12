@@ -587,7 +587,7 @@
       "name": "Wall Pecs",
       "file": "illustrations/wall-pecs.svg",
       "status": "drawn",
-      "view": "side",
+      "view": "front",
       "crop": "full",
       "variant": {
         "skin": "#E0A97E",

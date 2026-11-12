@@ -86,7 +86,7 @@ function limb(origin: Pt, l: Limb, a: number, b: number, c: number, defEnd: numb
 
 // Two-segment reach: place the middle joint so the limb ends at the target
 // (or points straight at it when it is out of range).
-function reachLimb(origin: Pt, target: Pt, a: number, b: number, c: number, bend: number, end?: number): Pt[] {
+function reachLimb(origin: Pt, target: Pt, a: number, b: number, c: number, bend: number, end?: number, flat = false): Pt[] {
   const dx = target.x - origin.x, dy = target.y - origin.y;
   const d = Math.min(a + b - 0.05, Math.max(Math.abs(a - b) + 0.05, Math.hypot(dx, dy)));
   const base = Math.atan2(dy, dx);
@@ -94,7 +94,8 @@ function reachLimb(origin: Pt, target: Pt, a: number, b: number, c: number, bend
   const mid = { x: origin.x + Math.cos(base + bend * inner) * a, y: origin.y + Math.sin(base + bend * inner) * a };
   const tip = { x: origin.x + Math.cos(base) * d, y: origin.y + Math.sin(base) * d };
   const fore = Math.atan2(tip.y - mid.y, tip.x - mid.x);
-  const dir = end === undefined ? fore : rad(end);
+  // A hand or foot resting on the floor lies flat along it.
+  const dir = end !== undefined ? rad(end) : flat ? (Math.cos(fore) >= 0 ? 0 : Math.PI) : fore;
   return [origin, mid, tip, { x: tip.x + Math.cos(dir) * c, y: tip.y + Math.sin(dir) * c }];
 }
 
@@ -178,7 +179,7 @@ export function solve(pose: Pose): Solved {
   floorY = Math.max(pelvis.y + 8.5, ...[...legN, ...legF].map((p, i) => p.y + (i % 4 === 0 ? 8 : i % 4 === 3 ? 3.4 : 5)));
   const arm = (sh: Pt, l: LimbSpec, f?: [number, number]): Pt[] =>
     isReach(l)
-      ? reachLimb(sh, target(l, sh), LEN.upperArm * (f?.[0] ?? 1), LEN.foreArm * (f?.[1] ?? 1), LEN.hand, l.bend ?? 1, l.end)
+      ? reachLimb(sh, target(l, sh), LEN.upperArm * (f?.[0] ?? 1), LEN.foreArm * (f?.[1] ?? 1), LEN.hand, l.bend ?? 1, l.end, l.to === 'floor')
       : limb(sh, l, LEN.upperArm, LEN.foreArm, LEN.hand, l[1], f);
   let armN = arm(shN, aN, pose.fs?.aN);
   Object.assign(named, { elbowN: armN[1], handN: armN[2] });
@@ -209,9 +210,10 @@ export function solve(pose: Pose): Solved {
   for (const k of ['armN', 'armF'] as const) (all[k] as Pt[]).forEach(p => add(p, 4));
   for (const k of ['legN', 'legF'] as const) (all[k] as Pt[]).forEach((p, i) => add(p, i === 3 ? 3.5 : 5.5));
   add(all.pelvis as Pt, 9); add(all.chest as Pt, 9); add(all.head as Pt, LEN.head);
-  (all.arrowFlat as Pt[]).forEach(p => add(p, 5));
 
   const maxY = Math.max(...pts.map(q => q.p.y + q.r));
+  // Arrows widen the frame but never move the ground.
+  (all.arrowFlat as Pt[]).forEach(p => add(p, 5));
   const minY0 = Math.min(...pts.map(q => q.p.y - q.r));
   const minX0 = Math.min(...pts.map(q => q.p.x - q.r));
   const maxX0 = Math.max(...pts.map(q => q.p.x + q.r));
