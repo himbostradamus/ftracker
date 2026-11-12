@@ -267,7 +267,7 @@
       "name": "Cow Face",
       "file": "illustrations/cow-face.svg",
       "status": "drawn",
-      "view": "side",
+      "view": "front",
       "crop": "full",
       "variant": {
         "skin": "#9A623F",
