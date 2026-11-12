@@ -103,7 +103,7 @@ export function validateBackup(parsed: unknown): BackupCheck {
   }
   if (badRecords) warnings.push(`${badRecords} damaged or duplicate history entr${badRecords === 1 ? 'y was' : 'ies were'} left out.`);
 
-  // Keep references intact: favourites and reminders may only point at
+  // Keep references intact: favorites and reminders may only point at
   // routines and exercises that exist after the import.
   const known = (id: string) => !!ROUTINE_BY_ID[id] || routines.some(r => r.id === id);
   const state: MobilityState = {
@@ -125,7 +125,7 @@ export function exportRoutineFile(r: Routine) {
 export function validateRoutineFile(parsed: unknown): { ok: boolean; error?: string; routine?: Routine; dropped?: string[] } {
   if (!isObj(parsed) || parsed.type !== ROUTINE_FILE || !isObj(parsed.routine)) return { ok: false, error: 'This is not a routine file.' };
   const { routine, dropped } = cleanRoutine({ ...parsed.routine, id: `custom-${uid()}` });
-  if (!routine) return { ok: false, error: 'The routine has no movements this app recognises.', dropped };
+  if (!routine) return { ok: false, error: 'The routine has no movements this app recognizes.', dropped };
   return { ok: true, routine, dropped };
 }
 

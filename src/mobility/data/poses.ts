@@ -11,13 +11,13 @@ export const POSES: Record<string, Pose> = {
   // ── Neck (bust crops) ────────────────────────────────────────────────
   'chin-retractions': { t: -90, h: -100, aN: [94, 86], lN: [90, 90], props: NONE, zoom: 2.5, arrows: [{ at: 'head', off: [24, 4], dir: 180, len: 9 }] },
   'ear-to-shoulder': { v: 'front', t: -90, h: -58, aN: [-62, -172], aF: [98, 94], lN: [90, 90], fs: { aN: [1, 0.8] }, props: NONE, zoom: 2.5 },
-  'neck-extension': { t: -90, h: -130, aN: [94, 86], lN: [90, 90], props: NONE, zoom: 2.5 },
-  'neck-flex': { t: -90, h: -36, aN: { to: 'head', off: [-9, -2], bend: -1 }, lN: [90, 90], props: NONE, zoom: 2.5 },
+  'neck-extension': { t: -90, h: -138, aN: [84, -98], lN: [90, 90], fs: { aN: [1, 0.72] }, props: NONE, zoom: 2.5, arrows: [{ at: 'chest', off: [16, -22], dir: -120, len: 16, bend: -5 }] },
+  'neck-flex': { t: -90, h: -36, aN: [-42, -168], lN: [90, 90], fs: { aN: [1, 0.78] }, props: NONE, zoom: 2.5 },
   'neck-flexion': { t: -90, h: -50, aN: [94, 86], lN: [90, 90], props: NONE, zoom: 2.5, arrows: [{ at: 'head', off: [17, -8], dir: 100, len: 13, bend: -3, both: true }] },
   'neck-laterals': { v: 'front', t: -90, h: -66, aN: [94, 90], lN: [90, 90], props: NONE, zoom: 2.5, arrows: [{ at: 'chest', off: [-9, -36], dir: 0, len: 18, bend: -5, both: true }] },
-  'neck-roll': { v: 'front', t: -90, h: -118, look: -1, aN: [94, 90], lN: [90, 90], props: NONE, zoom: 2.5, arrows: [{ at: 'chest', off: [-13, -1], dir: 0, len: 26, bend: -7, both: true }] },
+  'neck-roll': { v: 'front', t: -90, h: -118, look: -1, aN: [94, 90], lN: [90, 90], props: NONE, zoom: 2.5, arrows: [{ at: 'chest', off: [-13, -7], dir: 0, len: 26, bend: 7, both: true }] },
   'neck-rotation': { v: 'front', t: -90, h: -90, look: 1, aN: [94, 90], lN: [90, 90], props: NONE, zoom: 2.5 },
-  'scalene-stretch': { v: 'front', t: -90, h: -120, aN: [84, -118], aF: [70, -8], lN: [90, 90], fs: { aN: [1, 0.7], aF: [1, 0.9] }, props: NONE, zoom: 2.5 },
+  'scalene-stretch': { v: 'front', t: -90, h: -116, aN: [96, -84], aF: { to: [9, -49], bend: 1 }, lN: [90, 90], fs: { aN: [1, 0.85] }, props: NONE, zoom: 2.5 },
   'scapula-stretch': { v: 'front', t: -90, h: -56, look: 1, aN: [-66, -176], aF: [96, 92], lN: [90, 90], fs: { aN: [1, 0.75] }, props: NONE, zoom: 2.5 },
 
   // ── Shoulders, chest and arms ────────────────────────────────────────
@@ -50,7 +50,7 @@ export const POSES: Record<string, Pose> = {
   // ── Spine, trunk and rotation ────────────────────────────────────────
   'cat-cow': { t: [-28, 26], h: 62, aN: [90, 90], lN: [90, 180], arrows: [{ at: [22, -28], dir: -90, len: 20, both: true }] },
   'figure-four-twist': { t: 180, h: 180, aN: [-90, -90], aF: [0, 0], lN: [-70, 36], lF: [-40, 70, 0], fs: { aN: [0.45, 0.45], lN: [0.75, 0.7] } },
-  'modified-seated-twist': { v: 'front', t: -90, look: 1, aN: { to: 'floor', off: [14, 0], bend: 1 }, aF: { to: 'kneeN', off: [-6, -4], bend: 1 }, lN: [18, 162], fs: { lN: [0.85, 0.85] } },
+  'modified-seated-twist': { v: 'front', t: -90, look: 1, aN: { to: 'floor', off: [14, 0], bend: 1 }, aF: { to: 'kneeN', off: [-6, -6], bend: 1 }, lN: [5, 174, 180], fs: { lN: [0.85, 0.85] } },
   'pelvic-tilt-press': { t: 180, h: 180, aN: [0, 0], lN: [-55, 60, 0], lF: [-48, 62, 0], arrows: [{ at: 'pelvis', off: [-6, -30], dir: 90, len: 18 }] },
   'seated-twist': { t: -90, aN: { to: 'floor', off: [-22, 0], bend: 1 }, aF: { to: 'kneeN', off: [5, 5], bend: -1 }, lN: [-48, 78, 0], lF: [0, 0] },
   'side-bend': { v: 'front', t: [-90, -68], aF: [-72, -48], aN: { to: 'hipN', off: [5, -3], bend: 1 }, lN: [86, 90], props: NONE },
@@ -62,9 +62,9 @@ export const POSES: Record<string, Pose> = {
   'wide-leg-side-bend': { v: 'front', t: [-90, -52], aF: [-66, -36], aN: { to: 'kneeN', off: [0, -4], bend: 1 }, lN: [64, 68], props: NONE },
 
   // ── Hips, glutes, groin and splits ───────────────────────────────────
-  'ninety-ninety': { v: 'front', t: -90, aN: { to: 'floor', off: [12, 0], bend: 1 }, aF: { to: 'floor', off: [-12, 0], bend: -1 }, lN: [50, 178], lF: [176, -95], fs: { lN: [0.55, 1], lF: [1, 0.45] } },
-  'butterfly': { v: 'front', t: -90, aN: { to: 'ankleN', off: [0, -4], bend: 1 }, lN: [14, 166] },
-  'double-pigeon': { v: 'front', t: -90, aN: { to: 'floor', off: [14, 0], bend: 1 }, aF: { to: 'floor', off: [-14, 0], bend: -1 }, lN: [10, 176], lF: [168, 2] },
+  'ninety-ninety': { v: 'front', t: -90, aN: { to: 'floor', off: [12, 0], bend: 1 }, aF: { to: 'floor', off: [-12, 0], bend: -1 }, lN: [30, 178, 180], lF: [176, -95], fs: { lN: [0.5, 1], lF: [1, 0.45] } },
+  'butterfly': { v: 'front', t: -90, aN: { to: 'ankleN', off: [0, -5], bend: 1 }, lN: [5, 174, 180] },
+  'double-pigeon': { v: 'front', t: -90, aN: { to: 'floor', off: [14, 0], bend: 1 }, aF: { to: 'floor', off: [-14, 0], bend: -1 }, lN: [4, 178, 180], lF: [176, 2, 0] },
   'folded-butterfly': { t: [-58, -18], h: -4, aN: { to: 'ankleN', off: [0, -2], bend: -1 }, lN: [-8, 166], fs: { lN: [0.85, 0.6] } },
   'frog-pose': { t: [-6, 6], h: 8, aN: [84, 0], lN: [70, 176], fs: { lN: [0.55, 1], aN: [0.9, 1] } },
   'front-split': { t: -90, aN: { to: 'floor', off: [10, 0], bend: -1 }, aF: { to: 'floor', off: [-8, 0], bend: 1 }, lN: [0, 0], lF: [180, 180] },
@@ -77,9 +77,9 @@ export const POSES: Record<string, Pose> = {
   'lying-figure-four': { t: 180, h: 180, aN: { to: 'kneeF', off: [-4, 6], bend: 1 }, lF: [-112, -8], lN: [-84, -172], fs: { lN: [1, 0.5] } },
   'pigeon': { t: -80, aN: { to: 'floor', off: [14, 0], bend: -1 }, lN: [12, 172], lF: [180, 180] },
   'reclined-butterfly': { t: 180, h: 180, aN: [8, -4], lN: [-38, 142], fs: { lN: [1, 0.9] } },
-  'reverse-butterfly': { t: 0, h: 0, aN: { to: 'head', off: [8, 7], bend: 1 }, lN: [174, -66], lF: [176, -80], fs: { lN: [0.6, 0.9], lF: [0.6, 0.9] } },
+  'reverse-butterfly': { t: 0, h: 0, aN: [-8, 176], lN: [174, -66], lF: [176, -80], fs: { lN: [0.6, 0.9], lF: [0.6, 0.9], aN: [0.85, 0.7] } },
   'seated-figure-four': { t: -64, h: -70, aN: { to: 'kneeN', off: [0, -6], bend: 1 }, lF: [0, 90], lN: [-12, 176], fs: { lN: [1, 0.5] }, props: ['stool'] },
-  'seated-straddle': { v: 'front', t: -90, aN: { to: 'floor', off: [-7, 0], bend: 1 }, lN: [22, 22, -90] },
+  'seated-straddle': { v: 'front', t: -90, aN: { to: 'floor', off: [-7, 0], bend: 1 }, lN: [7, 7, -90] },
   'side-lunge': { v: 'front', t: -90, aN: { to: 'kneeN', off: [-4, -7], bend: 1 }, aF: { to: 'kneeN', off: [-11, -9], bend: 1 }, lN: [48, 100], lF: [140, 140] },
   'squat-stretch': { t: -74, aN: { to: 'kneeN', off: [-8, -2], bend: 1, end: -80 }, lN: [-36, 106, 0], props: NONE },
   'standing-frog': { v: 'front', t: -90, aN: { to: 'kneeN', off: [-7, -9], bend: 1 }, lN: [34, 100] },

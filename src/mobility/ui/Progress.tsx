@@ -86,7 +86,7 @@ export function Progress({ nav }: { nav: Nav }) {
           </p>
           {canRepair && (
             <div className="m-card p-4 mb-5 flex items-center gap-3">
-              <p className="flex-1 text-sm">{t('Yesterday has no session. If you did stretch, you can add it by hand to rejoin your streak. It will be labelled as a manual entry.')}</p>
+              <p className="flex-1 text-sm">{t('Yesterday has no session. If you did stretch, you can add it by hand to rejoin your streak. It will be labeled as a manual entry.')}</p>
               <Btn kind="secondary" onClick={repair}>{t('Add yesterday')}</Btn>
             </div>
           )}
@@ -100,7 +100,7 @@ export function Progress({ nav }: { nav: Nav }) {
                   <p className="text-m-muted">
                     {t('Share of your scheduled practice days, over the last {n} days, that reached {m} min of active time.', { n: WINDOW_DAYS, m: set.dayThresholdMin })}{' '}
                     {cons.partial ? t('Only the {n} days since you started are counted.', { n: cons.windowDays }) : ''}{' '}
-                    {t('Today counts once it is done. This measures how regularly you practise, not flexibility.')}
+                    {t('Today counts once it is done. This measures how regularly you practice, not flexibility.')}
                   </p>
                 </div>
               </div>
@@ -224,7 +224,7 @@ function EntryEditor({ entry, today, tz, onClose, nav }: { entry: SessionRecord 
   };
   return (
     <Sheet title={entry ? t('Edit entry') : t('Add a session by hand')} onClose={onClose}>
-      {!entry && <p className="text-sm text-m-muted mb-3">{t('Manual entries count toward streaks and totals and are always labelled as manual.')}</p>}
+      {!entry && <p className="text-sm text-m-muted mb-3">{t('Manual entries count toward streaks and totals and are always labeled as manual.')}</p>}
       {entry?.source === 'session' && <p className="text-sm text-m-muted mb-3">{t('Changing the date or duration marks this entry as edited.')}</p>}
       <Field label={t('Date')}><input type="date" className={inputCls} value={date} max={today} onChange={e => setDate(e.target.value)} /></Field>
       <Field label={t('Active minutes')}><input type="number" inputMode="numeric" min={1} max={600} className={inputCls} value={min} onChange={e => setMin(e.target.value)} /></Field>

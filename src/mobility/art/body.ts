@@ -114,18 +114,19 @@ export function buildBody(s: Solved, c: BodyColors, side: number, bodySide: numb
   if (front) {
     const a0 = perp(u0), a1 = perp(u1), am = perp(um);
     const waist = lerp(s.pelvis, s.mid, 0.42);
+    // Facing the viewer: a plain tapered trunk. The shoulders end where the
+    // sleeves begin, so the arms do not sprout from wings.
     torso.push(blob([
-      add(s.pelvis, a0, -11 * k), add(s.mid, am, -9.6 * k), add2(s.chest, a1, -12.2 * k, u1, -3),
-      add2(s.chest, a1, -16.4 * k, u1, 2.5), add2(s.chest, a1, -6 * k, u1, 7),
-      add2(s.chest, a1, 6 * k, u1, 7), add2(s.chest, a1, 16.4 * k, u1, 2.5),
-      add2(s.chest, a1, 12.2 * k, u1, -3), add(s.mid, am, 9.6 * k), add(s.pelvis, a0, 11 * k),
-      add(s.pelvis, u0, -5),
+      add(s.pelvis, a0, -10.4 * k), add(s.mid, am, -9.4 * k), add2(s.chest, a1, -11.8 * k, u1, -5),
+      add2(s.chest, a1, -13.4 * k, u1, 2), add2(s.chest, a1, -8 * k, u1, 5.6),
+      add2(s.chest, a1, 8 * k, u1, 5.6), add2(s.chest, a1, 13.4 * k, u1, 2),
+      add2(s.chest, a1, 11.8 * k, u1, -5), add(s.mid, am, 9.4 * k), add(s.pelvis, a0, 10.4 * k),
+      add(s.pelvis, u0, -4),
     ], c.top));
     torso.push(blob([
-      add(s.pelvis, a0, -11.3 * k), add(waist, a0, -10.2 * k), add(waist, a0, 10.2 * k), add(s.pelvis, a0, 11.3 * k),
-      add2(s.pelvis, u0, -8.5, a0, 6), add2(s.pelvis, u0, -8.5, a0, -6),
+      add2(s.pelvis, a0, -10.8 * k, u0, 1), add(waist, a0, -9.9 * k), add(waist, a0, 9.9 * k), add2(s.pelvis, a0, 10.8 * k, u0, 1),
+      add2(s.pelvis, u0, -6.5, a0, 7.5), add2(s.pelvis, u0, -5, a0, 0), add2(s.pelvis, u0, -6.5, a0, -7.5),
     ], c.bottom));
-    torso.push(circle(add(s.chest, u1, 7.2), 5.2, c.skin));
   } else {
     const fr = (u: Pt): Pt => ({ x: -u.y * bodySide, y: u.x * bodySide });
     const f0 = fr(u0), f1 = fr(u1), fm = fr(um);

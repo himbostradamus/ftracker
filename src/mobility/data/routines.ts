@@ -60,7 +60,7 @@ export const ROUTINES: Routine[] = [
     'neck-laterals shoulder-rolls arm-swings:20 cactus-arms chest-opener side-bend:20 trunk-twist:20 wall-dog standing-quad:25 single-leg-calf-stretch:25 forward-fold air-squats:10', 'midday'),
   R('neck-shoulder-reset', 'Neck and Shoulder Reset', 'work', 'beg', 'Three minutes for screen-tight neck and shoulders.',
     'shoulder-rolls:20 chin-retractions:8 ear-to-shoulder:20 scapula-stretch:20 bear-hug:25', 'midday'),
-  R('neck-shoulder-reset-long', 'Neck and Shoulder Reset, Longer', 'work', 'beg', 'Six minutes: mobilise first, then hold.',
+  R('neck-shoulder-reset-long', 'Neck and Shoulder Reset, Longer', 'work', 'beg', 'Six minutes: mobilize first, then hold.',
     'shoulder-rolls neck-roll chin-retractions neck-rotation:15 ear-to-shoulder:25 scapula-stretch:25 shoulder-cross:25 cactus-arms chest-opener', 'midday'),
   R('floor-free-break', 'Floor-Free Break', 'work', 'beg', 'Two minutes in ordinary clothes, no floor, no equipment.',
     'overhead-reach side-bend:15 trunk-twist:20 chest-opener:20 forward-fold:20'),
@@ -150,7 +150,7 @@ export const ROUTINES: Routine[] = [
     'hip-circles:25 good-mornings:8 standing-quad:25 squat-hold:20 forward-fold:30 wall-sit:20'),
   R('posture-core-back', 'Core and Back Support', 'posture', 'beg', 'Trunk endurance in four directions.',
     'dead-bug:10 bird-dog:20 elbow-plank:25 elbow-side-plank:15 bridge:30 superman:15'),
-  R('posture-full', 'Posture Session', 'posture', 'int', 'Fifteen minutes: mobilise, open, then strengthen.',
+  R('posture-full', 'Posture Session', 'posture', 'int', 'Fifteen minutes: mobilize, open, then strengthen.',
     'chin-retractions:10 shoulder-rolls cat-cow:10 thread-the-needle:30 puppy-pose:40 kneeling-psoas:35 wall-arms:10 wall-pecs:30 airplane:25 bird-dog:20 elbow-plank:30 bridge:35 reverse-plank:15'),
 
   // ── Activity preparation ─────────────────────────────────────────────

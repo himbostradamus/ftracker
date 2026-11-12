@@ -4,7 +4,7 @@ export const DYNAMIC = [
   ex('hip-switch', '90/90 Hip Switch', 'dynamic', 'dynamic beg seated none mat alt', 'hips|glutes,core', '10r@4', {
     a: ['Shin Box Switch', 'Seated Windshield Wipers'],
     d: 'Seated with hands behind, swing both knees from one side to the other.',
-    s: ['Sit with knees bent, feet wide and flat, hands on the floor behind you.', 'Lower both knees to one side into a 90/90 shape.', 'Lift the knees back through the centre and lower them to the other side.', 'Keep the heels in place and the chest lifted.'],
+    s: ['Sit with knees bent, feet wide and flat, hands on the floor behind you.', 'Lower both knees to one side into a 90/90 shape.', 'Lift the knees back through the center and lower them to the other side.', 'Keep the heels in place and the chest lifted.'],
     b: 'Breathe steadily; exhale as the knees lower.',
     e: ['Rushing through the middle.', 'Collapsing the chest.'],
     m: 'Lean back further on the hands and lower the knees only partway.',
@@ -13,7 +13,7 @@ export const DYNAMIC = [
   ex('hip-switch-no-hands', '90/90 Hip Switch (No Hands)', 'dynamic', 'dynamic int seated none mat alt', 'hips,core|glutes', '10r@4', {
     a: ['Hands-Free Shin Box Switch'],
     d: 'The 90/90 switch with the hands off the floor.',
-    s: ['Sit with knees bent and feet wide, arms held out in front.', 'Sit tall and lower both knees to one side.', 'Lift them through the centre and over to the other side without using your hands.', 'Keep the torso upright throughout.'],
+    s: ['Sit with knees bent and feet wide, arms held out in front.', 'Sit tall and lower both knees to one side.', 'Lift them through the center and over to the other side without using your hands.', 'Keep the torso upright throughout.'],
     b: 'Exhale as the knees lower.',
     e: ['Leaning far back to compensate.', 'Sliding the feet.'],
     m: 'Keep one fingertip on the floor behind you.',
@@ -81,7 +81,7 @@ export const DYNAMIC = [
   ex('dynamic-side-bends', 'Dynamic Side Bends', 'dynamic', 'dynamic beg standing none spot alt', 'core|lower-back,shoulders', '12r@3', {
     a: ['Standing Side Reaches'],
     d: 'Bend smoothly from side to side, reaching an arm over each time.',
-    s: ['Stand with feet a little wider than hips.', 'Reach one arm overhead and bend to the opposite side.', 'Return to centre and repeat on the other side.', 'Keep the movement flowing.'],
+    s: ['Stand with feet a little wider than hips.', 'Reach one arm overhead and bend to the opposite side.', 'Return to center and repeat on the other side.', 'Keep the movement flowing.'],
     b: 'Exhale into each bend.',
     e: ['Leaning forward.', 'Using momentum.'],
     m: 'Keep the hands on the hips.',
@@ -209,7 +209,7 @@ export const DYNAMIC = [
   ex('lateral-lunge', 'Lateral Lunge', 'dynamic', 'reps beg standing none mat alt', 'groin,glutes,quads|hips', '10r@3', {
     a: ['Side Lunges', 'Cossack Shift'],
     d: 'Step or shift from side to side into a lunge, keeping the other leg straight.',
-    s: ['Stand with your feet wide apart.', 'Sit your hips back and bend one knee, keeping the other leg straight.', 'Push back through the centre.', 'Repeat on the other side.'],
+    s: ['Stand with your feet wide apart.', 'Sit your hips back and bend one knee, keeping the other leg straight.', 'Push back through the center.', 'Repeat on the other side.'],
     b: 'Inhale down, exhale as you push back.',
     e: ['Letting the knee cave in.', 'Lifting the heel.'],
     m: 'Bend less deeply.',
@@ -277,7 +277,7 @@ export const DYNAMIC = [
   ex('wide-leg-toe-touches', 'Wide Leg Toe Touches', 'dynamic', 'dynamic beg standing none mat alt', 'hamstrings,groin|lower-back', '12r@3', {
     a: ['Wide-Stance Foot Reaches'],
     d: 'In a wide stance, reach both hands to one foot, then the other.',
-    s: ['Stand with your feet wide apart.', 'Hinge forward and reach both hands toward one foot.', 'Sweep through the centre and reach toward the other foot.', 'Rise to standing every few repetitions if you need a break.'],
+    s: ['Stand with your feet wide apart.', 'Hinge forward and reach both hands toward one foot.', 'Sweep through the center and reach toward the other foot.', 'Rise to standing every few repetitions if you need a break.'],
     b: 'Breathe steadily; exhale as you reach.',
     e: ['Bouncing at the bottom.', 'Locking the knees.'],
     m: 'Reach to the shins.',

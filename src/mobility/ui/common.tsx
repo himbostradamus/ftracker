@@ -143,7 +143,7 @@ export function Select<T extends string>({ label, value, onChange, options }: { 
   );
 }
 
-// Bottom sheet on phones, centred dialog on larger screens.
+// Bottom sheet on phones, centered dialog on larger screens.
 export function Sheet({ title, onClose, children, wide }: { title: string; onClose: () => void; children: React.ReactNode; wide?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {

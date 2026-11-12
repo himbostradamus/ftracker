@@ -4,7 +4,7 @@ export const PLANKS = [
   ex('bent-arm-pike', 'Bent Arm Pike', 'planks', 'hold adv support none mat both', 'shoulders,arms|core,upper-back', '15s', {
     a: ['Pike Push-Up Hold'], f: 'wrists inversion',
     d: 'Hold the bottom of a pike push-up, elbows bent and head near the floor.',
-    s: ['Start in a pike: hands and feet on the floor, hips high.', 'Bend your elbows and lower the top of your head toward the floor ahead of your hands.', 'Stop a few centimetres above the floor and hold.', 'Keep the elbows pointing back at about 45 degrees.'],
+    s: ['Start in a pike: hands and feet on the floor, hips high.', 'Bend your elbows and lower the top of your head toward the floor ahead of your hands.', 'Stop a few centimeters above the floor and hold.', 'Keep the elbows pointing back at about 45 degrees.'],
     b: 'Short, steady breaths.',
     e: ['Flaring the elbows straight out.', 'Letting the hips drop into a plank.'],
     m: 'Bend the elbows only a little, or raise the hands on a step.',
@@ -23,7 +23,7 @@ export const PLANKS = [
   ex('bulldog', 'Bulldog', 'planks', 'hold int support none mat both', 'core,quads|shoulders', '20s', {
     a: ['Bear Plank', 'Hovering Tabletop'], f: 'wrists',
     d: 'On hands and toes with the knees hovering just above the floor.',
-    s: ['Start on hands and knees with toes tucked.', 'Brace your abdomen and lift your knees a few centimetres off the floor.', 'Keep the back flat and hips level with the shoulders.', 'Push the floor away with your hands.'],
+    s: ['Start on hands and knees with toes tucked.', 'Brace your abdomen and lift your knees a few centimeters off the floor.', 'Keep the back flat and hips level with the shoulders.', 'Push the floor away with your hands.'],
     b: 'Slow breaths without losing the brace.',
     e: ['Lifting the hips high.', 'Rounding the back.'],
     m: 'Hold for shorter sets with rests on the knees.',
@@ -141,7 +141,7 @@ export const PLANKS = [
   ex('push-up-hold', 'Push Up Hold', 'planks', 'hold int support none mat both', 'chest,arms|core,shoulders', '15s', {
     a: ['Bottom Push-Up Hold'], f: 'wrists',
     d: 'Hold the bottom of a regular push-up, chest just above the floor.',
-    s: ['Start in a hand plank with hands a little wider than shoulders.', 'Lower until your chest is a few centimetres from the floor.', 'Hold, elbows at about 45 degrees from the body.', 'Keep the body in one line.'],
+    s: ['Start in a hand plank with hands a little wider than shoulders.', 'Lower until your chest is a few centimeters from the floor.', 'Hold, elbows at about 45 degrees from the body.', 'Keep the body in one line.'],
     b: 'Short, controlled breaths.',
     e: ['Flaring the elbows to 90 degrees.', 'Letting the hips sag.'],
     m: 'Lower the knees, or hold halfway down.',
@@ -373,7 +373,7 @@ export const LEGS = [
   }),
   ex('deep-split-squat', 'Deep Split Squat', 'legs', 'hold int standing none mat each', 'quads,glutes|hips,calves', '20s', {
     a: ['Bottom Split Squat Hold', 'ATG Split Squat Hold'], f: 'deep-knee',
-    d: 'Hold the bottom of a long split squat with the front knee travelling forward.',
+    d: 'Hold the bottom of a long split squat with the front knee traveling forward.',
     s: ['Take a long split stance.', 'Lower straight down, letting the front knee travel forward over the toes with the heel down.', 'Keep the back knee just above the floor and the back leg fairly long.', 'Hold with the torso upright.'],
     b: 'Steady breathing.',
     e: ['Lifting the front heel.', 'Resting the back knee on the floor.'],

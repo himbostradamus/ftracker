@@ -2,7 +2,7 @@ import React from 'react';
 import { PartName, Pose, Pt, solve } from './pose';
 import { BodyColors, buildBody, Shape } from './body';
 
-// Flat, solid-fill figure drawn from a solved pose. Colours come from a small
+// Flat, solid-fill figure drawn from a solved pose. Colors come from a small
 // set of body variants so the catalog shows a range of skin tones and hair
 // while every illustration keeps the same construction.
 
@@ -44,7 +44,7 @@ export function variantFor(seed: string): Variant {
 export const bgFor = (seed: string) => BADGE_BG[(hash(seed) >>> 20) % BADGE_BG.length];
 
 // One body part: a soft edge around its whole silhouette (so an arm stays
-// readable against a leg of the same colour), then the flat fills.
+// readable against a leg of the same color), then the flat fills.
 function Part({ shapes, edge = true }: { shapes: Shape[]; edge?: boolean }) {
   return (
     <g>
@@ -54,7 +54,7 @@ function Part({ shapes, edge = true }: { shapes: Shape[]; edge?: boolean }) {
   );
 }
 
-// A movement arrow: a curved line with a head, in the accent colour.
+// A movement arrow: a curved line with a head, in the accent color.
 function ArrowMark({ pts, both, k }: { pts: Pt[]; both: boolean; k: number }) {
   // Keep the line weight and head size constant on screen, whatever the zoom.
   const z = Math.min(1, 1.25 / k);
@@ -122,7 +122,7 @@ export interface FigureProps {
   pose: Pose;
   seed: string;
   size?: number | string;
-  badge?: boolean;         // circular coloured background, for catalog use
+  badge?: boolean;         // circular colored background, for catalog use
   title?: string;          // alternative text
   className?: string;
 }
@@ -136,12 +136,12 @@ export function Figure({ pose, seed, size = 96, badge = true, title, className }
   // The figure is drawn at a constant scale unless it would not fit the frame.
   const zoom = pose.zoom;
   // Scale to fill the frame. In a badge the bounding box has to sit inside
-  // the circle, so wide, low figures are centred rather than cut off.
+  // the circle, so wide, low figures are centered rather than cut off.
   const k = zoom ?? (badge
     ? Math.min(1.5, 160 / figH, 172 / figW, 212 / Math.hypot(figW, figH))
     : Math.min(1.6, 178 / figH, 186 / figW));
   const clipId = `c${hash(seed + (badge ? 'b' : 'p')).toString(36)}`;
-  // A zoomed pose is a bust crop centred on the chest (neck and wrist work).
+  // A zoomed pose is a bust crop centered on the chest (neck and wrist work).
   // ...shifted toward an outstretched hand so wrist work stays in frame.
   const reach = s.armN[3].x - s.chest.x;
   const tx = zoom ? 100 - (s.chest.x + (Math.abs(reach) > 25 ? reach * 0.45 : 0)) * k : 100;

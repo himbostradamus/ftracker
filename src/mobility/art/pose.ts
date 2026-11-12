@@ -48,7 +48,7 @@ export interface Pose {
   fs?: Partial<Record<'aN' | 'aF' | 'lN' | 'lF', [number, number]>>; // foreshortening per limb segment
   ts?: number;                  // torso foreshortening (folded toward the viewer)
   look?: 1 | -1;                // front view only: head turned to one side
-  zoom?: number;                // bust crop: scale factor, centred on the chest
+  zoom?: number;                // bust crop: scale factor, centered on the chest
   lift?: number;                // raise the figure off the ground (jumping)
   order?: PartName[];           // back-to-front drawing order, when the default hides something
   arrows?: Arrow[];             // movement arrows for dynamic exercises
@@ -103,8 +103,8 @@ function rotatePt(p: Pt, deg: number): Pt {
   return { x: p.x * c - p.y * s, y: p.x * s + p.y * c };
 }
 
-// Solve joint positions with the pelvis at the origin, then normalise so the
-// lowest point rests on y = 0 and the figure is centred on x = 0.
+// Solve joint positions with the pelvis at the origin, then normalize so the
+// lowest point rests on y = 0 and the figure is centered on x = 0.
 export function solve(pose: Pose): Solved {
   const front = pose.v === 'front';
   const [t1, t2] = Array.isArray(pose.t) ? pose.t : [pose.t, pose.t];

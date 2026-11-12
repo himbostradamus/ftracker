@@ -50,7 +50,7 @@ Done and checked by hand in headless desktop Chrome (`scripts/shots.mjs`, `scrip
 Not done, or not verified:
 
 - [ ] **Nothing has been tested on a real iPhone.** Audio, speech, screen wake, Home Screen
-      install, notifications and behaviour when the phone locks are implemented against the
+      install, notifications and behavior when the phone locks are implemented against the
       web standards but unverified on the target device.
 - [ ] **Demonstration videos: none.** Every entry is marked "no video". Illustrations and written steps are the reference.
 - [ ] **Illustration review.** All 193 figures are generated: each pose is composed individually in

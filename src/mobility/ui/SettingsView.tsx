@@ -95,7 +95,7 @@ export function SettingsView({ nav }: { nav: Nav }) {
           <p className="font-medium mb-1.5">{t('Prefer to avoid')}</p>
           <div className="flex flex-wrap gap-1.5 mb-2">{(Object.keys(CAUTION_LABEL) as Caution[]).map(k => <Chip key={k} on={s.cautions.includes(k)} onClick={() => set({ cautions: toggle(s.cautions, k) })}>{t(CAUTION_LABEL[k])}</Chip>)}</div>
           <p className="text-sm text-m-muted pb-2">{t('These steer suggestions and flag movements in routines. They are preferences, not a medical assessment.')}</p>
-          <p className="font-medium mb-1.5">{t('Days you plan to practise')}</p>
+          <p className="font-medium mb-1.5">{t('Days you plan to practice')}</p>
           <div className="flex flex-wrap gap-1.5 mb-2">{WEEKDAYS.map((d, i) => <Chip key={d} on={s.scheduleDays.includes(i)} onClick={() => set({ scheduleDays: toggle(s.scheduleDays, i).sort() })}>{t(d)}</Chip>)}</div>
           <Stepper label={t('Active minutes for a day to count')} value={s.dayThresholdMin} min={1} max={30} onChange={v => set({ dayThresholdMin: v })} suffix={t('min')} />
           <Toggle label={t('Show the consistency gauge')} checked={s.showGauge} onChange={v => set({ showGauge: v })} />
@@ -129,7 +129,7 @@ export function SettingsView({ nav }: { nav: Nav }) {
             </div>
           ))}
           <div className="border-t border-m-line">
-            <Toggle label={t('Streak reminder')} hint={t('Only when you have a streak and have not practised yet that day')} checked={s.streakReminder} onChange={v => set({ streakReminder: v })} />
+            <Toggle label={t('Streak reminder')} hint={t('Only when you have a streak and have not practiced yet that day')} checked={s.streakReminder} onChange={v => set({ streakReminder: v })} />
             {s.streakReminder && <Field label={t('Streak reminder time')}><input type="time" className={inputCls} value={s.streakReminderTime} onChange={e => set({ streakReminderTime: e.target.value })} /></Field>}
             <Toggle label={t('Quiet hours')} checked={s.quietEnabled} onChange={v => set({ quietEnabled: v })} />
             {s.quietEnabled && (

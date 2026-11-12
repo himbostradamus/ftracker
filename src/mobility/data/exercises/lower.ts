@@ -163,7 +163,7 @@ export const LOWER_LEG = [
     alt: 'Standing figure in profile hinged forward over one straight front leg with the toes lifted.',
   }),
   ex('knee-to-wall', 'Knee-to-Wall', 'lower-leg', 'dynamic beg standing wall spot each', 'calves,feet', '10r@4', {
-    a: ['Ankle Dorsiflexion Drill', 'Wall Ankle Mobilisation'],
+    a: ['Ankle Dorsiflexion Drill', 'Wall Ankle Mobilization'],
     d: 'With a foot near a wall, drive the knee forward to touch it, heel down.',
     s: ['Stand facing a wall with one foot about a hand-width from it.', 'Place your hands on the wall.', 'Bend the front knee and drive it toward the wall over the middle toes.', 'Keep the heel down, touch the wall if you can, and return.'],
     e: ['Letting the heel lift.', 'Letting the knee collapse inward.'],

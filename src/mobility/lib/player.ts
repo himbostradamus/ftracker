@@ -2,7 +2,7 @@ import { Routine, RoutineItem, SessionItemResult, SessionRecord } from '../types
 import { buildTimeline, Segment, TimingOpts } from './timeline';
 import { dateKeyInTz } from './dates';
 
-// Session engine. Pure functions over a serialisable state, driven by wall
+// Session engine. Pure functions over a serializable state, driven by wall
 // clock timestamps: a late or missing timer callback never loses time, and a
 // long gap (backgrounded tab, locked phone, reload) is detected rather than
 // silently "played through".

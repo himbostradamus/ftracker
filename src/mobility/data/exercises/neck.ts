@@ -51,15 +51,15 @@ export const NECK = [
   ex('neck-laterals', 'Neck Laterals', 'neck', 'dynamic beg standing+chair none spot alt', 'neck', '10r@4', {
     a: ['Side-to-Side Neck Tilts'],
     d: 'Tip the head slowly from one shoulder to the other.',
-    s: ['Sit or stand tall, looking forward.', 'Tip your right ear toward your right shoulder.', 'Return through centre and tip to the left.', 'Keep the nose pointing forward the whole time.'],
+    s: ['Sit or stand tall, looking forward.', 'Tip your right ear toward your right shoulder.', 'Return through center and tip to the left.', 'Keep the nose pointing forward the whole time.'],
     e: ['Turning the head instead of tipping it.', 'Hiking the shoulders.'],
-    m: 'Pause at centre between sides.',
+    m: 'Pause at center between sides.',
     alt: 'Figure facing forward with the head tipped slightly to one side and arms relaxed.',
   }),
   ex('neck-roll', 'Neck Roll', 'neck', 'dynamic beg standing+chair none spot alt', 'neck', '6r@6', {
     a: ['Neck Half Circles'],
     d: 'Roll the chin in a slow half circle from shoulder to shoulder.',
-    s: ['Lower your chin toward your chest.', 'Roll the chin toward one shoulder, then back through the centre to the other.', 'Keep the movement in the front half of the circle.'],
+    s: ['Lower your chin toward your chest.', 'Roll the chin toward one shoulder, then back through the center to the other.', 'Keep the movement in the front half of the circle.'],
     e: ['Rolling the head all the way back.', 'Rushing through the movement.'],
     m: 'Make the half circle smaller.',
     c: 'Stay in the front half circle; skip this if rolling the neck makes you dizzy.',

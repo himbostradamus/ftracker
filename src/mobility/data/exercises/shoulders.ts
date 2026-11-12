@@ -188,7 +188,7 @@ export const WRISTS = [
   ex('wrist-extension', 'Wrist Extension', 'wrists', 'static beg standing+chair none spot each', 'wrists,arms', '20s', {
     a: ['Wrist Flexor Stretch', 'Stop-Sign Wrist Stretch'],
     d: 'Arm forward with the palm facing away and fingers up; draw the fingers back.',
-    s: ['Hold one arm straight out in front.', 'Lift the hand so the palm faces away and the fingers point up, as if signalling stop.', 'Use the other hand to draw the fingers back toward you.'],
+    s: ['Hold one arm straight out in front.', 'Lift the hand so the palm faces away and the fingers point up, as if signaling stop.', 'Use the other hand to draw the fingers back toward you.'],
     e: ['Bending the elbow.', 'Pulling on the fingertips only.'],
     m: 'Keep a small bend in the elbow.',
     alt: 'Standing figure in profile with one arm straight forward, hand bent up with fingers to the ceiling, held by the other hand.',
