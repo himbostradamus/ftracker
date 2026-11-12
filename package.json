@@ -12,7 +12,7 @@
     "test": "vitest run",
     "art:export": "vite-node scripts/export-art.tsx",
     "art:sheet": "vite-node scripts/sheet.tsx",
-    "review": "vite-node --watch scripts/review.tsx"
+    "review": "vite-node scripts/review.tsx"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",

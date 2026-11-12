@@ -2,26 +2,21 @@
 // a note. Feedback is saved to review/feedback.json (and a readable
 // review/feedback.md) every time something changes.
 // Usage: npm run review   then open http://localhost:4400
-import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { execFileSync } from 'node:child_process';
 import { createServer } from 'node:http';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { EXERCISES, GROUP_LABELS } from '../src/mobility/data/catalog';
-import { POSES } from '../src/mobility/data/poses';
-import { Figure } from '../src/mobility/art/Figure';
-import { doseLabel } from '../src/mobility/lib/timeline';
 
 const PORT = Number(process.env.PORT ?? 4400);
 const DIR = 'review', FILE = `${DIR}/feedback.json`, MD = `${DIR}/feedback.md`;
 mkdirSync(DIR, { recursive: true });
 const load = () => (existsSync(FILE) ? JSON.parse(readFileSync(FILE, 'utf8')) : {});
 
-const items = EXERCISES.map(e => ({
-  id: e.id, name: e.name, group: GROUP_LABELS[e.group], desc: e.desc, steps: e.steps, breath: e.breath ?? '',
-  errors: e.errors, easier: e.easier, caution: e.caution ?? '', aliases: e.aliases, alt: e.alt,
-  meta: `${e.category} · ${e.difficulty} · ${e.position} · ${doseLabel({ ex: e.id, dose: e.dose }, e)}`,
-  svg: renderToStaticMarkup(<Figure pose={POSES[e.id]} seed={e.id} size="100%" />),
-}));
+// Movement data is rebuilt in a fresh process on every page load, so a
+// browser refresh always shows the current poses and text.
+interface Item { id: string; name: string; [k: string]: unknown }
+const loadItems = (): Item[] =>
+  JSON.parse(execFileSync('npx', ['vite-node', 'scripts/review-data.tsx'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }));
+let items: Item[] = loadItems();
 
 const STATUS: Record<string, string> = { ok: 'Good', fix: 'Needs work', bad: 'Wrong' };
 const TAGS = ['pose is wrong', 'hard to read', 'arrow wrong or missing', 'limbs tangled', 'text is wrong', 'name or alias'];
@@ -121,5 +116,6 @@ createServer((req, res) => {
     });
     return;
   }
+  try { items = loadItems(); } catch (e) { console.error('Could not rebuild the movement data; showing the last good version.', (e as Error).message.split('\n')[0]); }
   res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' }).end(page());
 }).listen(PORT, '127.0.0.1', () => console.log(`Movement review: http://localhost:${PORT}  (feedback -> ${FILE})`));
