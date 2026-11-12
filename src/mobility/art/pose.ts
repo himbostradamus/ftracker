@@ -123,7 +123,10 @@ export function solve(pose: Pose): Solved {
   });
   const sw = front ? 13 : 1.5;
   const hw = front ? 7 : 1;
-  const so = across(t2, sw), ho = across(t1, hw);
+  // Facing the viewer and folded far over, the hips stay level: only the
+  // spine leans.
+  const hipDir = front && Math.abs(((t1 + 90 + 540) % 360) - 180) > 20 ? -90 : t1;
+  const so = across(t2, sw), ho = across(hipDir, hw);
   const shN = { x: chest.x + so.x, y: chest.y + so.y + (front ? 0 : 3) };
   const shF = { x: chest.x - so.x, y: chest.y - so.y + (front ? 0 : 3) };
   const hipN = { x: pelvis.x + ho.x, y: pelvis.y + ho.y };
@@ -172,8 +175,17 @@ export function solve(pose: Pose): Solved {
     }
     return pts;
   };
-  let legN = leg(hipN, lN, 1, pose.fs?.lN);
-  let legF = leg(hipF, lF, -1, pose.fs?.lF ?? (pose.lF ? undefined : pose.fs?.lN));
+  // A leg given by angles sets where the floor is; a leg that reaches for
+  // the floor is then planted on it, so both always end at the same level.
+  const legFloor = (pts: Pt[]) => Math.max(...pts.map((p, i) => p.y + (i === 0 ? 8 : i === 3 ? 3.4 : 5)));
+  const fsF = pose.fs?.lF ?? (pose.lF ? undefined : pose.fs?.lN);
+  const plantN = isReach(lN) && lN.to === 'floor', plantF = isReach(lF) && lF.to === 'floor';
+  let legN: Pt[], legF: Pt[];
+  if (plantN && !plantF) {
+    legF = leg(hipF, lF, -1, fsF); floorY = Math.max(floorY, legFloor(legF)); legN = leg(hipN, lN, 1, pose.fs?.lN);
+  } else {
+    legN = leg(hipN, lN, 1, pose.fs?.lN); if (plantF && !plantN) floorY = Math.max(floorY, legFloor(legN)); legF = leg(hipF, lF, -1, fsF);
+  }
   Object.assign(named, { kneeN: legN[1], ankleN: legN[2], toeN: legN[3], kneeF: legF[1], ankleF: legF[2], toeF: legF[3] });
   // The floor is wherever the lowest part of the lower body rests.
   floorY = Math.max(pelvis.y + 8.5, ...[...legN, ...legF].map((p, i) => p.y + (i % 4 === 0 ? 8 : i % 4 === 3 ? 3.4 : 5)));

@@ -165,7 +165,8 @@ export function buildBody(s: Solved, c: BodyColors, side: number, bodySide: numb
     const a = perp(u);
     if (c.hairStyle === 'bun' || c.hairStyle === 'tail') head.push(circle(add(hc, u, 12.4), 4.7, c.hair));
     head.push(ellipse(add(hc, u, 1.4), u, 11.5, 11.7, c.hair));
-    if (c.hairStyle === 'bob') head.push(ellipse(add(hc, u, -3.5), u, 12.6, 8.6, c.hair));
+    // Chin-length hair shows at the sides of the face, never below the chin.
+    if (c.hairStyle === 'bob') head.push(ellipse(add(hc, u, -1.2), u, 12.5, 8.8, c.hair));
     head.push(circle(add2(hc, a, 9.5, u, -1), 2.3, c.skinFar), circle(add2(hc, a, -9.5, u, -1), 2.3, c.skinFar));
     head.push(ellipse(add(hc, u, -0.8), u, 9.2, 10.3, c.skin));
     head.push(ellipse(add(hc, u, 6.4), u, 9.3, 5, c.hair));
