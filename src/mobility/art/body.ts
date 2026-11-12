@@ -149,10 +149,16 @@ export function buildBody(s: Solved, c: BodyColors, side: number, bodySide: numb
   const head: Shape[] = [seg(add(s.chest, u, 1), hc, 4.3, 4, c.skin)];
   if (side !== 0) {
     const f: Pt = { x: -u.y * side, y: u.x * side };
-    if (c.hairStyle === 'bun') head.push(circle(add2(hc, f, -9.8, u, 7.4), 4.9, c.hair));
-    if (c.hairStyle === 'tail') {
+    // Lying down, a ponytail would pool on the floor under the head, so it is
+    // drawn gathered up instead.
+    const lying = hc.y > -17;
+    if (c.hairStyle === 'bun' || (c.hairStyle === 'tail' && lying)) head.push(circle(add2(hc, f, -9.8, u, 7.4), 4.9, c.hair));
+    if (c.hairStyle === 'tail' && !lying) {
       const root = add2(hc, f, -9.4, u, 5);
-      head.push(seg(root, add2(root, { x: 0, y: 1 }, 13, f, -3.5), 3.7, 1.9, c.hair));
+      // A ponytail hangs down, but never through the floor (y = 0).
+      const tip = add2(root, { x: 0, y: 1 }, 13, f, -3.5);
+      if (tip.y > -3) { tip.x += (tip.y + 3) * (f.x > 0 ? -1 : 1); tip.y = -3; }
+      head.push(seg(root, tip, 3.7, 1.9, c.hair));
     }
     if (c.hairStyle === 'bob') head.push(ellipse(add2(hc, f, -5.6, u, -3.6), u, 6.6, 8.2, c.hair));
     head.push(ellipse(add2(hc, f, -2.5, u, 2.2), u, 11.1, 11.3, c.hair));
