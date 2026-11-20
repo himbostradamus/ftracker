@@ -3,7 +3,7 @@ import { Play, RotateCcw } from 'lucide-react';
 import { useMobility } from '../lib/store';
 import { ROUTINES, SERIES, SERIES_BY_ID } from '../data/routines';
 import { allRoutines, findRoutine, recommend, timingOf, withinLevel } from '../lib/routines';
-import { routineAreas, routineTotals } from '../lib/timeline';
+import { routineAreas } from '../lib/timeline';
 import { dateKeyInTz, diffDays, formatDateKey, resolveTz } from '../lib/dates';
 import { activeDays, streaks } from '../lib/stats';
 import { Art, Btn, Chip, durationText, Nav, RoutineRow, Section } from './common';
@@ -41,11 +41,11 @@ export function Today({ nav, unfinished, onResume, onDiscard }: { nav: Nav; unfi
       <header className="mb-4 flex items-start justify-between gap-3">
         <div>
           <p className="text-sm text-m-muted">{formatDateKey(today, { weekday: 'long', month: 'long', day: 'numeric' })}</p>
-          <h1 className="text-[1.6rem] font-bold leading-tight">{t('Today')}</h1>
+          <h1 className="text-[1.6rem] font-bold leading-tight">{t('Stretch practice')}</h1>
         </div>
         <p className="text-sm text-m-muted text-right pt-1">
-          {streak.current > 0 ? t('{n}-day streak', { n: streak.current }) : t('No streak yet')}<br />
-          {doneToday ? t('Done today ✓') : t('Not yet today')}
+          {streak.current > 0 && <span className="block">{t('{n}-day streak', { n: streak.current })}</span>}
+          {doneToday && t('Practiced today')}
         </p>
       </header>
 
@@ -66,9 +66,8 @@ export function Today({ nav, unfinished, onResume, onDiscard }: { nav: Nav; unfi
         <p className="text-m-muted mt-0.5">
           {durationText(routine, st.settings)} · {t('{n} movements', { n: routine.items.length })} · {t(DIFFICULTY_LABEL[routine.difficulty])}
         </p>
-        <div className="flex -space-x-3 my-4" aria-hidden="true">
-          {routine.items.slice(0, 5).map((it, i) => <Art key={i} id={it.ex} size={64} className="rounded-full ring-2 ring-m-surface" />)}
-          {routine.items.length > 5 && <span className="grid h-16 w-16 place-items-center rounded-full bg-m-soft ring-2 ring-m-surface text-sm font-semibold text-m-muted">+{routine.items.length - 5}</span>}
+        <div className="pose-sequence" aria-hidden="true">
+          {routine.items.slice(0, 4).map((it, i) => <Art key={i} id={it.ex} size="100%" badge={false} />)}
         </div>
         <div className="flex gap-2">
           <Btn className="flex-1 text-base py-3" onClick={() => nav.start(routine)}><Play size={18} fill="currentColor" />{t('Start')}</Btn>
@@ -134,9 +133,7 @@ export function Today({ nav, unfinished, onResume, onDiscard }: { nav: Nav; unfi
         </Section>
       )}
 
-      <p className="text-sm text-m-muted">
-        <button type="button" className="underline underline-offset-2 min-h-[40px]" onClick={nav.exitToTracker}>{t('Open the training tracker')}</button>
-      </p>
+
     </div>
   );
 }

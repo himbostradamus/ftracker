@@ -194,7 +194,7 @@ export function Builder({ initial, nav }: { initial?: Routine; nav: Nav }) {
         {cover.image && <p className="text-sm text-m-muted mt-2">{t('The image is shrunk and stored on this device with the routine.')}</p>}
       </Section>
 
-      <div className="fixed bottom-0 inset-x-0 md:left-56 z-30 border-t border-m-line bg-m-surface px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))]">
+      <div className="fixed bottom-0 inset-x-0 z-30 border-t border-m-line bg-m-surface px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))]">
         <div className="mx-auto flex max-w-3xl gap-2">
           <Btn kind="secondary" className="flex-1" disabled={rows.length === 0} onClick={() => setPreview(true)}>{t('Preview')}</Btn>
           <Btn className="flex-1" onClick={save}>{t('Save Routine')}</Btn>

@@ -18,7 +18,7 @@ await sleep(1500);
 console.log('cached files:', await ev(`caches.keys().then(async ks => (await (await caches.open(ks[0])).keys()).length)`));
 await send('Network.emulateNetworkConditions', { offline: true, latency: 0, downloadThroughput: 0, uploadThroughput: 0 });
 await send('Page.navigate', { url: base }); await sleep(1500);
-console.log('offline tracker loads:', await ev(`document.body.innerText.includes('TRAINING')`));
+console.log('offline tracker loads:', await ev(`document.body.innerText.includes('Weekly schedule')`));
 await ev(`[...document.querySelectorAll('button')].find(b => b.textContent.includes('Stretch')).click()`); await sleep(1200);
 console.log('offline stretching loads:', await ev(`document.body.innerText.includes('Browse by area')`));
 await ev(`[...document.querySelectorAll('button')].find(b => b.textContent.trim() === 'Library').click()`); await sleep(500);

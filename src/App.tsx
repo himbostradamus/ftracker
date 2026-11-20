@@ -1,11 +1,11 @@
-import React, { Suspense, lazy, useState } from 'react';
+import React, { Suspense, lazy, useState, useLayoutEffect } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { ChecklistTab } from './components/ChecklistTab';
 import { TabBar } from './components/TabBar';
 import { RestTimer } from './components/RestTimer';
 import { loadUIPrefs, saveUIPrefs } from './lib/storage';
 import { UIPrefs } from './types';
-import { getState as getMobilityState, updateSettings as updateMobilitySettings } from './mobility/lib/store';
+import { useMobility, updateSettings as updateMobilitySettings } from './mobility/lib/store';
 
 // Lazy chunks: kept out of the initial bundle since the user lands on the
 // Checklist tab. Recharts (Progress) is the biggest win.
@@ -27,17 +27,31 @@ const MobilityApp = lazy(() => import('./mobility/ui/MobilityApp'));
 
 function TabFallback() {
   return (
-    <div className="flex items-center justify-center py-16 text-[#444] text-[10px] tracking-widest uppercase">
+    <div className="flex items-center justify-center py-16 text-muted text-xs tracking-widest uppercase">
       Loading…
     </div>
   );
 }
 
 export default function App() {
-  // Which half of the app is showing. Remembered in the stretching section's
-  // own settings, so the tracker's stored data is not involved.
-  const [section, setSection] = useState<'tracker' | 'mobility'>(() => getMobilityState().settings.lastSection ?? 'tracker');
-  const [activeTab, setActiveTab] = useState('check');
+  const { settings } = useMobility();
+  const [activeTab, setActiveTab] = useState(() => settings.lastSection === 'mobility' ? 'stretch' : 'check');
+  const [initialRoutine, setInitialRoutine] = useState<string | undefined>();
+
+  useLayoutEffect(() => {
+    const query = window.matchMedia('(prefers-color-scheme: dark)');
+    const apply = () => {
+      const dark = settings.appearance === 'dark' || (settings.appearance === 'system' && query.matches);
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      document.documentElement.style.fontSize = { normal: '100%', large: '112.5%', larger: '125%' }[settings.textSize];
+      const bg = getComputedStyle(document.body).backgroundColor;
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', bg);
+    };
+    apply();
+    query.addEventListener('change', apply);
+    return () => query.removeEventListener('change', apply);
+  }, [settings.appearance, settings.textSize]);
+
   const [viewOffset, setViewOffset] = useState(0);
   const [openWorkout, setOpenWorkout] = useState<{ dayIdx: number; typeIdx: number } | null>(null);
   const [timer, setTimer] = useState<{ duration: number } | null>(null);
@@ -45,6 +59,17 @@ export default function App() {
   // toggles a tab visibility — localStorage by itself doesn't trigger renders.
   const [uiPrefs, setUIPrefs] = useState<UIPrefs>(() => loadUIPrefs());
 
+  const [progressView, setProgressView] = useState<'Strength' | 'Stretching'>('Strength');
+
+  const navigate = (tab: string, routine?: string) => {
+    if (tab === 'prog' && activeTab !== 'prog') setProgressView(activeTab === 'stretch' ? 'Stretching' : 'Strength');
+    setInitialRoutine(routine);
+    setActiveTab(tab);
+    setOpenWorkout(null);
+    const section = tab === 'stretch' ? 'mobility' : 'tracker';
+    if (section !== settings.lastSection) updateMobilitySettings({ lastSection: section });
+    window.scrollTo(0, 0);
+  };
   const updatePrefs = (next: UIPrefs) => {
     saveUIPrefs(next);
     setUIPrefs(next);
@@ -68,18 +93,27 @@ export default function App() {
     }
 
     switch (activeTab) {
+      case 'stretch':
+        return <Suspense fallback={<TabFallback />}><MobilityApp initialRoutine={initialRoutine} /></Suspense>;
       case 'check':
         return (
           <ChecklistTab
             viewOffset={viewOffset}
             setViewOffset={setViewOffset}
+            onStretch={id => navigate('stretch', id)}
             onOpenWorkout={(di, ti) => setOpenWorkout({ dayIdx: di, typeIdx: ti })}
           />
         );
       case 'prog':
         return (
           <Suspense fallback={<TabFallback />}>
-            <ProgressTab />
+            <nav className="stretch-tabs" aria-label="Progress by activity">
+              {(['Strength', 'Stretching'] as const).map(view => (
+                <button key={view} aria-current={progressView === view ? 'page' : undefined}
+                  onClick={() => setProgressView(view)}>{view}</button>
+              ))}
+            </nav>
+            {progressView === 'Strength' ? <ProgressTab /> : <MobilityApp key="stretch-progress" progress />}
           </Suspense>
         );
       case 'nutr':
@@ -92,6 +126,7 @@ export default function App() {
             <ChecklistTab
               viewOffset={viewOffset}
               setViewOffset={setViewOffset}
+              onStretch={id => navigate('stretch', id)}
               onOpenWorkout={(di, ti) => setOpenWorkout({ dayIdx: di, typeIdx: ti })}
             />
           );
@@ -112,28 +147,10 @@ export default function App() {
     }
   };
 
-  if (section === 'mobility') {
-    return (
-      <Suspense fallback={<TabFallback />}>
-        <MobilityApp onExit={() => setSection('tracker')} />
-      </Suspense>
-    );
-  }
-
   return (
-    <div className="max-w-[375px] mx-auto p-3 safe-top safe-bottom min-h-screen">
+    <div className="journal-shell">
+      <TabBar activeTab={activeTab} uiPrefs={uiPrefs} onTabChange={navigate} />
       {renderTab()}
-
-      {!openWorkout && (
-        <TabBar
-          activeTab={activeTab}
-          uiPrefs={uiPrefs}
-          onTabChange={(t) => {
-            if (t === 'stretch') { updateMobilitySettings({ lastSection: 'mobility' }); setSection('mobility'); return; }
-            setActiveTab(t); setViewOffset(0);
-          }}
-        />
-      )}
 
       <AnimatePresence>
         {timer && (

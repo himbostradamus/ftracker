@@ -194,7 +194,6 @@ export function SettingsView({ nav }: { nav: Nav }) {
         </div>
       </Section>
 
-      <Btn kind="secondary" className="w-full" onClick={nav.exitToTracker}>{t('Open the training tracker')}</Btn>
 
       {restore && (
         <Sheet title={t('Restore stretching data')} onClose={() => setRestore(null)}>

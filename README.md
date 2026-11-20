@@ -4,12 +4,12 @@ A minimalist mobile-first workout, progress, and macro tracker. All data lives i
 
 ## Stretching section
 
-The **Stretch** tab opens a stretching, mobility and bodyweight-strength app: 193 illustrated
-movements, 121 prepared routines, a routine builder, a rule-based planner, a session player,
-history and streaks. It stores its data under its own keys and never writes the tracker's data.
-See [docs/MOBILITY.md](docs/MOBILITY.md) for what is finished, what is untested and the platform limits.
+The **Week** tab brings scheduled lifts, stretch routines and recorded stretch sessions into one weekly log.
+Open a scheduled stretch directly, or use **Stretch** to browse 193 illustrated movements, 121 prepared routines, the routine builder and planner.
+**Progress** includes strength history and stretching statistics. Both use the same appearance and text-size settings.
 
-Both halves work offline once the site has been opened online, and can be added to the Home Screen.
+The tracker works offline after the first online visit and can be added to the Home Screen.
+See [docs/MOBILITY.md](docs/MOBILITY.md) for stretching features and platform limits.
 
 ## Run locally
 

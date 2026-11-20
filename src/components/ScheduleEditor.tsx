@@ -26,7 +26,7 @@ export function ScheduleEditor({
 }: ScheduleEditorProps) {
   return (
     <div className="bg-card border border-border rounded-lg p-3">
-      <h3 className="text-[10px] font-bold tracking-widest text-[#888] uppercase mb-3">Weekly Schedule</h3>
+      <h3 className="text-xs font-bold tracking-widest text-muted uppercase mb-3">Weekly Schedule</h3>
       <div className="flex flex-col gap-2">
         {sched.map(dayObj => {
           const liftItem = dayObj.items.find(i => i.type === 'lift');
@@ -58,13 +58,13 @@ export function ScheduleEditor({
             <div key={dayObj.day} className="p-2 bg-bg border border-border rounded">
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <div className="text-xs font-bold text-[#ccc]">{DAYS[dayObj.day]}</div>
-                  <div className="text-[9px] text-[#555] tracking-widest">{fmtDate(dayDate)}</div>
+                  <div className="text-xs font-bold text-ink">{DAYS[dayObj.day]}</div>
+                  <div className="text-xs text-muted tracking-widest">{fmtDate(dayDate)}</div>
                 </div>
                 <select
                   value={currentLift}
                   onChange={(e) => onLiftChange(dayObj.day, e.target.value)}
-                  className="bg-[#1A1A1A] border border-[#2A2A2A] rounded p-1.5 text-xs text-[#ddd] outline-none"
+                  className="bg-soft border border-border rounded p-1.5 text-xs text-ink outline-none"
                   aria-label={`Lift for ${DAYS[dayObj.day]}`}
                 >
                   <option value="None">No lift</option>
@@ -86,12 +86,12 @@ export function ScheduleEditor({
                       aria-label={meta.label}
                       onClick={() => toggleActivity(id)}
                       className={cn(
-                        "flex items-center gap-1 px-2 py-1 rounded border text-[10px] font-medium transition-colors",
+                        "flex items-center gap-1 px-2 py-1 rounded border text-xs font-medium transition-colors",
                         active
                           ? "border-[var(--c)] bg-[var(--c-dim)] text-[var(--c)]"
-                          : "border-[#2A2A2A] bg-transparent text-[#666] hover:border-[#3A3A3A]"
+                          : "border-border bg-transparent text-muted hover:border-border"
                       )}
-                      style={{ '--c': meta.color, '--c-dim': meta.color + '22' } as any}
+                      style={{ '--c': meta.color, '--c-dim': `color-mix(in srgb, ${meta.color} 14%, transparent)` } as any}
                     >
                       <span aria-hidden="true">{meta.icon}</span>
                       <span>{meta.label}</span>
@@ -103,7 +103,7 @@ export function ScheduleEditor({
           );
         })}
       </div>
-      <p className="text-[9px] text-[#444] mt-3 leading-relaxed">
+      <p className="text-xs text-muted mt-3 leading-relaxed">
         Weeks start blank. Use the lift dropdown and activity chips to build this week only.
       </p>
     </div>

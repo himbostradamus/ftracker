@@ -35,8 +35,8 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
   if (!item) {
     return (
       <div className="flex flex-col items-center justify-center p-8 gap-4 text-center">
-        <p className="text-[#888] text-sm">Workout removed or not found.</p>
-        <button onClick={onBack} className="flex items-center gap-1 text-[#ccc] uppercase text-[10px] tracking-widest py-2 px-4 border border-[#333] rounded">
+        <p className="text-muted text-sm">Workout removed or not found.</p>
+        <button onClick={onBack} className="flex items-center gap-1 text-ink uppercase text-xs tracking-widest py-2 px-4 border border-border rounded">
           <ChevronLeft size={18} /> BACK TO MENU
         </button>
       </div>
@@ -160,13 +160,13 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
   return (
     <div className="flex flex-col gap-4 pb-20">
       <div className="flex justify-between items-center">
-        <button onClick={onBack} className="flex items-center gap-1 text-[#888] uppercase text-[10px] tracking-widest py-1">
+        <button onClick={onBack} className="flex items-center gap-1 text-muted uppercase text-xs tracking-widest py-1">
           <ChevronLeft size={18} /> Back
         </button>
         {isLift && (
           <button 
             onClick={() => setEditingSchedule(!editingSchedule)}
-            className="flex items-center gap-1 text-primary uppercase text-[10px] tracking-widest py-1"
+            className="flex items-center gap-1 text-primary uppercase text-xs tracking-widest py-1"
           >
             {editingSchedule ? 'Done' : 'Edit Schedule'}
           </button>
@@ -195,12 +195,12 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
           <div className="flex items-center gap-3">
             <div className="text-2xl" style={{ color: meta.color }}>{meta.icon}</div>
             <div className="flex-1">
-              <div className="text-lg font-bold tracking-widest text-white uppercase">{label}</div>
-              <div className="text-[10px] text-[#555] tracking-widest uppercase">{fmtDate(dd)}</div>
+              <div className="text-lg font-bold tracking-widest text-ink uppercase">{label}</div>
+              <div className="text-xs text-muted tracking-widest uppercase">{fmtDate(dd)}</div>
             </div>
             <div className="flex items-baseline">
-              <span className="text-2xl font-bold" style={{ color: completedExCount === exercises.length ? '#47E8A0' : meta.color }}>{completedExCount}</span>
-              <span className="text-xs text-[#444]">/{exercises.length}</span>
+              <span className="text-2xl font-bold" style={{ color: completedExCount === exercises.length ? 'var(--color-success)' : meta.color }}>{completedExCount}</span>
+              <span className="text-xs text-muted">/{exercises.length}</span>
             </div>
           </div>
 
@@ -260,11 +260,11 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
             return (
               <div key={name} className={cn("bg-card border border-border rounded-lg p-3", done && "opacity-50")}>
                 <div className="flex items-center justify-between mb-2">
-                  <span className={cn("text-xs font-bold text-[#ccc]", ld.skipped && "line-through text-[#666]")}>{name}</span>
+                  <span className={cn("text-xs font-bold text-ink", ld.skipped && "line-through text-muted")}>{name}</span>
                   <div className="flex items-center gap-2">
-                    {ld.skipped && <span className="text-[9px] text-[#555] tracking-widest uppercase">SKIPPED</span>}
-                    {!ld.skipped && <span className="text-[9px] text-[#444] tracking-widest uppercase">{ld.grid.filter(r => r.some(x => x)).length}/{ld.prescribedSets ?? ld.grid.length} sets</span>}
-                    <button onClick={() => setEditingEx(name)} className="text-[#333] hover:text-primary"><Settings size={12} /></button>
+                    {ld.skipped && <span className="text-xs text-muted tracking-widest uppercase">SKIPPED</span>}
+                    {!ld.skipped && <span className="text-xs text-muted tracking-widest uppercase">{ld.grid.filter(r => r.some(x => x)).length}/{ld.prescribedSets ?? ld.grid.length} sets</span>}
+                    <button onClick={() => setEditingEx(name)} className="text-muted hover:text-primary"><Settings size={12} /></button>
                   </div>
                 </div>
 
@@ -272,7 +272,7 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
                   const last = getLastPerformed(name, `lift-${weekKey}-${dayIdx}-${name}`);
                   if (!last) {
                     return (
-                      <div className="text-[9px] text-[#444] mb-2 tracking-wide">First time logging this lift</div>
+                      <div className="text-xs text-muted mb-2 tracking-wide">First time logging this lift</div>
                     );
                   }
                   // Average reps actually completed per attempted set. If you didn't
@@ -292,20 +292,20 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
                     // (i.e. is still on its suggested defaults).
                     !ld.grid.some(row => row.some(r => r));
                   return (
-                    <div className="text-[9px] text-[#666] mb-2 tracking-wide flex items-center gap-1.5 flex-wrap">
-                      <span className="text-[#888]">Last:</span>
-                      <span className="text-[#aaa] font-medium">{def.bw ? (last.weight > 0 ? `+${last.weight}` : 'BW') : `${last.weight} lbs`}</span>
-                      <span className="text-[#333]">·</span>
+                    <div className="text-xs text-muted mb-2 tracking-wide flex items-center gap-1.5 flex-wrap">
+                      <span className="text-muted">Last:</span>
+                      <span className="text-muted font-medium">{def.bw ? (last.weight > 0 ? `+${last.weight}` : 'BW') : `${last.weight} lbs`}</span>
+                      <span className="text-muted">·</span>
                       {prescriptionMatched ? (
                         <span>{last.prescribedSets}×{last.prescribedReps}</span>
                       ) : (
                         <span>
-                          <span className="text-[#aaa]">{last.completedSets}×{avgReps}</span>
-                          <span className="text-[#444]"> of </span>
+                          <span className="text-muted">{last.completedSets}×{avgReps}</span>
+                          <span className="text-muted"> of </span>
                           {last.prescribedSets}×{last.prescribedReps}
                         </span>
                       )}
-                      <span className="text-[#333]">·</span>
+                      <span className="text-muted">·</span>
                       <span>{formatLastPerformed(last.daysAgo, last.date)}</span>
                       {autoBumped && (
                         <span className="text-success font-bold ml-auto" title="Cleared all reps last time — weight bumped">↑ +{ld.weight - last.weight}</span>
@@ -317,25 +317,25 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
                 {!ld.skipped && (
                   <>
                     <div className="flex items-center gap-0 mb-3">
-                      <button onClick={() => setWeight(name, ld.weight - def.inc)} className="w-8 h-7 bg-[#1A1A1A] border border-[#2A2A2A] rounded-l-md text-[#888] flex items-center justify-center active:bg-[#252525]"><Minus size={14} /></button>
-                      <div className="flex-1 h-7 bg-card border-y border-[#2A2A2A] flex items-center justify-center text-sm font-bold text-primary tracking-widest">
-                        {def.bw && <span className="text-[9px] text-[#888] mr-1">BW</span>}
+                      <button onClick={() => setWeight(name, ld.weight - def.inc)} className="w-8 h-7 bg-soft border border-border rounded-l-md text-muted flex items-center justify-center active:bg-soft"><Minus size={14} /></button>
+                      <div className="flex-1 h-7 bg-card border-y border-border flex items-center justify-center text-sm font-bold text-primary tracking-widest">
+                        {def.bw && <span className="text-xs text-muted mr-1">BW</span>}
                         {def.bw ? (ld.weight > 0 ? `+${ld.weight}` : "") : ld.weight}
-                        {!def.bw && <span className="text-[9px] text-[#555] ml-1">lbs</span>}
+                        {!def.bw && <span className="text-xs text-muted ml-1">lbs</span>}
                       </div>
-                      <button onClick={() => setWeight(name, ld.weight + def.inc)} className="w-8 h-7 bg-[#1A1A1A] border border-[#2A2A2A] rounded-r-md text-[#888] flex items-center justify-center active:bg-[#252525]"><Plus size={14} /></button>
+                      <button onClick={() => setWeight(name, ld.weight + def.inc)} className="w-8 h-7 bg-soft border border-border rounded-r-md text-muted flex items-center justify-center active:bg-soft"><Plus size={14} /></button>
                     </div>
 
                     <div className="flex flex-col gap-1">
                       {ld.grid.map((row, si) => (
                         <div key={si} className="flex items-center gap-1">
-                          <span className={cn("text-[8px] w-5 text-center font-bold", row.some(r => r) ? "text-success/50" : "text-[#444]")}>S{si + 1}</span>
+                          <span className={cn("text-xs w-5 text-center font-bold", row.some(r => r) ? "text-success/50" : "text-muted")}>S{si + 1}</span>
                           <div className="flex gap-0.5 flex-1">
                             {row.map((val, ri) => (
                               <button 
                                 key={ri}
                                 onClick={() => toggleRep(name, si, ri)}
-                                className={cn("flex-1 h-6 rounded border-[1.5px] border-[#222] transition-all active:scale-90", val && "bg-[var(--c)] border-[var(--c)]")}
+                                className={cn("flex-1 h-6 rounded border-[1.5px] border-border transition-all active:scale-90", val && "bg-[var(--c)] border-[var(--c)]")}
                                 style={{ '--c': meta.color } as any}
                               />
                             ))}
@@ -350,24 +350,24 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
           })}
           
           {!addingExercise ? (
-            <button onClick={() => setAddingExercise(true)} className="w-full mt-2 py-3 border-2 border-dashed border-[#2A2A2A] text-[#888] font-bold text-[10px] tracking-widest uppercase rounded hover:bg-[#1A1A1A] transition-colors">
+            <button onClick={() => setAddingExercise(true)} className="w-full mt-2 py-3 border-2 border-dashed border-border text-muted font-bold text-xs tracking-widest uppercase rounded hover:bg-soft transition-colors">
               + Add Exercise
             </button>
           ) : (
             <div className="bg-card border border-border rounded-lg p-3 mt-2">
-              <h3 className="text-[10px] font-bold tracking-widest text-[#888] uppercase mb-3">Add Exercise to {item.liftType}</h3>
+              <h3 className="text-xs font-bold tracking-widest text-muted uppercase mb-3">Add Exercise to {item.liftType}</h3>
               <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto pr-1" style={{ scrollbarWidth: 'thin' }}>
                 {(AVAILABLE_EXERCISES[item.liftType as keyof typeof AVAILABLE_EXERCISES] || []).filter(ex => !exercises.includes(ex)).map(ex => (
                   <button 
                     key={ex} 
                     onClick={() => handleAddExercise(ex)}
-                    className="flex items-center justify-between p-2.5 bg-bg border border-[#2A2A2A] rounded text-left text-xs font-bold text-[#ccc] hover:bg-[#1A1A1A] transition-colors"
+                    className="flex items-center justify-between p-2.5 bg-bg border border-border rounded text-left text-xs font-bold text-ink hover:bg-soft transition-colors"
                   >
-                    {ex} <Plus size={14} className="text-[#888]" />
+                    {ex} <Plus size={14} className="text-muted" />
                   </button>
                 ))}
               </div>
-              <button onClick={() => setAddingExercise(false)} className="w-full mt-3 py-2 border border-border text-[#555] font-bold text-[10px] tracking-widest uppercase rounded hover:bg-[#1A1A1A] transition-colors">
+              <button onClick={() => setAddingExercise(false)} className="w-full mt-3 py-2 border border-border text-muted font-bold text-xs tracking-widest uppercase rounded hover:bg-soft transition-colors">
                 Cancel
               </button>
             </div>
@@ -378,10 +378,10 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
             const chk = data[`${itemKey}-ex${ei}`];
             return (
               <div key={ei} className="flex items-center gap-2 p-2.5 bg-card border border-border rounded-lg">
-                <span className="text-xs font-medium text-[#ccc] flex-1">{name}</span>
+                <span className="text-xs font-medium text-ink flex-1">{name}</span>
                 <button 
                   onClick={() => toggleExChk(ei)}
-                  className={cn("w-9 h-9 rounded-lg border-2 flex items-center justify-center text-xs", chk ? "bg-[var(--c)] border-[var(--c)] text-bg" : "border-[#2A2A2A] text-[#555]")}
+                  className={cn("w-9 h-9 rounded-lg border-2 flex items-center justify-center text-xs", chk ? "bg-[var(--c)] border-[var(--c)] text-bg" : "border-border text-muted")}
                   style={{ '--c': meta.color } as any}
                 >
                   {chk ? <Check size={16} /> : ""}
@@ -395,12 +395,12 @@ export function WorkoutDetail({ dayIdx, typeIdx, viewOffset, onBack, onStartTime
       <button 
         onClick={toggleComplete}
         className={cn(
-          "w-full py-3 rounded-lg font-bold text-[11px] tracking-[3px] border transition-all mt-4",
+          "w-full py-3 rounded-lg font-bold text-xs tracking-[3px] border transition-all mt-4",
           isWorkoutDone 
             ? "bg-[var(--c-dim)] text-[var(--c)] border-[var(--c)]" 
             : "bg-[var(--c)] text-bg border-[var(--c)]"
         )}
-        style={{ '--c': meta.color, '--c-dim': meta.color + "22" } as any}
+        style={{ '--c': meta.color, '--c-dim': `color-mix(in srgb, ${meta.color} 14%, transparent)` } as any}
       >
         {isWorkoutDone ? "✓ COMPLETED" : "MARK COMPLETE"}
       </button>
@@ -446,24 +446,24 @@ function ExerciseEditForm({ name, currentSets, currentReps, currentWeight, curre
 
   return (
     <div className="bg-card border border-border rounded-lg p-3">
-      <h3 className="text-[10px] font-bold tracking-widest text-[#888] uppercase mb-3">Edit {name}</h3>
+      <h3 className="text-xs font-bold tracking-widest text-muted uppercase mb-3">Edit {name}</h3>
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] text-[#555]">Sets</span>
+          <span className="text-xs text-muted">Sets</span>
           <input type="number" min={1} value={sets} onChange={(e) => setSets(e.target.value)} className="bg-bg border border-border rounded p-1 text-xs text-center w-12" />
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-[10px] text-[#555]">Reps</span>
+          <span className="text-xs text-muted">Reps</span>
           <input type="number" min={1} value={reps} onChange={(e) => setReps(e.target.value)} className="bg-bg border border-border rounded p-1 text-xs text-center w-12" />
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-[10px] text-[#555]">Weight</span>
+          <span className="text-xs text-muted">Weight</span>
           <input type="number" min={0} step="0.5" value={weight} onChange={(e) => setWeight(e.target.value)} className="bg-bg border border-border rounded p-1 text-xs text-center w-12" />
         </div>
         <div className="flex items-center justify-between pt-1 border-t border-border">
           <div className="flex flex-col">
-            <span className="text-[10px] text-[#555]">Auto-progress weight</span>
-            <span className="text-[9px] text-[#444]">Bump up after fully clearing</span>
+            <span className="text-xs text-muted">Auto-progress weight</span>
+            <span className="text-xs text-muted">Bump up after fully clearing</span>
           </div>
           <button
             type="button"
@@ -472,23 +472,23 @@ function ExerciseEditForm({ name, currentSets, currentReps, currentWeight, curre
             aria-label="Auto-progress weight"
             onClick={() => setAutoBump(v => !v)}
             className={cn(
-              "px-2.5 py-1 rounded text-[10px] font-bold tracking-widest border transition-colors",
+              "px-2.5 py-1 rounded text-xs font-bold tracking-widest border transition-colors",
               autoBump
                 ? "bg-success/15 text-success border-success/40"
-                : "bg-bg text-[#555] border-border"
+                : "bg-bg text-muted border-border"
             )}
           >
             {autoBump ? "ON" : "OFF"}
           </button>
         </div>
         <div className="flex gap-2 mt-2">
-          <button onClick={handleSave} className="flex-1 py-2 bg-primary text-bg font-bold text-[10px] rounded">SAVE</button>
-          <button onClick={onCancel} className="flex-1 py-2 border border-border text-[#555] font-bold text-[10px] rounded">Cancel</button>
+          <button onClick={handleSave} className="flex-1 py-2 bg-primary text-bg font-bold text-xs rounded">SAVE</button>
+          <button onClick={onCancel} className="flex-1 py-2 border border-border text-muted font-bold text-xs rounded">Cancel</button>
         </div>
-        <button onClick={onSkipToggle} className="w-full mt-2 py-2 border border-[#2A2A2A] text-warning font-bold text-[10px] rounded hover:bg-warning/10">
+        <button onClick={onSkipToggle} className="w-full mt-2 py-2 border border-border text-warning font-bold text-xs rounded hover:bg-warning/10">
           {skipped ? "UNSKIP EXERCISE" : "SKIP EXERCISE (TODAY)"}
         </button>
-        <button onClick={onRemove} className="w-full mt-2 py-2 border border-[#2A2A2A] text-danger font-bold text-[10px] rounded hover:bg-danger/10">
+        <button onClick={onRemove} className="w-full mt-2 py-2 border border-border text-danger font-bold text-xs rounded hover:bg-danger/10">
           REMOVE FROM ROUTINE
         </button>
       </div>

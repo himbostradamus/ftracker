@@ -46,15 +46,15 @@ export function ProgressTab() {
       <div className="flex flex-col gap-4">
         <button 
           onClick={() => setProgExercise(null)}
-          className="flex items-center gap-1 text-[#888] uppercase text-[10px] tracking-widest py-1"
+          className="flex items-center gap-1 text-muted uppercase text-xs tracking-widest py-1"
         >
           <ChevronLeft size={18} /> Back
         </button>
 
         <div className="flex justify-between items-start">
           <div>
-            <h2 className="text-lg font-bold tracking-widest text-white uppercase">{progExercise}</h2>
-            <p className="text-[10px] text-[#555] tracking-wider mt-1">
+            <h2 className="text-lg font-bold tracking-widest text-ink uppercase">{progExercise}</h2>
+            <p className="text-xs text-muted tracking-wider mt-1">
               {def.sets}×{def.reps} target {def.bw && '· bodyweight'} {hist.length ? `· ${hist.length} sessions` : '· No sessions yet'}
             </p>
           </div>
@@ -64,8 +64,8 @@ export function ProgressTab() {
                 key={m}
                 onClick={() => setMetric(m)}
                 className={cn(
-                  "px-2 py-1 text-[8px] font-bold tracking-widest uppercase rounded transition-colors",
-                  metric === m ? "bg-primary text-bg" : "text-[#555]"
+                  "px-2 py-1 text-xs font-bold tracking-widest uppercase rounded transition-colors",
+                  metric === m ? "bg-primary text-bg" : "text-muted"
                 )}
               >
                 {m}
@@ -76,38 +76,38 @@ export function ProgressTab() {
 
         {hist.length >= 2 && (
           <div className="bg-card border border-border rounded-lg p-3">
-            <p className="text-[9px] text-[#555] tracking-widest uppercase mb-3">{metricLabel} progression</p>
+            <p className="text-xs text-muted tracking-widest uppercase mb-3">{metricLabel} progression</p>
             <div className="h-[160px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 {metric === 'weight' ? (
                   <LineChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1A1A1A" vertical={false} />
-                    <XAxis dataKey="name" stroke="#333" fontSize={8} tickLine={false} axisLine={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+                    <XAxis dataKey="name" stroke="var(--color-muted)" fontSize={8} tickLine={false} axisLine={false} />
                     <YAxis hide domain={['auto', 'auto']} />
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#111', border: '1px solid #2A2A2A', fontSize: '10px' }}
-                      itemStyle={{ color: '#E8C547' }}
+                      contentStyle={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-border)', fontSize: '10px' }}
+                      itemStyle={{ color: 'var(--color-primary)' }}
                     />
                     <Line 
                       type="monotone" 
                       dataKey="weight" 
-                      stroke="#E8C547" 
+                      stroke="var(--color-primary)"
                       strokeWidth={2} 
-                      dot={{ fill: '#E8C547', r: 3 }}
-                      activeDot={{ r: 5, stroke: '#0D0D0D', strokeWidth: 2 }}
+                      dot={{ fill: 'var(--color-primary)', r: 3 }}
+                      activeDot={{ r: 5, stroke: 'var(--color-bg)', strokeWidth: 2 }}
                     />
                   </LineChart>
                 ) : (
                   <BarChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1A1A1A" vertical={false} />
-                    <XAxis dataKey="name" stroke="#333" fontSize={8} tickLine={false} axisLine={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+                    <XAxis dataKey="name" stroke="var(--color-muted)" fontSize={8} tickLine={false} axisLine={false} />
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#111', border: '1px solid #2A2A2A', fontSize: '10px' }}
-                      itemStyle={{ color: '#E8C547' }}
+                      contentStyle={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-border)', fontSize: '10px' }}
+                      itemStyle={{ color: 'var(--color-primary)' }}
                     />
                     <Bar dataKey={metric} radius={[2, 2, 0, 0]}>
                       {chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.isBest ? '#47E8A0' : '#E8C54744'} />
+                        <Cell key={`cell-${index}`} fill={entry.isBest ? 'var(--color-success)' : 'var(--color-soft)'} />
                       ))}
                     </Bar>
                   </BarChart>
@@ -121,8 +121,8 @@ export function ProgressTab() {
           <div className="flex items-center gap-2 p-2.5 bg-success/5 border border-success/20 rounded-lg">
             <Trophy size={14} className="text-success" />
             <div className="flex-1">
-              <div className="text-[9px] text-success font-bold tracking-[2px] uppercase">Best {metricLabel}</div>
-              <div className="text-sm text-[#ccc] font-bold">
+              <div className="text-xs text-success font-bold tracking-[2px] uppercase">Best {metricLabel}</div>
+              <div className="text-sm text-ink font-bold">
                 {bestDisplay}
               </div>
             </div>
@@ -130,24 +130,24 @@ export function ProgressTab() {
         )}
 
 
-        <h3 className="text-[11px] font-bold tracking-widest text-[#888] uppercase mt-2">History</h3>
+        <h3 className="text-xs font-bold tracking-widest text-muted uppercase mt-2">History</h3>
         {!hist.length ? (
-          <div className="text-center py-8 text-[#333] text-xs tracking-widest">Complete sets in the checklist to start tracking</div>
+          <div className="text-center py-8 text-muted text-xs tracking-widest">Complete sets in the checklist to start tracking</div>
         ) : (
           <div className="flex flex-col gap-1">
             {[...hist].reverse().slice(0, 20).map((h, i) => {
               const isBest = h[metric] === maxVal;
               return (
                 <div key={i} className="flex items-start gap-2 p-2.5 bg-card border border-border rounded-lg">
-                  <span className="text-[10px] text-[#555] w-[50px] shrink-0 pt-0.5">{fmtDate(h.date)}</span>
+                  <span className="text-xs text-muted w-[50px] shrink-0 pt-0.5">{fmtDate(h.date)}</span>
                   <div className="flex-1">
-                    <div className="text-sm text-[#ccc] font-bold">{weightDisplay(h.weight, def)}{!def.bw && " lbs"}</div>
-                    <div className="text-[10px] text-[#555] mt-0.5">
+                    <div className="text-sm text-ink font-bold">{weightDisplay(h.weight, def)}{!def.bw && " lbs"}</div>
+                    <div className="text-xs text-muted mt-0.5">
                       {h.completedSets}/{h.totalSets} sets · {h.reps} reps · {h.volume} vol
                     </div>
                   </div>
                   {isBest && (
-                    <span className="text-[8px] text-success font-bold tracking-widest bg-success/15 border border-success/30 rounded px-1.5 py-0.5">BEST</span>
+                    <span className="text-xs text-success font-bold tracking-widest bg-success/15 border border-success/30 rounded px-1.5 py-0.5">BEST</span>
                   )}
                 </div>
               );
@@ -181,7 +181,7 @@ export function ProgressTab() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-base font-bold tracking-[5px] text-white">PROGRESS</h1>
+      <h1 className="text-ink">Strength progress</h1>
       
       <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-hide">
         {ALL_EX_CATS.map(c => (
@@ -189,8 +189,8 @@ export function ProgressTab() {
             key={c.cat}
             onClick={() => setProgCat(c.cat)}
             className={cn(
-              "text-[9px] font-bold tracking-widest uppercase rounded px-2 py-1 border transition-colors shrink-0",
-              progCat === c.cat ? "text-primary border-primary/40 bg-primary/10" : "text-[#666] border-[#252525] bg-card"
+              "text-xs font-bold tracking-widest uppercase rounded px-2 py-1 border transition-colors shrink-0",
+              progCat === c.cat ? "text-primary border-primary/40 bg-primary/10" : "text-muted border-border bg-card"
             )}
           >
             {c.cat}
@@ -208,14 +208,14 @@ export function ProgressTab() {
             <button
               key={name}
               onClick={() => setProgExercise(name)}
-              className="flex items-center gap-2 p-2.5 bg-card border border-border rounded-lg text-left group active:bg-[#151515]"
+              className="flex items-center gap-2 p-2.5 bg-card border border-border rounded-lg text-left group active:bg-soft"
             >
-              <span className="text-xs font-medium text-[#ccc] flex-1">{name}</span>
+              <span className="text-xs font-medium text-ink flex-1">{name}</span>
               {hist.length > 0 && (def.bw || maxW > 0) && (
-                <span className="text-[9px] text-success tracking-widest">{weightDisplay(maxW, def)}{!def.bw && " lbs"}</span>
+                <span className="text-xs text-success tracking-widest">{weightDisplay(maxW, def)}{!def.bw && " lbs"}</span>
               )}
-              <span className="text-[9px] text-[#444] tracking-widest">{def.sets}×{def.reps}</span>
-              <ChevronRight size={14} className="text-[#2A2A2A] group-active:text-primary" />
+              <span className="text-xs text-muted tracking-widest">{def.sets}×{def.reps}</span>
+              <ChevronRight size={14} className="text-muted group-active:text-primary" />
             </button>
           );
         })}

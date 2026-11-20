@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, Plus, Check } from 'lucide-react';
-import { ACTIVITY_REGISTRY, DAYS, TYPE_META } from '../constants';
-import { getWeekKey, getMon, fmtDate, getWeekTemplate, getWorkoutItemKey } from '../lib/helpers';
+import { ChevronLeft, ChevronRight, Plus, Check, Activity, SlidersHorizontal } from 'lucide-react';
+import { ACTIVITY_REGISTRY, TYPE_META } from '../constants';
+import { getWeekKey, toDateKey, getMon, fmtDate, getWeekTemplate, getWorkoutItemKey } from '../lib/helpers';
 import { loadData, saveData, updateWeekLifts, updateWeekActivities } from '../lib/storage';
 import { cn } from '../lib/utils';
 import { CustomItem, WorkoutItem } from '../types';
 import { ScheduleEditor } from './ScheduleEditor';
 
+import { useMobility } from '../mobility/lib/store';
+import { fmtActive } from '../mobility/lib/dates';
+
 interface ChecklistTabProps {
+  onStretch: (routineId?: string) => void;
   viewOffset: number;
   setViewOffset: (v: number) => void;
   onOpenWorkout: (dayIdx: number, typeIdx: number) => void;
@@ -17,13 +21,14 @@ interface ChecklistTabProps {
 // Re-evaluated on every render so the highlight follows midnight crossings.
 type ExpandedDay = number | null | 'auto';
 
-export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: ChecklistTabProps) {
+export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout, onStretch }: ChecklistTabProps) {
   const [data, setData] = useState(loadData());
   const [expandedDay, setExpandedDay] = useState<ExpandedDay>('auto');
   const [addingTo, setAddingTo] = useState<number | null>(null);
   const [newItemText, setNewItemText] = useState('');
   const [editingSchedule, setEditingSchedule] = useState(false);
 
+  const { history } = useMobility();
   const today = new Date();
   const todayIdx = today.getDay() === 0 ? 6 : today.getDay() - 1;
   const isCurWk = viewOffset === 0;
@@ -53,20 +58,21 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-1">
-        <span className="text-sm font-bold tracking-[4px] text-white">TRAINING</span>
-        <button 
-          onClick={() => setEditingSchedule(!editingSchedule)}
-          className="text-[9px] font-bold tracking-widest text-primary uppercase"
-        >
-          {editingSchedule ? 'DONE' : 'EDIT'}
-        </button>
-      </div>
-
+      <header className="week-heading">
+        <div>
+          <p className="journal-date">{refDate.getFullYear()} · Weekly plan</p>
+          <h1>{wkLabel}</h1>
+        </div>
+        <div className="week-controls">
+          <button aria-label="Previous week" onClick={() => setViewOffset(viewOffset - 1)}><ChevronLeft size={18} /></button>
+          <button aria-label="Next week" onClick={() => setViewOffset(viewOffset + 1)}><ChevronRight size={18} /></button>
+        </div>
+      </header>
       <div className="flex items-center justify-between">
-        <button onClick={() => setViewOffset(viewOffset - 1)} className="w-8 h-7 flex items-center justify-center border border-[#222] rounded text-[#888]"><ChevronLeft size={16} /></button>
-        <span className="text-[11px] text-[#555] tracking-widest">{wkLabel}</span>
-        <button onClick={() => setViewOffset(viewOffset + 1)} className="w-8 h-7 flex items-center justify-center border border-[#222] rounded text-[#888]"><ChevronRight size={16} /></button>
+        <h2 className="font-semibold">{editingSchedule ? 'Edit schedule' : 'Weekly schedule'}</h2>
+        <button className="flex items-center gap-2 text-sm text-primary min-h-11" onClick={() => setEditingSchedule(!editingSchedule)}>
+          <SlidersHorizontal size={15} />{editingSchedule ? 'Done' : 'Edit schedule'}
+        </button>
       </div>
 
       {editingSchedule ? (
@@ -91,31 +97,34 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
         {sched.map((s, di) => {
           const isToday = isCurWk && s.day === todayIdx;
           const dObj = new Date(mon); dObj.setDate(mon.getDate() + s.day);
+          const sessions = history.filter(entry => entry.dateKey === toDateKey(dObj));
           const cust = getCust(s.day);
           const exp = displayedExpandedDay === s.day;
           
           return (
-            <div key={s.day} className={cn("bg-card border border-border rounded-lg overflow-hidden", isToday && "border-[#2A2A2A] bg-[#131313]")}>
-              <div className="flex items-center gap-2 p-2.5 cursor-pointer min-h-[40px]" onClick={() => setExpandedDay(exp ? null : s.day)}>
-                <span className={cn("text-[11px] font-bold tracking-widest uppercase", isToday ? "text-white" : "text-[#888]")}>{DAYS[s.day]}</span>
-                <span className="text-[10px] text-[#3A3A3A]">{dObj.getDate()}</span>
+            <div key={s.day} className={cn("day-card", isToday && "current-day")}>
+              <button type="button" className="day-toggle" aria-expanded={exp} onClick={() => setExpandedDay(exp ? null : s.day)}>
+                <span className="day-number">{dObj.getDate()}</span>
+                <span className="font-semibold">{dObj.toLocaleDateString('en-US', { weekday: 'long' })}</span>
+                {isToday && <span className="today-label">Today</span>}
                 <div className="flex-1" />
                 {!exp && (
                   <div className="flex items-center gap-1">
+                    {sessions.length > 0 && <Activity aria-label="Stretch logged" size={15} className="text-primary" />}
                     {s.items.map((item, ti) => {
                       const chk = data[k(s.day, item)];
                       const meta = TYPE_META[item.type];
-                      return <span key={ti} className="text-[10px]" style={{ color: chk ? meta.color + "44" : meta.color }}>{meta.icon}</span>;
+                      return <span key={ti} className="text-xs" style={{ color: chk ? `color-mix(in srgb, ${meta.color} 40%, transparent)` : meta.color }}>{meta.icon}</span>;
                     })}
                   </div>
                 )}
-                <ChevronRight size={14} className={cn("text-[#333] transition-transform", exp && "rotate-90")} />
-              </div>
+                <ChevronRight size={14} className={cn("text-muted transition-transform", exp && "rotate-90")} />
+              </button>
 
               {exp && (
-                <div className="p-2.5 pt-0 flex flex-col gap-0.5">
-                  {s.items.length === 0 && cust.length === 0 && addingTo !== s.day && (
-                    <div className="text-[10px] text-[#555] py-2">
+                <div className="px-4 pb-4 pt-0 flex flex-col gap-0.5">
+                  {s.items.length === 0 && cust.length === 0 && sessions.length === 0 && addingTo !== s.day && (
+                    <div className="text-sm text-muted py-2">
                       No workouts scheduled for this day.
                     </div>
                   )}
@@ -123,7 +132,8 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
                     const chk = data[k(s.day, item)];
                     const meta = TYPE_META[item.type];
                     const label = item.type === 'lift' ? item.liftType : meta.label;
-                    const hasDetail =
+                    const stretchId = item.type === 'bend-full' ? 'full-body-stretch' : item.type === 'bend-expert' ? 'full-body-deep' : undefined;
+                    const hasDetail = stretchId ||
                       item.type === 'lift' ||
                       ACTIVITY_REGISTRY[item.type]?.kind === 'session';
 
@@ -134,7 +144,7 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
                           aria-label={chk ? "Mark incomplete" : "Mark complete"}
                           aria-pressed={!!chk}
                           className={cn("w-[18px] h-[18px] rounded border-2 flex items-center justify-center shrink-0", chk ? "bg-[var(--c)] border-[var(--c)]" : "border-[var(--c-dim)]")}
-                          style={{ '--c': meta.color, '--c-dim': meta.color + "55" } as any}
+                          style={{ '--c': meta.color, '--c-dim': `color-mix(in srgb, ${meta.color} 50%, transparent)` } as any}
                           onClick={() => toggle(k(s.day, item))}
                         >
                           {chk && <Check size={12} className="text-bg font-bold" />}
@@ -143,11 +153,11 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
                           <button
                             type="button"
                             className="flex items-center gap-2 flex-1 text-left"
-                            onClick={() => onOpenWorkout(di, ti)}
+                            onClick={() => stretchId ? onStretch(stretchId) : onOpenWorkout(di, ti)}
                           >
-                            <span className="text-xs w-3.5 text-center" style={{ color: chk ? meta.color + "44" : meta.color }}>{meta.icon}</span>
-                            <span className={cn("text-xs font-medium text-[#ccc] flex-1", chk && "line-through text-[#555]")}>{label}</span>
-                            <ChevronRight size={14} className="text-[#2A2A2A]" />
+                            <span className="text-xs w-3.5 text-center" style={{ color: chk ? `color-mix(in srgb, ${meta.color} 40%, transparent)` : meta.color }}>{meta.icon}</span>
+                            <span className={cn("text-xs font-medium text-ink flex-1", chk && "line-through text-muted")}>{label}</span>
+                            <ChevronRight size={14} className="text-muted" />
                           </button>
                         ) : (
                           // Checkbox-only activity: tapping the row anywhere just toggles.
@@ -156,13 +166,22 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
                             className="flex items-center gap-2 flex-1 text-left"
                             onClick={() => toggle(k(s.day, item))}
                           >
-                            <span className="text-xs w-3.5 text-center" style={{ color: chk ? meta.color + "44" : meta.color }}>{meta.icon}</span>
-                            <span className={cn("text-xs font-medium text-[#ccc] flex-1", chk && "line-through text-[#555]")}>{label}</span>
+                            <span className="text-xs w-3.5 text-center" style={{ color: chk ? `color-mix(in srgb, ${meta.color} 40%, transparent)` : meta.color }}>{meta.icon}</span>
+                            <span className={cn("text-xs font-medium text-ink flex-1", chk && "line-through text-muted")}>{label}</span>
                           </button>
                         )}
                       </div>
                     );
                   })}
+                  {sessions.map(entry => (
+                    <div key={entry.id} className="logged-stretch">
+                      <Check size={15} /><span>{entry.routineName || 'Stretch session'}</span>
+                      <span className="ml-auto text-muted">{fmtActive(entry.activeSec)}</span>
+                    </div>
+                  ))}
+                  {isToday && <button type="button" onClick={() => onStretch()} className="practice-link">
+                    <Activity size={17} /> Open stretch practice <ChevronRight size={15} className="ml-auto" />
+                  </button>}
                   {cust.length > 0 && <div className="h-[1px] bg-border my-1" />}
                   {cust.map(ci => (
                     <div key={ci.id} className={cn("flex items-center gap-2 p-1.5 rounded-md", ci.done && "opacity-40")}>
@@ -170,30 +189,30 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout }: Check
                         type="button"
                         aria-label={ci.done ? "Mark incomplete" : "Mark complete"}
                         aria-pressed={ci.done}
-                        className={cn("w-[18px] h-[18px] rounded border-2 flex items-center justify-center shrink-0", ci.done ? "bg-[#888] border-[#888]" : "border-[#44444466]")}
+                        className={cn("w-[18px] h-[18px] rounded border-2 flex items-center justify-center shrink-0", ci.done ? "bg-muted border-border" : "border-border")}
                         onClick={() => toggleCust(s.day, ci.id)}
                       >
                         {ci.done && <Check size={12} className="text-bg font-bold" />}
                       </button>
-                      <span className="text-xs w-3.5 text-center text-[#555]">•</span>
+                      <span className="text-xs w-3.5 text-center text-muted">•</span>
                       <button
                         type="button"
-                        className={cn("text-xs font-medium text-[#ccc] flex-1 text-left", ci.done && "line-through text-[#555]")}
+                        className={cn("text-xs font-medium text-ink flex-1 text-left", ci.done && "line-through text-muted")}
                         onClick={() => toggleCust(s.day, ci.id)}
                       >{ci.label}</button>
-                      <button onClick={() => removeCust(s.day, ci.id)} className="text-sm text-[#444] px-1">×</button>
+                      <button onClick={() => removeCust(s.day, ci.id)} className="text-sm text-muted px-1">×</button>
                     </div>
                   ))}
                   {addingTo === s.day ? (
                     <div className="flex items-center gap-1 mt-1">
-                      <input autoFocus className="flex-1 bg-[#1A1A1A] border border-[#2A2A2A] rounded p-1.5 text-xs text-[#ddd] outline-none" placeholder="New item..." value={newItemText} onChange={(e) => setNewItemText(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') addCust(s.day); if (e.key === 'Escape') { setAddingTo(null); setNewItemText(''); } }} />
-                      <button onClick={() => addCust(s.day)} className="w-8 h-8 flex items-center justify-center bg-[#1A1A1A] border border-[#2A2A2A] rounded text-success">+</button>
-                      <button onClick={() => { setAddingTo(null); setNewItemText(''); }} className="w-8 h-8 flex items-center justify-center border border-border rounded text-[#555]">×</button>
+                      <input autoFocus className="flex-1 bg-soft border border-border rounded p-1.5 text-xs text-ink outline-none" placeholder="New item..." value={newItemText} onChange={(e) => setNewItemText(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') addCust(s.day); if (e.key === 'Escape') { setAddingTo(null); setNewItemText(''); } }} />
+                      <button onClick={() => addCust(s.day)} className="w-8 h-8 flex items-center justify-center bg-soft border border-border rounded text-success">+</button>
+                      <button onClick={() => { setAddingTo(null); setNewItemText(''); }} className="w-8 h-8 flex items-center justify-center border border-border rounded text-muted">×</button>
                     </div>
                   ) : (
-                    <button onClick={() => setAddingTo(s.day)} className="flex items-center gap-2 p-1.5 border border-dashed border-border rounded-md mt-1 text-[#444]">
+                    <button onClick={() => setAddingTo(s.day)} className="flex items-center gap-2 p-1.5 border border-dashed border-border rounded-md mt-1 text-muted">
                       <Plus size={12} />
-                      <span className="text-[10px] tracking-widest uppercase">Add item</span>
+                      <span className="text-xs tracking-widest uppercase">Add item</span>
                     </button>
                   )}
                 </div>

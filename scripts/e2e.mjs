@@ -19,8 +19,11 @@ const loaded = async () => { for (let i = 0; i < 40; i++) { if (await ev(`!!docu
 const timer = () => ev(`document.querySelector('[role=timer]')?.textContent`);
 const secs = t => { const [m, s] = t.split(':').map(Number); return m * 60 + s; };
 
+const monday = new Date();
+monday.setDate(monday.getDate() - (monday.getDay() + 6) % 7);
+const week = [monday.getFullYear(), String(monday.getMonth() + 1).padStart(2, '0'), String(monday.getDate()).padStart(2, '0')].join('-');
 const TRACKER = {
-  'workout-tracker-v6': JSON.stringify({ 'week-lifts-2026-11-09': { 0: 'Push' }, 'lift-2026-11-09-0-Incline Bench': { weight: 140, grid: [[true, true]], prescribedSets: 1, prescribedReps: 2 }, '2026-11-09-0-item-lift-Push': true }),
+  'workout-tracker-v6': JSON.stringify({ [`week-activities-${week}`]: { 0: ['bend-full'] }, [`week-lifts-${week}`]: { 0: 'Push' }, [`lift-${week}-0-Incline Bench`]: { weight: 140, grid: [[true, true]], prescribedSets: 1, prescribedReps: 2 }, [`${week}-0-item-lift-Push`]: true }),
   'exercise-config-v1': JSON.stringify({ 'Incline Bench': { sets: 4, reps: 8, w: 140, inc: 5, bw: false, rest: 90 } }),
   'nutrition-v1': JSON.stringify({ sex: 'm', age: 30, ft: 5, inches: 10, weight: 180, goalWeight: 175, startWeight: 185, activity: 'moderate', goal: 'cut', weightKg: 81.6, heightCm: 177.8 }),
   'weight-log-v1': JSON.stringify([{ date: '2026-11-08', weight: 181.2 }]),
@@ -31,9 +34,15 @@ await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, devi
 await send('Page.navigate', { url: base }); await sleep(300); await loaded();
 await ev(`(() => { const d = ${JSON.stringify(TRACKER)}; for (const k in d) localStorage.setItem(k, d[k]); })()`);
 await send('Page.navigate', { url: base }); await sleep(300); await loaded(); await sleep(300);
-ok(await ev(`document.body.innerText.replace(/\\s+/g, ' ').includes('MON 9 ◆')`), 'tracker shows the seeded week');
+ok(await ev(`document.querySelectorAll('.day-toggle').length === 7`), 'week shows all seven days');
+await ev(`(() => { const monday = document.querySelector('.day-toggle'); if (monday.getAttribute('aria-expanded') === 'false') monday.click(); })()`);
+await sleep(150);
+ok(await ev(`document.body.innerText.includes('Push')`), 'week shows the seeded lift');
 
-await click('Stretch'); await sleep(700);
+await click('Full-body stretch'); await sleep(500);
+ok(await ev(`document.querySelector('#mob-main h1')?.textContent === 'Full-Body Stretch'`), 'scheduled stretch opens its routine');
+await click('Back');
+await sleep(300);
 await click('Details'); await click('Start'); await sleep(1200);
 const a = secs(await timer()); await sleep(2500); const b = secs(await timer());
 ok(b < a && a - b >= 2 && a - b <= 3, `get-ready clock counts down (${a} -> ${b})`);
@@ -53,6 +62,12 @@ const hist = JSON.parse(await ev(`localStorage.getItem('mobility-v1')`)).history
 ok(hist.length === 1 && hist[0].activeSec >= 14 && hist[0].activeSec <= 19, `one history record with real active time (${hist[0]?.activeSec}s)`);
 await send('Page.navigate', { url: base }); await sleep(300); await loaded(); await sleep(300);
 ok(JSON.parse(await ev(`localStorage.getItem('mobility-v1')`)).history.length === 1, 'history survives a reload');
+await click('Progress'); await click('History');
+ok(await ev(`document.body.innerText.includes(${JSON.stringify(hist[0].routineName)})`), 'Progress opens the stretch history');
+await click('Strength');
+ok(await ev(`document.body.innerText.includes('Strength progress')`), 'shared Progress switches to lifting');
+await click('Week');
+ok(await ev(`document.querySelector('.logged-stretch')?.textContent.includes(${JSON.stringify(hist[0].routineName)})`), 'saved stretch appears on the weekly plan');
 const after = JSON.parse(await ev(`JSON.stringify(Object.fromEntries(${JSON.stringify(Object.keys(TRACKER))}.map(k => [k, localStorage.getItem(k)])))`));
 ok(JSON.stringify(after) === JSON.stringify(TRACKER), 'tracker storage is byte-for-byte unchanged');
 ok(errors.length === 0, `no page errors ${errors.join(' | ')}`);

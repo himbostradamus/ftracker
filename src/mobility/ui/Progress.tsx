@@ -65,7 +65,7 @@ export function Progress({ nav }: { nav: Nav }) {
 
   return (
     <div className="m-fade">
-      <Header title={t('Progress')} />
+      <Header title={t('Stretch progress')} />
       <div role="tablist" aria-label={t('Progress views')} className="flex gap-1 mb-5 border-b border-m-line">
         {(['stats', 'history'] as const).map(v => (
           <button key={v} role="tab" aria-selected={view === v} type="button" onClick={() => setView(v)}

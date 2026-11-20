@@ -146,11 +146,11 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-base font-bold tracking-[5px] text-white">DATA</h1>
+      <h1 className="text-ink">Data</h1>
 
       {msg && (
         <div className={cn(
-          "text-[11px] p-2 rounded-md text-center tracking-wider border",
+          "text-xs p-2 rounded-md text-center tracking-wider border",
           msg.type === 'ok' ? "bg-success/10 text-success border-success/30" : "bg-danger/10 text-danger border-danger/30"
         )}>
           {msg.text}
@@ -159,13 +159,13 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
 
       <div className="bg-card border border-border rounded-lg p-4">
         <div className="flex items-center gap-2 mb-3">
-          <Eye size={14} className="text-[#888]" />
-          <h2 className="text-[11px] font-bold tracking-widest text-[#888] uppercase">Display</h2>
+          <Eye size={14} className="text-muted" />
+          <h2 className="text-xs font-bold tracking-widest text-muted uppercase">Display</h2>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-[11px] text-[#ccc]">Show Macros tab</span>
-            <span className="text-[9px] text-[#444] leading-relaxed">Calorie targets, macros, and weight tracking. Hide if you'd rather not see this data.</span>
+            <span className="text-xs text-ink">Show Macros tab</span>
+            <span className="text-xs text-muted leading-relaxed">Calorie targets, macros, and weight tracking. Hide if you'd rather not see this data.</span>
           </div>
           <button
             type="button"
@@ -174,10 +174,10 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
             aria-label="Show Macros tab"
             onClick={() => onUpdatePrefs({ ...uiPrefs, hideNutrition: !uiPrefs.hideNutrition })}
             className={cn(
-              "px-2.5 py-1 rounded text-[10px] font-bold tracking-widest border transition-colors shrink-0 ml-3",
+              "px-2.5 py-1 rounded text-xs font-bold tracking-widest border transition-colors shrink-0 ml-3",
               !uiPrefs.hideNutrition
                 ? "bg-success/15 text-success border-success/40"
-                : "bg-bg text-[#555] border-border"
+                : "bg-bg text-muted border-border"
             )}
           >
             {!uiPrefs.hideNutrition ? "ON" : "OFF"}
@@ -187,50 +187,50 @@ export function DataTab({ uiPrefs, onUpdatePrefs }: DataTabProps) {
 
       <div className="bg-card border border-border rounded-lg p-4">
         <div className="flex items-center gap-2 mb-3">
-          <Database size={14} className="text-[#888]" />
-          <h2 className="text-[11px] font-bold tracking-widest text-[#888] uppercase">Storage</h2>
+          <Database size={14} className="text-muted" />
+          <h2 className="text-xs font-bold tracking-widest text-muted uppercase">Storage</h2>
         </div>
         <div className="flex flex-col gap-2">
-          <div className="flex justify-between text-[11px]">
-            <span className="text-[#666]">Total keys</span>
-            <span className="text-[#ccc] font-bold">{keys.length}</span>
+          <div className="flex justify-between text-xs">
+            <span className="text-muted">Total keys</span>
+            <span className="text-ink font-bold">{keys.length}</span>
           </div>
-          <div className="flex justify-between text-[11px]">
-            <span className="text-[#666]">Checklist entries</span>
-            <span className="text-[#ccc] font-bold">{ck}</span>
+          <div className="flex justify-between text-xs">
+            <span className="text-muted">Checklist entries</span>
+            <span className="text-ink font-bold">{ck}</span>
           </div>
-          <div className="flex justify-between text-[11px]">
-            <span className="text-[#666]">Lift sessions</span>
-            <span className="text-[#ccc] font-bold">{lk}</span>
+          <div className="flex justify-between text-xs">
+            <span className="text-muted">Lift sessions</span>
+            <span className="text-ink font-bold">{lk}</span>
           </div>
-          <div className="flex justify-between text-[11px]">
-            <span className="text-[#666]">Data size</span>
-            <span className="text-[#ccc] font-bold">{ss}</span>
+          <div className="flex justify-between text-xs">
+            <span className="text-muted">Data size</span>
+            <span className="text-ink font-bold">{ss}</span>
           </div>
         </div>
       </div>
 
       <div className="bg-card border border-border rounded-lg p-4">
-        <h2 className="text-[11px] font-bold tracking-widest text-[#888] uppercase mb-1.5">Export</h2>
-        <p className="text-[10px] text-[#444] leading-relaxed mb-3">Download a JSON backup of your data.</p>
-        <button onClick={exportData} className="w-full py-2.5 rounded-md bg-primary text-bg font-bold text-[11px] tracking-widest flex items-center justify-center gap-2">
+        <h2 className="text-xs font-bold tracking-widest text-muted uppercase mb-1.5">Export</h2>
+        <p className="text-xs text-muted leading-relaxed mb-3">Download a JSON backup of your data.</p>
+        <button onClick={exportData} className="w-full py-2.5 rounded-md bg-primary text-bg font-bold text-xs tracking-widest flex items-center justify-center gap-2">
           <Download size={14} /> EXPORT BACKUP
         </button>
       </div>
 
       <div className="bg-card border border-border rounded-lg p-4">
-        <h2 className="text-[11px] font-bold tracking-widest text-[#888] uppercase mb-1.5">Import</h2>
-        <p className="text-[10px] text-[#444] leading-relaxed mb-3">Restore from a backup. Workouts and configs are merged with backup values winning on overlap; the nutrition profile is replaced.</p>
+        <h2 className="text-xs font-bold tracking-widest text-muted uppercase mb-1.5">Import</h2>
+        <p className="text-xs text-muted leading-relaxed mb-3">Restore from a backup. Workouts and configs are merged with backup values winning on overlap; the nutrition profile is replaced.</p>
         <input type="file" id="import-file" accept=".json" className="hidden" onChange={handleImport} />
-        <button onClick={() => document.getElementById('import-file')?.click()} className="w-full py-2.5 rounded-md border border-[#2A2A2A] text-[#888] font-bold text-[11px] tracking-widest flex items-center justify-center gap-2">
+        <button onClick={() => document.getElementById('import-file')?.click()} className="w-full py-2.5 rounded-md border border-border text-muted font-bold text-xs tracking-widest flex items-center justify-center gap-2">
           <Upload size={14} /> IMPORT BACKUP
         </button>
       </div>
 
       <div className="bg-card border border-danger/20 rounded-lg p-4">
-        <h2 className="text-[11px] font-bold tracking-widest text-danger uppercase mb-1.5">Danger zone</h2>
-        <p className="text-[10px] text-[#444] leading-relaxed mb-3">Permanently delete all data from this device.</p>
-        <button onClick={clearAllData} className="w-full py-2.5 rounded-md border border-danger/30 text-danger font-bold text-[11px] tracking-widest flex items-center justify-center gap-2">
+        <h2 className="text-xs font-bold tracking-widest text-danger uppercase mb-1.5">Danger zone</h2>
+        <p className="text-xs text-muted leading-relaxed mb-3">Permanently delete all data from this device.</p>
+        <button onClick={clearAllData} className="w-full py-2.5 rounded-md border border-danger/30 text-danger font-bold text-xs tracking-widest flex items-center justify-center gap-2">
           <Trash2 size={14} /> CLEAR ALL DATA
         </button>
       </div>

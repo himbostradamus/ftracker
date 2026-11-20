@@ -45,18 +45,18 @@ export function RestTimer({ duration, onDismiss }: RestTimerProps) {
       exit={{ y: 100, opacity: 0 }}
       className="fixed bottom-[50px] left-0 right-0 flex justify-center z-50 px-3 pb-[env(safe-area-inset-bottom)]"
     >
-      <div className="max-w-[375px] w-full bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl p-3 flex items-center gap-3 shadow-2xl">
-        <span className="text-[10px] text-[#888] tracking-widest uppercase">Rest</span>
-        <button onClick={() => adjust(-15)} className="w-7 h-7 rounded-md border border-[#333] text-[#888] flex items-center justify-center active:bg-[#222]">
+      <div className="max-w-[375px] w-full bg-soft border border-border rounded-xl p-3 flex items-center gap-3 shadow-2xl">
+        <span className="text-xs text-muted tracking-widest uppercase">Rest</span>
+        <button onClick={() => adjust(-15)} className="w-7 h-7 rounded-md border border-border text-muted flex items-center justify-center active:bg-soft">
           <Minus size={14} />
         </button>
         <div className={`flex-1 text-center text-2xl font-bold tracking-widest ${isDone ? 'text-success animate-pulse' : 'text-primary'}`}>
           {isDone ? 'GO' : formatTime(timeLeft)}
         </div>
-        <button onClick={() => adjust(15)} className="w-7 h-7 rounded-md border border-[#333] text-[#888] flex items-center justify-center active:bg-[#222]">
+        <button onClick={() => adjust(15)} className="w-7 h-7 rounded-md border border-border text-muted flex items-center justify-center active:bg-soft">
           <Plus size={14} />
         </button>
-        <button onClick={onDismiss} className="text-[#555] p-1">
+        <button onClick={onDismiss} className="text-muted p-1">
           <X size={16} />
         </button>
       </div>

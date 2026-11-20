@@ -59,7 +59,7 @@ await click('End session'); await click('End and save'); await shot('12-summary'
 await click('Done');
 await click('Progress'); await shot('13-progress');
 await click('History'); await shot('14-history');
-await click('Settings'); await shot('15-settings');
+await click('Stretch'); await click('Settings'); await shot('15-settings');
 await click('Create'); await click('Build it yourself'); await click('Add Cat Cow'); await click('Add Lunge'); await click('Add Butterfly'); await shot('16-picker');
 await click('Done ('); await shot('17-builder');
 await ev(`localStorage.setItem('mobility-v1', JSON.stringify({ ...JSON.parse(localStorage.getItem('mobility-v1')), settings: { ...JSON.parse(localStorage.getItem('mobility-v1')).settings, appearance: 'dark', textSize: 'larger' } }))`);

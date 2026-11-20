@@ -74,13 +74,13 @@ export const STOCK_DEFAULTS: Record<string, ExerciseConfig> = {
 // ActivityId in types.ts; ChecklistTab and the ScheduleEditor both read from
 // here so adding a new wellness activity is one entry.
 export const ACTIVITY_REGISTRY: Record<ActivityId, ActivityMeta> = {
-  run:           { icon: "▸",  color: "#47E8A0", label: "Run / Bike",      kind: 'session' },
-  hiit:          { icon: "⚡", color: "#E85C47", label: "HIIT Sprint",     kind: 'session' },
-  walk:          { icon: "~",  color: "#47B8E8", label: "75 min Walk",     kind: 'session' },
-  core:          { icon: "◉",  color: "#F59E0B", label: "Core",            kind: 'session' },
-  "bend-full":   { icon: "○",  color: "#C084FC", label: "Bend – Full Body", kind: 'checkbox' },
-  "bend-expert": { icon: "◎",  color: "#C084FC", label: "Bend – Expert",   kind: 'checkbox' },
-  meditate:      { icon: "◇",  color: "#A78BFA", label: "Meditate",        kind: 'checkbox' }
+  run:           { icon: "▸",  color: "var(--color-success)", label: "Run / Bike",      kind: 'session' },
+  hiit:          { icon: "⚡", color: "var(--color-danger)", label: "HIIT Sprint",     kind: 'session' },
+  walk:          { icon: "~",  color: "var(--color-info)", label: "75 min Walk",     kind: 'session' },
+  core:          { icon: "◉",  color: "var(--color-warning)", label: "Core",            kind: 'session' },
+  "bend-full":   { icon: "○",  color: "var(--color-primary)", label: "Full-body stretch", kind: 'checkbox' },
+  "bend-expert": { icon: "◎",  color: "var(--color-primary)", label: "Deep stretch",   kind: 'checkbox' },
+  meditate:      { icon: "◇",  color: "var(--color-accent)", label: "Meditate",        kind: 'checkbox' }
 };
 
 // Stable order for UI lists (chips in the editor, default scheduling).
@@ -92,7 +92,7 @@ export const ACTIVITY_IDS: readonly ActivityId[] = [
 // TYPE_META now also includes a 'lift' entry that the ACTIVITY_REGISTRY (which
 // only lists non-lift activities) doesn't carry.
 export const TYPE_META = {
-  lift: { icon: "◆", color: "#E8C547", label: "Lift" },
+  lift: { icon: "◆", color: "var(--color-primary)", label: "Lift" },
   ...ACTIVITY_REGISTRY
 } as const;
 

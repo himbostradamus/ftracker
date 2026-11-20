@@ -24,7 +24,6 @@ export interface Nav {
   start: (r: Routine) => void;
   toast: (text: string, undo?: () => void) => void;
   goTab: (tab: string) => void;
-  exitToTracker: () => void;
 }
 
 export function Art({ id, size = 64, badge = true, className }: { id: string; size?: number | string; badge?: boolean; className?: string }) {
@@ -41,7 +40,7 @@ export function Btn({ kind = 'primary', className, ...p }: React.ButtonHTMLAttri
     <button
       type="button" {...p}
       className={cn(
-        'm-tap inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-[0.95rem] font-semibold transition-colors disabled:opacity-45',
+        'm-tap inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-[0.95rem] font-semibold transition-colors disabled:opacity-45',
         kind === 'primary' && 'bg-m-accent text-m-ink',
         kind === 'secondary' && 'bg-m-surface text-m-text border border-m-line',
         kind === 'ghost' && 'text-m-accent',
