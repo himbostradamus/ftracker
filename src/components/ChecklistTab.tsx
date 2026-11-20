@@ -94,7 +94,8 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout, onStret
         {sched.map((s, di) => {
           const isToday = isCurWk && s.day === todayIdx;
           const dObj = new Date(mon); dObj.setDate(mon.getDate() + s.day);
-          const sessions = history.filter(entry => entry.dateKey === toDateKey(dObj));
+          const dayKey = toDateKey(dObj);
+          const sessions = history.filter(entry => entry.dateKey === dayKey);
           const cust = getCust(s.day);
           const exp = displayedExpandedDay === s.day;
           
@@ -106,11 +107,13 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout, onStret
                 {isToday && <span className="today-label">Today</span>}
                 <div className="flex-1" />
                 {!exp && (
-                  <div className="flex items-center gap-1">
-                    {sessions.length > 0 && <Activity aria-label="Stretch logged" size={15} className="text-primary" />}
+                  <div className="flex flex-wrap justify-end items-center gap-1">
                     {s.items.map((item, ti) => {
                       const chk = data[k(s.day, item)];
                       const meta = TYPE_META[item.type];
+                      if (chk && (item.type === 'bend-full' || item.type === 'bend-expert')) {
+                        return <span key={ti} className="text-xs text-muted normal-case">✓ {meta.label}</span>;
+                      }
                       return <span key={ti} className="text-xs" style={{ color: chk ? `color-mix(in srgb, ${meta.color} 40%, transparent)` : meta.color }}>{item.type === 'lift' ? item.liftType : meta.icon}</span>;
                     })}
                   </div>
@@ -120,7 +123,7 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout, onStret
 
               {exp && (
                 <div className="px-2.5 pb-2.5 pt-0 flex flex-col gap-0.5">
-                  {s.items.length === 0 && cust.length === 0 && sessions.length === 0 && addingTo !== s.day && (
+                  {s.items.length === 0 && cust.length === 0 && addingTo !== s.day && (
                     <div className="lift-picker" role="group" aria-label={`Schedule a lift for ${DAYS[s.day]}`}>
                       <span>Schedule lift</span>
                       {(['Push', 'Pull', 'Legs'] as const).map(lift => (
@@ -173,12 +176,6 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout, onStret
                       </div>
                     );
                   })}
-                  {sessions.map(entry => (
-                    <div key={entry.id} className="logged-stretch">
-                      <Check size={15} /><span>{entry.routineName || 'Stretch session'}</span>
-                      <span className="ml-auto text-muted">{fmtActive(entry.activeSec)}</span>
-                    </div>
-                  ))}
                   {isToday && s.items.some(item => item.type === 'lift') && <button type="button" onClick={() => onStretch()} className="practice-link">
                     <Activity size={17} /> Stretch after lifting <ChevronRight size={15} className="ml-auto" />
                   </button>}
@@ -216,6 +213,17 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout, onStret
                     </button>
                   )}
                 </div>
+              )}
+              {sessions.length > 0 && (
+                <ul aria-label="Logged stretches" className="px-2.5 pb-1.5">
+                  {sessions.map(entry => (
+                    <li key={entry.id} className="logged-stretch">
+                      <Check size={15} aria-hidden="true" className="shrink-0 text-accent" />
+                      <span className="min-w-0 break-words">{entry.routineName || 'Stretch session'}</span>
+                      <span className="ml-auto shrink-0 text-muted">{fmtActive(entry.activeSec)}</span>
+                    </li>
+                  ))}
+                </ul>
               )}
             </div>
           );
