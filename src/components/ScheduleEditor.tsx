@@ -4,6 +4,9 @@ import { fmtDate } from '../lib/helpers';
 import { cn } from '../lib/utils';
 import { ActivityId, DaySchedule } from '../types';
 
+const stretchActivities: readonly ActivityId[] = ['bend-full', 'bend-expert'];
+const scheduleChoices = ACTIVITY_IDS.filter(id => !stretchActivities.includes(id));
+
 interface ScheduleEditorProps {
   sched: DaySchedule[];
   mon: Date;
@@ -74,7 +77,7 @@ export function ScheduleEditor({
                 </select>
               </div>
               <div className="flex flex-wrap gap-1">
-                {ACTIVITY_IDS.map(id => {
+                {scheduleChoices.map(id => {
                   const meta = ACTIVITY_REGISTRY[id];
                   const active = currentActivities.includes(id);
                   return (
@@ -99,6 +102,12 @@ export function ScheduleEditor({
                   );
                 })}
               </div>
+              {stretchActivities.filter(id => currentActivities.includes(id)).map(id => (
+                <button key={id} type="button" className="mt-2 block text-xs text-muted underline"
+                  onClick={() => toggleActivity(id)}>
+                  Remove {ACTIVITY_REGISTRY[id].label} from schedule
+                </button>
+              ))}
             </div>
           );
         })}

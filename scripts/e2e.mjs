@@ -85,6 +85,12 @@ await click('Pull');
 ok(await ev(`JSON.parse(localStorage.getItem('workout-tracker-v6'))['week-lifts-' + ${JSON.stringify(week)}][1] === 'Pull'`), 'quick scheduling saves the lift for the selected day');
 await click('Pull');
 ok(await ev(`document.body.textContent.includes('Seated Row')`), 'scheduled lift opens the workout log');
+await click('Edit Schedule');
+ok(await ev(`!!document.querySelector('[aria-label="Lift for Mon"]') && !document.querySelector('[role=switch][aria-label="Full-body stretch"], [role=switch][aria-label="Deep stretch"]')`), 'schedule editor omits stretch choices');
+await click('Core');
+ok(await ev(`JSON.parse(localStorage.getItem('workout-tracker-v6'))['week-activities-' + ${JSON.stringify(week)}][0].includes('bend-full')`), 'editing other activities preserves an existing scheduled stretch');
+await click('Remove Full-body stretch from schedule');
+ok(await ev(`!JSON.parse(localStorage.getItem('workout-tracker-v6'))['week-activities-' + ${JSON.stringify(week)}][0].includes('bend-full')`), 'an existing scheduled stretch can be removed');
 ok(errors.length === 0, `no page errors ${errors.join(' | ')}`);
 ws.close(); try { process.kill(-chrome.pid); } catch { chrome.kill(); }
 process.exit(failed ? 1 : 0);
