@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, Plus, Check, Activity, SlidersHorizontal } from 'lucide-react';
-import { ACTIVITY_REGISTRY, TYPE_META } from '../constants';
+import { ChevronLeft, ChevronRight, Plus, Check, Activity } from 'lucide-react';
+import { ACTIVITY_REGISTRY, DAYS, TYPE_META } from '../constants';
 import { getWeekKey, toDateKey, getMon, fmtDate, getWeekTemplate, getWorkoutItemKey } from '../lib/helpers';
 import { loadData, saveData, updateWeekLifts, updateWeekActivities } from '../lib/storage';
 import { cn } from '../lib/utils';
@@ -53,26 +53,27 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout, onStret
   const addCust = (dn: number) => { if (!newItemText.trim()) return; const newData = { ...data, [kcu(dn)]: [...getCust(dn), { id: Date.now(), label: newItemText.trim(), done: false }] }; setData(newData); saveData(newData); setNewItemText(''); setAddingTo(null); };
   const removeCust = (dn: number, id: number) => { const newData = { ...data, [kcu(dn)]: getCust(dn).filter(i => i.id !== id) }; setData(newData); saveData(newData); };
 
+  const changeLift = (day: number, value: string) => {
+    const next = updateWeekLifts(data, weekKey, sched, day, value);
+    setData(next);
+    saveData(next);
+  };
+
   const end = new Date(mon); end.setDate(end.getDate() + 6);
   const wkLabel = `${fmtDate(mon)} – ${fmtDate(end)}`;
 
   return (
     <div className="flex flex-col gap-4">
-      <header className="week-heading">
-        <div>
-          <p className="journal-date">{refDate.getFullYear()} · Weekly plan</p>
-          <h1>{wkLabel}</h1>
-        </div>
-        <div className="week-controls">
-          <button aria-label="Previous week" onClick={() => setViewOffset(viewOffset - 1)}><ChevronLeft size={18} /></button>
-          <button aria-label="Next week" onClick={() => setViewOffset(viewOffset + 1)}><ChevronRight size={18} /></button>
-        </div>
-      </header>
-      <div className="flex items-center justify-between">
-        <h2 className="font-semibold">{editingSchedule ? 'Edit schedule' : 'Weekly schedule'}</h2>
-        <button className="flex items-center gap-2 text-sm text-primary min-h-11" onClick={() => setEditingSchedule(!editingSchedule)}>
-          <SlidersHorizontal size={15} />{editingSchedule ? 'Done' : 'Edit schedule'}
+      <header className="flex items-center justify-between">
+        <h1 className="tracker-title">Training</h1>
+        <button className="text-xs text-primary uppercase tracking-wider min-h-10" onClick={() => setEditingSchedule(!editingSchedule)}>
+          {editingSchedule ? 'Done' : 'Edit schedule'}
         </button>
+      </header>
+      <div className="week-controls">
+        <button aria-label="Previous week" onClick={() => setViewOffset(viewOffset - 1)}><ChevronLeft size={16} /></button>
+        <span>{wkLabel}</span>
+        <button aria-label="Next week" onClick={() => setViewOffset(viewOffset + 1)}><ChevronRight size={16} /></button>
       </div>
 
       {editingSchedule ? (
@@ -81,11 +82,7 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout, onStret
           mon={mon}
           customLifts={data[`week-lifts-${weekKey}`]}
           customActivities={data[`week-activities-${weekKey}`]}
-          onLiftChange={(day, val) => {
-            const newData = updateWeekLifts(data, weekKey, sched, day, val);
-            setData(newData);
-            saveData(newData);
-          }}
+          onLiftChange={changeLift}
           onActivitiesChange={(day, activities) => {
             const newData = updateWeekActivities(data, weekKey, sched, day, activities);
             setData(newData);
@@ -104,8 +101,8 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout, onStret
           return (
             <div key={s.day} className={cn("day-card", isToday && "current-day")}>
               <button type="button" className="day-toggle" aria-expanded={exp} onClick={() => setExpandedDay(exp ? null : s.day)}>
-                <span className="day-number">{dObj.getDate()}</span>
-                <span className="font-semibold">{dObj.toLocaleDateString('en-US', { weekday: 'long' })}</span>
+                <span className="font-bold">{DAYS[s.day]}</span>
+                <span className="text-muted">{dObj.getDate()}</span>
                 {isToday && <span className="today-label">Today</span>}
                 <div className="flex-1" />
                 {!exp && (
@@ -114,7 +111,7 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout, onStret
                     {s.items.map((item, ti) => {
                       const chk = data[k(s.day, item)];
                       const meta = TYPE_META[item.type];
-                      return <span key={ti} className="text-xs" style={{ color: chk ? `color-mix(in srgb, ${meta.color} 40%, transparent)` : meta.color }}>{meta.icon}</span>;
+                      return <span key={ti} className="text-xs" style={{ color: chk ? `color-mix(in srgb, ${meta.color} 40%, transparent)` : meta.color }}>{item.type === 'lift' ? item.liftType : meta.icon}</span>;
                     })}
                   </div>
                 )}
@@ -122,10 +119,13 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout, onStret
               </button>
 
               {exp && (
-                <div className="px-4 pb-4 pt-0 flex flex-col gap-0.5">
+                <div className="px-2.5 pb-2.5 pt-0 flex flex-col gap-0.5">
                   {s.items.length === 0 && cust.length === 0 && sessions.length === 0 && addingTo !== s.day && (
-                    <div className="text-sm text-muted py-2">
-                      No workouts scheduled for this day.
+                    <div className="lift-picker" role="group" aria-label={`Schedule a lift for ${DAYS[s.day]}`}>
+                      <span>Schedule lift</span>
+                      {(['Push', 'Pull', 'Legs'] as const).map(lift => (
+                        <button type="button" key={lift} onClick={() => changeLift(s.day, lift)}>{lift}</button>
+                      ))}
                     </div>
                   )}
                   {s.items.map((item, ti) => {
@@ -179,8 +179,8 @@ export function ChecklistTab({ viewOffset, setViewOffset, onOpenWorkout, onStret
                       <span className="ml-auto text-muted">{fmtActive(entry.activeSec)}</span>
                     </div>
                   ))}
-                  {isToday && <button type="button" onClick={() => onStretch()} className="practice-link">
-                    <Activity size={17} /> Open stretch practice <ChevronRight size={15} className="ml-auto" />
+                  {isToday && s.items.some(item => item.type === 'lift') && <button type="button" onClick={() => onStretch()} className="practice-link">
+                    <Activity size={17} /> Stretch after lifting <ChevronRight size={15} className="ml-auto" />
                   </button>}
                   {cust.length > 0 && <div className="h-[1px] bg-border my-1" />}
                   {cust.map(ci => (

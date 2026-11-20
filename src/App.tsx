@@ -148,8 +148,8 @@ export default function App() {
   };
 
   return (
-    <div className="journal-shell">
-      <TabBar activeTab={activeTab} uiPrefs={uiPrefs} onTabChange={navigate} />
+    <div className={activeTab === 'stretch' || (activeTab === 'prog' && progressView === 'Stretching') ? 'tracker-shell mobility-width' : 'tracker-shell'}>
+      {!openWorkout && <TabBar activeTab={activeTab} uiPrefs={uiPrefs} onTabChange={navigate} />}
       {renderTab()}
 
       <AnimatePresence>

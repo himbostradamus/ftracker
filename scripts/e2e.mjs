@@ -65,11 +65,17 @@ ok(JSON.parse(await ev(`localStorage.getItem('mobility-v1')`)).history.length ==
 await click('Progress'); await click('History');
 ok(await ev(`document.body.innerText.includes(${JSON.stringify(hist[0].routineName)})`), 'Progress opens the stretch history');
 await click('Strength');
-ok(await ev(`document.body.innerText.includes('Strength progress')`), 'shared Progress switches to lifting');
+ok(await ev(`document.querySelector('h1')?.textContent === 'Strength progress'`), 'shared Progress switches to lifting');
 await click('Week');
 ok(await ev(`document.querySelector('.logged-stretch')?.textContent.includes(${JSON.stringify(hist[0].routineName)})`), 'saved stretch appears on the weekly plan');
 const after = JSON.parse(await ev(`JSON.stringify(Object.fromEntries(${JSON.stringify(Object.keys(TRACKER))}.map(k => [k, localStorage.getItem(k)])))`));
 ok(JSON.stringify(after) === JSON.stringify(TRACKER), 'tracker storage is byte-for-byte unchanged');
+await ev(`(() => { const day = document.querySelectorAll('.day-toggle')[1]; if (day.getAttribute('aria-expanded') === 'false') day.click(); })()`);
+await sleep(150);
+await click('Pull');
+ok(await ev(`JSON.parse(localStorage.getItem('workout-tracker-v6'))['week-lifts-' + ${JSON.stringify(week)}][1] === 'Pull'`), 'quick scheduling saves the lift for the selected day');
+await click('Pull');
+ok(await ev(`document.body.textContent.includes('Seated Row')`), 'scheduled lift opens the workout log');
 ok(errors.length === 0, `no page errors ${errors.join(' | ')}`);
 ws.close(); try { process.kill(-chrome.pid); } catch { chrome.kill(); }
 process.exit(failed ? 1 : 0);

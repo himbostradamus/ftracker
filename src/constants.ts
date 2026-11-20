@@ -78,8 +78,8 @@ export const ACTIVITY_REGISTRY: Record<ActivityId, ActivityMeta> = {
   hiit:          { icon: "⚡", color: "var(--color-danger)", label: "HIIT Sprint",     kind: 'session' },
   walk:          { icon: "~",  color: "var(--color-info)", label: "75 min Walk",     kind: 'session' },
   core:          { icon: "◉",  color: "var(--color-warning)", label: "Core",            kind: 'session' },
-  "bend-full":   { icon: "○",  color: "var(--color-primary)", label: "Full-body stretch", kind: 'checkbox' },
-  "bend-expert": { icon: "◎",  color: "var(--color-primary)", label: "Deep stretch",   kind: 'checkbox' },
+  "bend-full":   { icon: "○",  color: "var(--color-accent)", label: "Full-body stretch", kind: 'checkbox' },
+  "bend-expert": { icon: "◎",  color: "var(--color-accent)", label: "Deep stretch",   kind: 'checkbox' },
   meditate:      { icon: "◇",  color: "var(--color-accent)", label: "Meditate",        kind: 'checkbox' }
 };
 

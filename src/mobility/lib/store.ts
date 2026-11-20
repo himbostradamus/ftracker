@@ -8,7 +8,7 @@ export const SESSION_KEY = 'mobility-session-v1';
 export const SCHEMA = 1;
 
 export const DEFAULT_SETTINGS: Settings = {
-  appearance: 'system', textSize: 'normal', reduceMotion: 'system',
+  appearance: 'dark', textSize: 'normal', reduceMotion: 'system',
   sounds: true, speakNames: false, speakSides: false, volume: 0.7, countdownBeeps: 3,
   prepSec: 5, transitionSec: 5, switchSec: 4, pauseOnInfo: true, keepAwake: true,
   level: 'beginner', cautions: [], timezone: 'auto',
